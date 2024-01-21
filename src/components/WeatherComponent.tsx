@@ -29,18 +29,20 @@ const Weather: React.FC = () => {
       <Text fontSize="xl" fontWeight="bold" mb={2}>
         Weather in {weatherData?.name}
       </Text>
-      <Box>
-        <Text fontSize="lg">Temperature: {weatherData.main?.temp}°C</Text>
-        <Text fontSize="lg" mt={2}>
-          Description: {weatherData.weather?.[0]?.description}
-        </Text>
-        <Text fontSize="lg" mt={2}>
-          Humidity: {weatherData.main?.humidity}%
-        </Text>
-        <Text fontSize="lg" mt={2}>
-          Wind Speed: {weatherData.wind?.speed} m/s
-        </Text>
-      </Box>
+      {weatherData && (
+        <Box>
+          <Text fontSize="lg">Temperature: {weatherData.main?.temp}°C</Text>
+          <Text fontSize="lg" mt={2}>
+            Description: {weatherData.weather?.[0]?.description}
+          </Text>
+          <Text fontSize="lg" mt={2}>
+            Humidity: {weatherData.main?.humidity}%
+          </Text>
+          <Text fontSize="lg" mt={2}>
+            Wind Speed: {weatherData.wind?.speed} m/s
+          </Text>
+        </Box>
+      )}
     </Box>
   );
 };
