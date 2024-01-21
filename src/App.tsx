@@ -8,7 +8,7 @@ function App() {
   return (
     <BrowserRouter>
       <Navbar />
-      <Box maxW="1200px" mx="auto" mt="4">
+      <Box maxW="1200px" p="10px" mx="auto" mt="4">
         <Routing />
       </Box>
     </BrowserRouter>

@@ -1,7 +1,9 @@
+import Weather from "../../components/WeatherComponent";
+
 const Dashboard = () => {
   return (
     <div>
-      <h2>Dashboard Component</h2>
+      <Weather />
     </div>
   );
 };
