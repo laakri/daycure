@@ -1,5 +1,6 @@
 import CryptoPrices from "../../components/CryptoComponent";
 import RandomQuotes from "../../components/QuoteComponent";
+import Horoscope from "../../components/HoroscopeComponents";
 import Weather from "../../components/WeatherComponent";
 import { Flex, Text } from "@chakra-ui/react";
 
@@ -13,6 +14,7 @@ const Dashboard = () => {
         <Weather />
         <CryptoPrices />
         <RandomQuotes />
+        <Horoscope />
       </Flex>
     </Flex>
   );
