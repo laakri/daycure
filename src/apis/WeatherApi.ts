@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_KEY = "30ac8ac7fcmshae821a48f077ac0p1fbb2cjsn645dfb7592a3";
+const API_KEY = "ad601afa83msh59ba055e06eb96dp1f0854jsne6b88450f0ab";
 const API_URL = "https://open-weather13.p.rapidapi.com/city/Tunisie";
 
 export const getWeatherData = async () => {

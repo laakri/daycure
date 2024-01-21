@@ -3,7 +3,14 @@ import { Flex, Text, Box } from "@chakra-ui/react";
 
 const Navbar = () => {
   return (
-    <Flex align="center" justify="space-between" display="flex" width="100vw">
+    <Flex
+      align="center"
+      justify="space-between"
+      display="flex"
+      width="100vw"
+      h="60px"
+      px="10px"
+    >
       <Flex>
         <Box
           display="flex"
@@ -22,14 +29,13 @@ const Navbar = () => {
         align="center"
         justify="space-around"
         wrap="wrap"
-        padding="5px 20px"
+        padding="7px 20px"
         display="flex"
         gap="20px"
-        background="#39007277"
+        background="var(--lvl1-darkcolor)"
         rounded="10px"
         maxW="500px"
         margin="auto"
-        marginTop="10px"
       >
         <Box display="flex" gap="10px" alignItems="center">
           <Link to="/">
@@ -70,6 +76,7 @@ const Navbar = () => {
           alignItems="center"
           rounded="5px"
           padding="5px 20px"
+          background="var(--lvl1-darkcolor)"
         >
           <Link to="/">
             <Text fontSize="lg">Sign Up</Text>
