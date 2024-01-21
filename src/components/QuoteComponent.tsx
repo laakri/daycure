@@ -45,7 +45,7 @@ const RandomQuotes: React.FC = () => {
       width="max-content"
       position="relative"
       background="var(--lvl1-darkcolor)"
-      maxW="400px"
+      maxW="300px"
       h="max-content"
       transition="box-shadow 0.3s ease-in-out"
       _hover={{ boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)" }}

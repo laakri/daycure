@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { fetchData } from "../apis/HoroscopeApi";
-import { Box, Image, Text } from "@chakra-ui/react";
+import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import { DragHandleIcon, SunIcon, StarIcon, ViewIcon } from "@chakra-ui/icons";
 
 const Horoscope: React.FC = () => {
@@ -22,77 +22,67 @@ const Horoscope: React.FC = () => {
 
   return (
     <div>
-      <h1>Horoscope</h1>
       <Box
-        borderColor="gray.200"
-        backgroundColor="rgba(92, 92, 92, 0.158)"
-        borderRadius="20px"
-        p={4}
+        border="1px var(--bordercolor) solid"
+        borderRadius="10px"
         maxW="300px"
         display="flex"
         flexDirection="column"
         justifyContent="center"
-        alignItems="center"
-        padding={2}
-        border="1px"
+        background="var(--lvl1-darkcolor)"
+        position="relative"
+        p="10px"
       >
-        <Box maxW="150px" borderColor="gray.200" p="10px">
-          <Image src="https://pngimg.com/uploads/scorpio/small/scorpio_PNG31.png" />
+        <Box position={"absolute"} right="10px" top="10px">
+          <button>
+            <DragHandleIcon />
+          </button>
         </Box>
-
-        <Box 
-          borderRadius="20px"
-          p={2}
-          maxW="300px"
-          display="flex"
-          justifyContent="left"
-          alignItems="center"
-        >
+        <Box maxW="150px" maxH="120px" borderColor="gray.200" p="10px" m="auto">
+          <Image
+            maxH="100px"
+            src="https://pngimg.com/uploads/scorpio/small/scorpio_PNG31.png"
+          />
+        </Box>
+        <Box maxW="300px" justifyContent="left" alignItems="center">
           <Box>
-            <Text fontSize="xl" fontWeight="bold">
+            <Text fontSize="md" fontWeight="bold">
               Your Luck Today
             </Text>
             <Text fontSize="l" mb={2} color="gray">
               {horoscopeData ? horoscopeData.date : "15-01-2024"}
             </Text>
           </Box>
-
-          <Box>
-            <DragHandleIcon boxSize={6} marginLeft="110px" />
-          </Box>
         </Box>
 
         {horoscopeData ? (
           <Box>{horoscopeData.prediction}</Box>
         ) : (
-          <Box
-            borderColor="gray.200"
+          <Flex
+            direction="column"
+            bg="var(--lvl3-darkcolor)"
             p="10px"
-            borderRadius="20px"
-            backgroundColor="rgba(92, 92, 92, 0.322)"
+            mt="10px"
+            rounded="10px"
           >
             <p>
               Lorem ipsum dolor veritatis exercitationem debitis, reprehenderit
-              natus ex eum nemo. 
+              natus ex eum nemo.
             </p>
-            
+
             <Box
               display="flex"
               flexDirection="row"
-              gap={8}
-              justifyContent="center"
-              alignItems="center"
+              justifyContent="space-between"
+              mt="10px"
             >
               <Box
                 display="flex"
                 alignItems="center"
                 borderRadius={20}
                 backgroundColor="rgba(5, 172, 194, 0.966)"
-                pl={3}
-                pr={3}
-                gap={2}
-                mt={1} 
-                maxW="70px"
+                gap="5px"
+                p="0 10px"
               >
                 <SunIcon /> 100%
               </Box>
@@ -101,11 +91,8 @@ const Horoscope: React.FC = () => {
                 alignItems="center"
                 borderRadius={20}
                 backgroundColor="rgba(118, 126, 6, 0.966)"
-                pl={3}
-                pr={3}
-                mt={1} 
-                gap={2}
-                maxW="70px"
+                gap="5px"
+                p="0 10px"
               >
                 <StarIcon /> 60%
               </Box>
@@ -114,16 +101,13 @@ const Horoscope: React.FC = () => {
                 alignItems="center"
                 borderRadius={20}
                 backgroundColor="rgba(238, 7, 207, 0.966)"
-                gap={2}
-                pl={3} 
-                mt={1}
-                pr={3}
-                maxW="70px"
+                gap="5px"
+                p="0 10px"
               >
                 <ViewIcon /> 30%
               </Box>
             </Box>
-          </Box>
+          </Flex>
         )}
       </Box>
     </div>

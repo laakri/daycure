@@ -13,8 +13,8 @@ const Dashboard = () => {
       <Flex display={"Flex"} wrap={"wrap"} gap={"10px"}>
         <Weather />
         <CryptoPrices />
-        <RandomQuotes />
         <Horoscope />
+        <RandomQuotes />
       </Flex>
     </Flex>
   );
