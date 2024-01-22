@@ -48,6 +48,7 @@ const Weather: React.FC = () => {
       width={"max-content"}
       background={"var(--lvl1-darkcolor)"}
       position={"relative"}
+      w="320px"
       h="max-content"
     >
       <Box position={"absolute"} right="10px">

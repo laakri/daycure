@@ -52,7 +52,8 @@ const CryptoPrices: React.FC = () => {
       width="max-content"
       background="var(--lvl1-darkcolor)"
       position="relative"
-      minW="350px"
+      w="320px"
+      h="max-content"
     >
       <Box position={"absolute"} right="10px">
         <button>

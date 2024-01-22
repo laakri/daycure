@@ -7,7 +7,7 @@ const Navbar = () => {
       align="center"
       justify="space-between"
       display="flex"
-      width="100vw"
+      width="99vw"
       h="60px"
       px="10px"
     >

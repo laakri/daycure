@@ -2,27 +2,43 @@ import CryptoPrices from "../../components/CryptoComponent";
 import RandomQuotes from "../../components/QuoteComponent";
 import Horoscope from "../../components/HoroscopeComponents";
 import Weather from "../../components/WeatherComponent";
-import { Flex, Text } from "@chakra-ui/react";
+
+import { Flex, Text, Wrap, WrapItem } from "@chakra-ui/react";
+import FinanceNews from "../../components/FinanceNewsComponent";
+import TechnologiesNews from "../../components/TechnologiesNews";
 import WomenProd from "../../components/WomenProdComponent";
 
 const Dashboard = () => {
   return (
-    <div>
-
-    <Flex flexDirection={"column"} gap={"20px"}>
+    <Flex flexDirection="column" gap="20px">
       <Text fontSize="2xl" fontWeight="bold">
         Dashboard
       </Text>
-      <Flex display={"Flex"} wrap={"wrap"} gap={"10px"}>
-        <Weather />
-        <CryptoPrices />
-        <Horoscope />
-        <RandomQuotes />
+
+      <Wrap spacing="10px">
+        <WrapItem>
+          <Weather />
+        </WrapItem>
+
+        <WrapItem>
+          <CryptoPrices />
+        </WrapItem>
+
+        <WrapItem>
+          <Horoscope />
+        </WrapItem>
+        <WrapItem>
+          <RandomQuotes />
+        </WrapItem>
+      </Wrap>
+
+      <Flex flexDirection="column" gap="20px">
+        <FinanceNews />
+        <TechnologiesNews />
       </Flex>
+      <WomenProd/>
 
     </Flex>
-      <WomenProd/>
-    </div>
 
   );
 };

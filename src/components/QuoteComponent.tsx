@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Text, Flex, Button } from "@chakra-ui/react";
+import { Box, Text, Flex } from "@chakra-ui/react";
 import { getRandomQuotes } from "../apis/QuoteApi";
 import { DragHandleIcon } from "@chakra-ui/icons";
 
@@ -45,18 +45,18 @@ const RandomQuotes: React.FC = () => {
       width="max-content"
       position="relative"
       background="var(--lvl1-darkcolor)"
-      maxW="300px"
+      w="320px"
       h="max-content"
-      transition="box-shadow 0.3s ease-in-out"
-      _hover={{ boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)" }}
     >
       <Flex justify="space-between" align="center" mb="2">
         <Text fontSize="md" fontWeight="bold">
           Daily Quote
         </Text>
-        <button>
-          <DragHandleIcon />{" "}
-        </button>
+        <Box position={"absolute"} right="10px" top="10px">
+          <button>
+            <DragHandleIcon />
+          </button>
+        </Box>
       </Flex>
       {quote && (
         <Box>
