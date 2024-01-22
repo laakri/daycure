@@ -100,7 +100,7 @@ const Horoscope: React.FC = () => {
                 display="flex"
                 alignItems="center"
                 borderRadius={20}
-                backgroundColor="rgba(238, 7, 207, 0.966)"
+                backgroundColor="rgba(2--38, 7, 207, 0.966)"
                 gap="5px"
                 p="0 10px"
               >

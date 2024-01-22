@@ -3,9 +3,12 @@ import RandomQuotes from "../../components/QuoteComponent";
 import Horoscope from "../../components/HoroscopeComponents";
 import Weather from "../../components/WeatherComponent";
 import { Flex, Text } from "@chakra-ui/react";
+import WomenProd from "../../components/WomenProdComponent";
 
 const Dashboard = () => {
   return (
+    <div>
+
     <Flex flexDirection={"column"} gap={"20px"}>
       <Text fontSize="2xl" fontWeight="bold">
         Dashboard
@@ -16,7 +19,11 @@ const Dashboard = () => {
         <Horoscope />
         <RandomQuotes />
       </Flex>
+
     </Flex>
+      <WomenProd/>
+    </div>
+
   );
 };
 
