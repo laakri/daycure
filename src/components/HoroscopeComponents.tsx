@@ -32,6 +32,7 @@ const Horoscope: React.FC = () => {
         background="var(--lvl1-darkcolor)"
         position="relative"
         p="10px"
+        minW="320px"
       >
         <Box position={"absolute"} right="10px" top="10px">
           <button>
@@ -49,7 +50,7 @@ const Horoscope: React.FC = () => {
             <Text fontSize="md" fontWeight="bold">
               Your Luck Today
             </Text>
-            <Text fontSize="l" mb={2} color="gray">
+            <Text fontSize="md" color="gray.300">
               {horoscopeData ? horoscopeData.date : "15-01-2024"}
             </Text>
           </Box>
