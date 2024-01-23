@@ -2,9 +2,11 @@ import CryptoPrices from "../../components/CryptoComponent";
 import RandomQuotes from "../../components/QuoteComponent";
 import Horoscope from "../../components/HoroscopeComponents";
 import Weather from "../../components/WeatherComponent";
+
 import { Flex, Text, Wrap, WrapItem } from "@chakra-ui/react";
 import FinanceNews from "../../components/FinanceNewsComponent";
 import TechnologiesNews from "../../components/TechnologiesNews";
+import WomenProd from "../../components/WomenProdComponent";
 
 const Dashboard = () => {
   return (
@@ -34,7 +36,10 @@ const Dashboard = () => {
         <FinanceNews />
         <TechnologiesNews />
       </Flex>
+      <WomenProd/>
+
     </Flex>
+
   );
 };
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getWeatherData } from "../apis/WeatherApi";
-import { Box, Text, Flex, Icon, AbsoluteCenter } from "@chakra-ui/react";
+import { Box, Text, Flex, Icon } from "@chakra-ui/react";
 import { WiHumidity, WiStrongWind, WiCloudy } from "react-icons/wi";
 import { DragHandleIcon } from "@chakra-ui/icons";
 
