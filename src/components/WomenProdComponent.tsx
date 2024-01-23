@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./Carousel.css";
 import { getSephoraProdData } from "../apis/SephoraApi";
-import { Box, Text, Flex, Image, Link } from "@chakra-ui/react";
-import { DragHandleIcon, ArrowForwardIcon,ArrowBackIcon } from "@chakra-ui/icons";
+import { Box, Text, Flex, Image, Button,Link } from "@chakra-ui/react";
+import { DragHandleIcon, ChevronRightIcon,ChevronLeftIcon ,ExternalLinkIcon} from "@chakra-ui/icons";
 
 const WomenProd: React.FC = () => {
   const [storeData, setStoreData] = useState<any[]>([]);
@@ -32,6 +32,10 @@ const WomenProd: React.FC = () => {
   };
 
   return (
+    <Box>
+        <Text fontSize="xl" fontWeight="bold" mb={4}>
+        Store Information Sephora
+      </Text>
     <Box
       border="1px solid var(--bordercolor)"
       borderRadius="10px"
@@ -39,16 +43,17 @@ const WomenProd: React.FC = () => {
       width="max-content"
       background="var(--lvl1-darkcolor)"
       position="relative"
-      minW="350px"
+      minW="320px"
     >
-      <Box position={"absolute"} right="10px">
-        <button>
-          <DragHandleIcon />
-        </button>
-      </Box>
-      <Text fontSize="md" fontWeight="bold">
-        Store Information Sephora
-      </Text>
+     <Text
+      fontSize="lg"
+      fontWeight="bold"
+      overflow="hidden"
+      textOverflow="ellipsis"
+     >
+     Discover the widely acclaimed skincare product
+     </Text>
+      
       <Flex
         direction="column"
         bg="var(--lvl3-darkcolor)"
@@ -71,6 +76,7 @@ const WomenProd: React.FC = () => {
                 transform={`translateX(-${currentIndex * (100 / 3)}%)`}
               >
                 {storeData.map((store, index) => (
+
                   <Flex
                     key={store.storeId}
                     className="carousel-slide"
@@ -89,8 +95,18 @@ const WomenProd: React.FC = () => {
                       <Text>
                         <strong>Store Type:</strong> {store.storeType}
                       </Text>
+                      <Box>
+                    <Link href={store.reservationUrl} isExternal>
+                 <Text
+   color={"rgb(94,216,250)"}
+                 >Reservation <ExternalLinkIcon /></Text>
+                </Link>
+                      
                     </Box>
-                    <Box>
+                    </Box>
+                    <Box
+                    maxW={"200px"}
+                    >
                       <Image
                         src={store.storeHeroImages.imagePath}
                         alt="Store"
@@ -99,6 +115,8 @@ const WomenProd: React.FC = () => {
                     </Box>
                     
                   </Flex>
+                    
+                  
                 ))}
                 
               </Flex>
@@ -108,15 +126,23 @@ const WomenProd: React.FC = () => {
          
         </Box>
       </Flex>
-      <button className="carousel-button" onClick={prevSlide}>
-      <ArrowBackIcon/>
-
-          </button>
-          <button className="carousel-button" onClick={nextSlide}>
-      <ArrowForwardIcon/>
-         
-          </button> 
+    
+          <Flex my={4} gap={2} justifyContent={"center"}>
+        <Button
+          fontSize="25px"
+          onClick={prevSlide}
+          disabled={currentIndex === 0}
+          variant="link"
+        >
+          <ChevronLeftIcon />
+        </Button>
+        <Button fontSize="25px" onClick={nextSlide} variant="link">
+          <ChevronRightIcon />
+        </Button>
+      </Flex>
     </Box>
+    </Box>
+
   );
 };
 
