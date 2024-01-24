@@ -5,6 +5,7 @@ require("dotenv").config();
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const userRoutes = require("./routes/user");
+const taskRoutes = require("./routes/task");
 
 const cors = require("cors");
 const app = express();
@@ -41,5 +42,6 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/users", userRoutes);
+app.use("/api/tasks", taskRoutes);
 
 module.exports = app;
