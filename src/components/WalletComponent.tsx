@@ -25,41 +25,41 @@ const Wallet = () => {
   ];
   const modalContent = [
     <div key={0}>
-      <Flex justifyContent={"center"} gap={12} p={5}>
-        <Stack spacing={4}>
-          <Text fontSize={"xl"} color="#ffb802">
-            Food Transaction
-          </Text>
-          <InputGroup>
-            <InputLeftElement pointerEvents="none">
-              <CalendarIcon color="gray.300" />
-            </InputLeftElement>
-            <Input type="date" placeholder="Date" />
-          </InputGroup>
+        <Flex justifyContent={"center"} gap={12} p={5}>
+          <Stack spacing={4}>
+            <Text fontSize={"xl"} color="#ffb802">
+              Food Transaction
+            </Text>
+            <InputGroup>
+              <InputLeftElement pointerEvents="none">
+                <CalendarIcon color="gray.300" />
+              </InputLeftElement>
+              <Input type="date" placeholder="Date" />
+            </InputGroup>
 
-          <InputGroup>
-            <InputLeftElement
-              pointerEvents="none"
-              color="gray.300"
-              fontSize="1.2em"
-            >
-              $
-            </InputLeftElement>
-            <Input placeholder="Enter amount" />
-            <InputRightElement>
-              <CheckIcon color="green.500" />
-            </InputRightElement>
-          </InputGroup>
-          <Textarea placeholder="Description" size="sm" />
-        </Stack>
-        <Stack spacing={6}>
-          <Image
-            boxSize="300px"
-            src="https://cdn2.iconfinder.com/data/icons/ecommerce-422/512/ECommerce_4.png"
-            alt="Dan Abramov"
-          />
-        </Stack>
-      </Flex>
+            <InputGroup>
+              <InputLeftElement
+                pointerEvents="none"
+                color="gray.300"
+                fontSize="1.2em"
+              >
+                $
+              </InputLeftElement>
+              <Input placeholder="Enter amount" />
+              <InputRightElement>
+                <CheckIcon color="green.500" />
+              </InputRightElement>
+            </InputGroup>
+            <Textarea placeholder="Description" size="sm" />
+          </Stack>
+          <Stack spacing={6}>
+            <Image
+              boxSize="300px"
+              src="https://cdn2.iconfinder.com/data/icons/ecommerce-422/512/ECommerce_4.png"
+              alt="Dan Abramov"
+            />
+          </Stack>
+        </Flex>
     </div>,
     <div key={1}>
       <Flex justifyContent={"center"} gap={12} p={5}>

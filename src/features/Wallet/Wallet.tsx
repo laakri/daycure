@@ -1,4 +1,10 @@
-import { AddIcon, CalendarIcon } from "@chakra-ui/icons";
+import {
+  AddIcon,
+  CalendarIcon,
+  CheckIcon,
+  PlusSquareIcon,
+} from "@chakra-ui/icons";
+
 import {
   Box,
   Button,
@@ -22,7 +28,26 @@ import {
   Th,
   Tbody,
   Td,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverArrow,
+  PopoverHeader,
+  PopoverCloseButton,
+  PopoverBody,
+  Popover,
+  Portal,
+  InputLeftElement,
+  Stack,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+  Textarea,
 } from "@chakra-ui/react";
+import { useState } from "react";
 const categories = [
   "Groceries",
   "Shopping",
@@ -40,6 +65,7 @@ const transactions = [
   { id: 2, description: "Transaction 2", amount: -15.0, category: "Shopping" },
   // Add more transactions as needed
 ];
+
 const Wallet = () => {
   const borderColor = useColorModeValue("gray.700", "gray.300");
   const circleRadius = 160; // Adjust the radius as needed
@@ -49,6 +75,16 @@ const Wallet = () => {
     const x = center.x + circleRadius * Math.cos(angle);
     const y = center.y + circleRadius * Math.sin(angle);
     return { x, y };
+  };
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const handleOpenModal = (category :string) => {
+    setSelectedCategory(category);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
   };
   return (
     <Box>
@@ -228,27 +264,125 @@ const Wallet = () => {
                         _hover={{ bg: "teal.600" }}
                         top={y}
                         transform="translate(-50%, -50%)"
+                        onClick={()=>handleOpenModal(category)}
                       >
                         {category}
                       </Button>
                     );
                   })}
-                  <Button
-                    size="md"
-                    fontSize="md"
-                    rounded={10}
-                    position="absolute"
-                    borderColor={"gray.600"}
-                    color={"gray.100"}
-                    boxShadow="lg"
-                    variant="outline"
-                    _hover={{ bg: "teal.500" }}
-                    gap={3}
-                    alignItems={"center"}
-                  >
-                    <AddIcon fontSize="xs" />
-                    Category
-                  </Button>
+                   <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+        <ModalOverlay />
+        <ModalContent
+          bg="var(--lvl1-darkcolor)"
+          border="solid 1px "
+          borderColor="gray.700"
+          marginTop={"250px"}
+        >
+          <ModalHeader>{selectedCategory} transaction </ModalHeader>
+          <ModalCloseButton />
+          <ModalBody 
+          
+          >
+          <Flex justifyContent={"center"} gap={12} p={5}>
+        <Stack spacing={4}>
+         
+          <InputGroup
+          borderColor="gray.700"
+          >
+            <InputLeftElement pointerEvents="none">
+              <CalendarIcon color="gray.300" />
+            </InputLeftElement>
+            <Input type="date" placeholder="Date" />
+          </InputGroup>
+
+          <InputGroup
+          borderColor="gray.700"
+          
+          >
+            <InputLeftElement
+              pointerEvents="none"
+              color="gray.300"
+              fontSize="1.2em"
+            >
+              $
+            </InputLeftElement>
+            <Input placeholder="Enter amount" />
+            <InputRightElement>
+              <CheckIcon color="green.500" />
+            </InputRightElement>
+          </InputGroup>
+          <Textarea 
+          borderColor="gray.700"
+          
+          placeholder="Description" size="sm" />
+        </Stack>
+       
+      </Flex>
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="--bordercolor" bg={'gray.700'} mr={3} onClick={handleCloseModal}>
+              Close
+            </Button>
+            {/* Additional buttons or actions if needed */}
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+                  <Popover>
+                    <PopoverTrigger>
+                      <Button
+                        size="md"
+                        fontSize="md"
+                        rounded={10}
+                        position="absolute"
+                        borderColor={"gray.600"}
+                        color={"gray.100"}
+                        boxShadow="lg"
+                        variant="outline"
+                        _hover={{ bg: "teal.500" }}
+                        gap={3}
+                        alignItems={"center"}
+                      >
+                        <AddIcon fontSize="xs" />
+                        Category
+                      </Button>
+                    </PopoverTrigger>
+                    <Portal>
+                      <PopoverContent           bg="var(--lvl1-darkcolor)"
+ borderColor={"gray.700"}>
+                        <PopoverArrow />
+                        <PopoverHeader borderColor={"gray.700"}>
+                          Add Category
+                        </PopoverHeader>
+                        <PopoverCloseButton />
+                        <PopoverBody>
+                          <Stack spacing={4}>
+                            <InputGroup borderColor={"gray.700"}>
+                              <InputLeftElement pointerEvents="none">
+                                <PlusSquareIcon color="gray.300" />
+                              </InputLeftElement>
+                              <Input type="text" placeholder="Name category" />
+                            </InputGroup>
+
+                            <InputGroup borderColor={"gray.700"}>
+                              <InputLeftElement
+                                pointerEvents="none"
+                                color="gray.300"
+                                fontSize="1.2em"
+                              >
+                                $
+                              </InputLeftElement>
+                              <Input placeholder="Enter max amount" />
+                              <InputRightElement>
+                                <CheckIcon color="green.500" />
+                              </InputRightElement>
+                            </InputGroup>
+
+                            <Button colorScheme="--bordercolor">Add</Button>
+                          </Stack>
+                        </PopoverBody>
+                      </PopoverContent>
+                    </Portal>
+                  </Popover>
                 </Circle>
               </Box>
             </SlideFade>
