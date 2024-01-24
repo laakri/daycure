@@ -7,7 +7,6 @@ import {
   ChevronLeftIcon,
   ExternalLinkIcon,
 } from "@chakra-ui/icons";
-import { CgSpaceBetween } from "react-icons/cg";
 
 const TechnologiesNews: React.FC = () => {
   const [technologyNews, setTechnologyNews] = useState<any[]>([]);
