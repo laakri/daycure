@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:4401/api/";
+const BASE_URL = "http://localhost:4401/api";
 
 //ADD new TASK
 export const addTask = async (taskDetails: {
@@ -21,12 +21,11 @@ export const addTask = async (taskDetails: {
   }
 };
 
-//Fetch the freaking DATA AKA TASKS
-export const fetchTasksByDate = async (date: Date, userId: string) => {
+//Fetch all tasks for the user
+export const fetchAllTasks = async (userId: string) => {
   try {
-    const formattedDate = date.toISOString().split("T")[0];
     const response = await axios.get(
-      `${BASE_URL}/tasks/${userId}/${formattedDate}`
+      `${BASE_URL}/tasks/tasks-by-user/${userId}`
     );
     return response.data;
   } catch (error) {

@@ -1,7 +1,6 @@
 import dayjs from "dayjs";
 import { useState } from "react";
 import { Calendar } from "@mantine/dates";
-
 import {
   Box,
   Text,
@@ -22,6 +21,7 @@ import {
   HStack,
   TagLabel,
   Tag,
+  useToast,
 } from "@chakra-ui/react";
 import {
   AddIcon,
@@ -29,7 +29,7 @@ import {
   DeleteIcon,
   DragHandleIcon,
 } from "@chakra-ui/icons";
-import { useViewportSize } from "@mantine/hooks";
+import { fetchAllTasks, addTask } from "../../states/schedule";
 
 const Schedule = () => {
   const [selected, setSelected] = useState<Date | null>(null);
@@ -39,7 +39,6 @@ const Schedule = () => {
   const [selectedTaskIndex, setSelectedTaskIndex] = useState<number | null>(
     null
   );
-  const { width } = useViewportSize();
   const [important, setImportant] = useState<boolean>(false);
   const [suggestedTasks] = useState<string[]>([
     "Complete a coding challenge",
@@ -53,17 +52,65 @@ const Schedule = () => {
     setImportant((prevImportant) => !prevImportant);
   };
 
-  const handleSelect = (date: Date) => {
+  const toast = useToast();
+
+  // TASK FUNCTIONS
+  const handleSelect = async (date: Date) => {
     setSelected(date);
+
+    try {
+      const formattedDate = dayjs(date).format("YYYY-MM-DD");
+      const allTasks = await fetchAllTasks("65b0320bb3870b156e159462");
+      setTasks(allTasks);
+
+      if (!allTasks[formattedDate] || allTasks[formattedDate].length === 0) {
+        toast({
+          title: "Info",
+          description: "No tasks for the selected date",
+          status: "info",
+          duration: 5000,
+          isClosable: true,
+        });
+      }
+    } catch (error: any) {
+      console.error("Error fetching tasks:", error);
+
+      // Display an error toast message
+      toast({
+        title: "Error",
+        description: error.message || "An error occurred",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
   };
 
-  const handleAddTask = () => {
+  const handleAddTask = async () => {
     if (selected && newTask.trim() !== "") {
-      const formattedDate = dayjs(selected).format("YYYY-MM-DD");
-      setTasks((prevTasks) => ({
-        ...prevTasks,
-        [formattedDate]: [...(prevTasks[formattedDate] || []), newTask.trim()],
-      }));
+      const taskDetails = {
+        userId: "65b0320bb3870b156e159462",
+        date: selected,
+        description: newTask.trim(),
+        isImportant: important,
+      };
+
+      try {
+        await addTask(taskDetails);
+      } catch (error) {
+        console.error("Error adding task:", error);
+        const errorMessage = (error as Error).message || "An error occurred";
+
+        // Call the toast function to display the error
+        toast({
+          title: "Error",
+          description: errorMessage,
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+      }
+
       setNewTask("");
       onClose();
     }
