@@ -1,10 +1,11 @@
 import { BrowserRouter } from "react-router-dom";
-import "@mantine/core/styles.css";
 import { MantineProvider } from "@mantine/core";
 import Routing from "./Routing";
 import Navbar from "./components/Navbar";
 import "./App.css";
 import { Box } from "@chakra-ui/react";
+import "@mantine/core/styles.css";
+import "@mantine/dates/styles.css";
 
 function App() {
   return (

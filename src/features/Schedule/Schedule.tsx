@@ -23,15 +23,6 @@ const theme = extendTheme({
     initialColorMode: "dark",
     useSystemColorMode: false,
   },
-  components: {
-    Drawer: {
-      baseStyle: {
-        content: {
-          bg: "gray.800", // Set the background color for the sidebar
-        },
-      },
-    },
-  },
 });
 
 const Schedule = () => {
@@ -115,6 +106,9 @@ const Schedule = () => {
             onClick: () => handleSelect(date),
           })}
           size={calendarSize}
+          renderDay={(paramDate) => {
+            return <div>daf</div>;
+          }}
         />
         <Drawer
           isOpen={isDrawerOpen}
