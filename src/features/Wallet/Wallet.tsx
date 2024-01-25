@@ -8,6 +8,7 @@ import {
 import {
   Box,
   Button,
+  Checkbox,
   Circle,
   Flex,
   Input,
@@ -78,7 +79,7 @@ const Wallet = () => {
   };
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("");
-  const handleOpenModal = (category :string) => {
+  const handleOpenModal = (category: string) => {
     setSelectedCategory(category);
     setIsModalOpen(true);
   };
@@ -264,69 +265,78 @@ const Wallet = () => {
                         _hover={{ bg: "teal.600" }}
                         top={y}
                         transform="translate(-50%, -50%)"
-                        onClick={()=>handleOpenModal(category)}
+                        onClick={() => handleOpenModal(category)}
                       >
                         {category}
                       </Button>
                     );
                   })}
-                   <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-        <ModalOverlay />
-        <ModalContent
-          bg="var(--lvl1-darkcolor)"
-          border="solid 1px "
-          borderColor="gray.700"
-          marginTop={"250px"}
-        >
-          <ModalHeader>{selectedCategory} transaction </ModalHeader>
-          <ModalCloseButton />
-          <ModalBody 
-          
-          >
-          <Flex justifyContent={"center"} gap={12} p={5}>
-        <Stack spacing={4}>
-         
-          <InputGroup
-          borderColor="gray.700"
-          >
-            <InputLeftElement pointerEvents="none">
-              <CalendarIcon color="gray.300" />
-            </InputLeftElement>
-            <Input type="date" placeholder="Date" />
-          </InputGroup>
+                  <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+                    <ModalOverlay />
+                    <ModalContent
+                      bg="var(--lvl1-darkcolor)"
+                      border="solid 1px "
+                      borderColor="gray.700"
+                      marginTop={"250px"}
+                    >
+                      <ModalHeader>
+                        {selectedCategory} transaction
+                        <Stat>
+                          <StatNumber >0.00 Dt</StatNumber>
+                        </Stat>
+                      </ModalHeader>
+                      <ModalCloseButton />
+                      <ModalBody>
+                        <Flex justifyContent={"center"} gap={12} p={5}>
+                          <Stack spacing={4}>
+                            <InputGroup borderColor="gray.700">
+                              <InputLeftElement
+                                pointerEvents="none"
+                                color="gray.300"
+                                fontSize="1.2em"
+                              >
+                                $
+                              </InputLeftElement>
+                              <Input placeholder="Enter amount" />
+                              <InputRightElement>
+                                <CheckIcon color="green.500" />
+                              </InputRightElement>
+                            </InputGroup>
 
-          <InputGroup
-          borderColor="gray.700"
-          
-          >
-            <InputLeftElement
-              pointerEvents="none"
-              color="gray.300"
-              fontSize="1.2em"
-            >
-              $
-            </InputLeftElement>
-            <Input placeholder="Enter amount" />
-            <InputRightElement>
-              <CheckIcon color="green.500" />
-            </InputRightElement>
-          </InputGroup>
-          <Textarea 
-          borderColor="gray.700"
-          
-          placeholder="Description" size="sm" />
-        </Stack>
-       
-      </Flex>
-          </ModalBody>
-          <ModalFooter>
-            <Button colorScheme="--bordercolor" bg={'gray.700'} mr={3} onClick={handleCloseModal}>
-              Close
-            </Button>
-            {/* Additional buttons or actions if needed */}
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+                            <InputGroup
+                              borderColor="gray.700"
+                              color={"gray.500"}
+                            >
+                              <InputLeftElement pointerEvents="none">
+                                <CalendarIcon color="gray.300" />
+                              </InputLeftElement>
+                              <Input type="date" placeholder="Date" />
+                            </InputGroup>
+
+                            <Textarea
+                              borderColor="gray.700"
+                              placeholder="Description"
+                              size="sm"
+                            />
+                            <Checkbox colorScheme="green" defaultChecked>
+                              Is Expense
+                            </Checkbox>
+                          </Stack>
+                        </Flex>
+                      </ModalBody>
+                      <ModalFooter>
+                        <Button
+                          colorScheme="--bordercolor"
+                          bg={"gray.700"}
+                          mr={3}
+                          onClick={handleCloseModal}
+                        >
+                          Close
+                        </Button>
+                        {/* Additional buttons or actions if needed */}
+                      </ModalFooter>
+                    </ModalContent>
+                  </Modal>
                   <Popover>
                     <PopoverTrigger>
                       <Button
@@ -347,8 +357,10 @@ const Wallet = () => {
                       </Button>
                     </PopoverTrigger>
                     <Portal>
-                      <PopoverContent           bg="var(--lvl1-darkcolor)"
- borderColor={"gray.700"}>
+                      <PopoverContent
+                        bg="var(--lvl1-darkcolor)"
+                        borderColor={"gray.700"}
+                      >
                         <PopoverArrow />
                         <PopoverHeader borderColor={"gray.700"}>
                           Add Category
