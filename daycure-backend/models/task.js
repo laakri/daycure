@@ -18,6 +18,13 @@ const taskSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  isCompleted: {
+    type: Boolean,
+    default: false,
+  },
+  order: {
+    type: Number,
+  },
 });
 
 const Task = mongoose.model("Task", taskSchema);
