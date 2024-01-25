@@ -3,10 +3,10 @@ import { MantineProvider } from "@mantine/core";
 import Routing from "./Routing";
 import Navbar from "./components/Navbar";
 import "./App.css";
-import { Box } from "@chakra-ui/react";
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
-import { ChakraProvider, extendTheme } from "@chakra-ui/react";
+import { ChakraProvider, extendTheme, Box } from "@chakra-ui/react";
+
 const theme = extendTheme({
   config: {
     useSystemColorMode: false,
@@ -15,11 +15,13 @@ const theme = extendTheme({
   styles: {
     global: {},
   },
+  colorScheme: "dark",
 });
+
 function App() {
   return (
     <ChakraProvider theme={theme}>
-      <MantineProvider>
+      <MantineProvider defaultColorScheme="dark">
         <BrowserRouter>
           <Navbar />
           <Box maxW="1400px" p="10px" mx="auto" mt="4">
