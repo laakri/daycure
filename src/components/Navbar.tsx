@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { Flex, Text, Box } from "@chakra-ui/react";
 
 const Navbar = () => {
@@ -7,7 +7,6 @@ const Navbar = () => {
       align="center"
       justify="space-between"
       display="flex"
-      width="99vw"
       h="60px"
       px="10px"
     >
@@ -20,7 +19,7 @@ const Navbar = () => {
           padding="5px 20px"
         >
           <Link to="/">
-            <Text fontSize="xl">DailyCure</Text>
+            <Text fontSize="2xl">DailyCure</Text>
           </Link>
         </Box>
       </Flex>
@@ -29,7 +28,7 @@ const Navbar = () => {
         align="center"
         justify="space-around"
         wrap="wrap"
-        padding="7px 20px"
+        padding="7px 10px"
         display="flex"
         gap="20px"
         background="var(--lvl1-darkcolor)"
@@ -38,24 +37,24 @@ const Navbar = () => {
         margin="auto"
       >
         <Box display="flex" gap="10px" alignItems="center">
-          <Link to="/">
-            <Text fontSize="lg">Dashboard</Text>
-          </Link>
+          <NavLink to="/">
+            <Text fontSize="md">Dashboard</Text>
+          </NavLink>
         </Box>
         <Box display="flex" gap="10px" alignItems="center">
-          <Link to="/schedule">
-            <Text fontSize="lg">Schedule</Text>
-          </Link>
+          <NavLink to="/schedule">
+            <Text fontSize="md">Schedule</Text>
+          </NavLink>
         </Box>
         <Box display="flex" gap="10px" alignItems="center">
-          <Link to="/wallet">
-            <Text fontSize="lg">Wallet</Text>
-          </Link>
+          <NavLink to="/wallet">
+            <Text fontSize="md">Wallet</Text>
+          </NavLink>
         </Box>
         <Box display="flex" gap="10px" alignItems="center">
-          <Link to="/fitness">
-            <Text fontSize="lg">Fitness</Text>
-          </Link>
+          <NavLink to="/fitness">
+            <Text fontSize="md">Fitness</Text>
+          </NavLink>
         </Box>
       </Flex>
       <Flex>
@@ -67,7 +66,7 @@ const Navbar = () => {
           padding="5px 20px"
         >
           <Link to="/">
-            <Text fontSize="lg">Login</Text>
+            <Text fontSize="md">Login</Text>
           </Link>
         </Box>
         <Box
@@ -75,11 +74,12 @@ const Navbar = () => {
           gap="10px"
           alignItems="center"
           rounded="5px"
-          padding="5px 20px"
+          padding="5px 10px"
           background="var(--lvl1-darkcolor)"
+          border={"var(--bordercolor) solid 1px"}
         >
           <Link to="/">
-            <Text fontSize="lg">Sign Up</Text>
+            <Text fontSize="md">Sign Up</Text>
           </Link>
         </Box>
       </Flex>

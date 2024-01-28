@@ -30,13 +30,11 @@ a:hover {
   color: var(--hover-maincolor);
 
 }
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+a.active {
+  color: var(--maincolor);
+  background-color: var(--lvl2-darkcolor);
+  padding:  5px 10px;
+  border-radius: 10px;
 }
 
 button {
