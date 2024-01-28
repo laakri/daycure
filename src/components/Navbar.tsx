@@ -28,32 +28,40 @@ const Navbar = () => {
         align="center"
         justify="space-around"
         wrap="wrap"
-        padding="7px 10px"
+        padding="5px 10px"
         display="flex"
-        gap="20px"
+        gap="15px"
         background="var(--lvl1-darkcolor)"
         rounded="10px"
         maxW="500px"
         margin="auto"
       >
         <Box display="flex" gap="10px" alignItems="center">
-          <NavLink to="/">
-            <Text fontSize="md">Dashboard</Text>
+          <NavLink to="/dashboard">
+            <Text fontSize="md" p="5px 10px">
+              Dashboard
+            </Text>
           </NavLink>
         </Box>
-        <Box display="flex" gap="10px" alignItems="center">
+        <Box display="flex" gap="10px" alignItems="center ">
           <NavLink to="/schedule">
-            <Text fontSize="md">Schedule</Text>
+            <Text fontSize="md" p="5px 10px">
+              Schedule
+            </Text>
           </NavLink>
         </Box>
-        <Box display="flex" gap="10px" alignItems="center">
+        <Box display="flex" gap="10px" alignItems="cent e r">
           <NavLink to="/wallet">
-            <Text fontSize="md">Wallet</Text>
+            <Text fontSize="md" p="5px 10px">
+              Wallet
+            </Text>
           </NavLink>
         </Box>
-        <Box display="flex" gap="10px" alignItems="center">
+        <Box display="flex" gap="10px" alignItems="cente r ">
           <NavLink to="/fitness">
-            <Text fontSize="md">Fitness</Text>
+            <Text fontSize="md" p="5px 10px">
+              Fitness
+            </Text>
           </NavLink>
         </Box>
       </Flex>

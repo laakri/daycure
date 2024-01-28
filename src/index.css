@@ -31,10 +31,9 @@ a:hover {
 
 }
 a.active {
-  color: var(--maincolor);
-  background-color: var(--lvl2-darkcolor);
-  padding:  5px 10px;
-  border-radius: 10px;
+  color: #c2abfa;
+  background-color: var(--chakra-colors-chakra-body-bg);
+  border-radius: 7px;
 }
 
 button {
