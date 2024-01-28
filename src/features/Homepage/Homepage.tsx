@@ -14,7 +14,17 @@ const Homepage = () => {
           well-being.
         </Text>
       </Box>
-      <Button colorScheme="gray" size="md" as={Link} to="/explore">
+      <Button
+        bg="gray.800"
+        color={"gray.100"}
+        size="md"
+        as={Link}
+        _hover={{
+          bg: "gray.700",
+          color: "gray.100",
+        }}
+        to="/dashboard"
+      >
         Explore Now
       </Button>
       <Wrap
@@ -27,10 +37,11 @@ const Homepage = () => {
       >
         <Box
           p={6}
-          maxW="300px"
+          maxW="310px"
           borderWidth="1px"
           borderRadius="lg"
-          color="white"
+          border="1px solid"
+          borderColor={"gray.700"}
         >
           <Heading size="lg" mb={4}>
             Manage Finances
@@ -42,10 +53,11 @@ const Homepage = () => {
         </Box>
         <Box
           p={6}
-          maxW="300px"
+          maxW="310px"
           borderWidth="1px"
           borderRadius="lg"
-          color="white"
+          border="1px solid"
+          borderColor={"gray.700"}
         >
           <Heading size="lg" mb={4}>
             Stay Productive
@@ -57,10 +69,11 @@ const Homepage = () => {
         </Box>
         <Box
           p={6}
-          maxW="300px"
+          maxW="310px"
           borderWidth="1px"
           borderRadius="lg"
-          color="white"
+          border="1px solid"
+          borderColor={"gray.700"}
         >
           <Heading size="lg" mb={4}>
             Get Daily News
@@ -72,10 +85,11 @@ const Homepage = () => {
         </Box>
         <Box
           p={6}
-          maxW="300px"
+          maxW="310px"
           borderWidth="1px"
           borderRadius="lg"
-          color="white"
+          border="1px solid"
+          borderColor={"gray.700"}
         >
           <Heading size="lg" mb={4}>
             Track Your Fitness

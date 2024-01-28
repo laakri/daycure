@@ -31,7 +31,7 @@ a:hover {
 
 }
 a.active {
-  color: #c2abfa;
+  color: #f5f0ff;
   background-color: var(--chakra-colors-chakra-body-bg);
   border-radius: 7px;
 }

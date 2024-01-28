@@ -31,7 +31,7 @@ const Navbar = () => {
         padding="5px 10px"
         display="flex"
         gap="15px"
-        background="var(--lvl1-darkcolor)"
+        background="var(--lvl2-darkcolor)"
         rounded="10px"
         maxW="500px"
         margin="auto"
