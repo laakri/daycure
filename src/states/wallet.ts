@@ -23,7 +23,6 @@ export const addCategory = async (categoryDetails: {
 export const fetchAllCategories = async () => {
   try {
     const response = await axios.get(`${BASE_URL}/category/categories`);
-    console.log(response.data);
     return response.data;
   } catch (err) {
     console.error("Error fetching categories", err);
@@ -32,29 +31,26 @@ export const fetchAllCategories = async () => {
 };
 
 //Create a new transaction
-/*export const addTransaction = async (transactionDetails: {
+export const addTransaction = async (transactionDetails: {
   amount: number;
   date: Date;
   description: string;
-  isExpense:boolean;
+  isExpense: boolean;
   walletId: string;
   categoryId: string;
 }) => {
   try {
-    const response = await axios.post(
-      `${BASE_URL}/transactions/transaction`, 
-      {
-        amount: transactionDetails.amount,
-        date: transactionDetails.date, // Convert Date to string
-        description: transactionDetails.description,
-        isExpense: transactionDetails.isExpense,
-        walletId: transactionDetails.walletId,
-        categoryId: transactionDetails.categoryId,
-      }
-    );
+    const response = await axios.post(`${BASE_URL}/transactions/transaction`, {
+      amount: transactionDetails.amount,
+      date: transactionDetails.date, // Convert Date to string
+      description: transactionDetails.description,
+      isExpense: transactionDetails.isExpense,
+      walletId: transactionDetails.walletId,
+      categoryId: transactionDetails.categoryId,
+    });
     return response.data;
   } catch (error) {
     console.error("Error creating transaction:", error);
     throw new Error("Failed to create transaction");
   }
-};*/
+};

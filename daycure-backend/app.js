@@ -48,5 +48,4 @@ app.use("/api/tasks", taskRoutes);
 app.use("/api/category", categoryRoutes);
 app.use("/api/transactions", transactionRoutes);
 
-
 module.exports = app;

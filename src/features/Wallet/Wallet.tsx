@@ -50,7 +50,11 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import Category from "./categoryModel";
-import { addCategory, fetchAllCategories } from "../../states/wallet";
+import {
+  addCategory,
+  addTransaction,
+  fetchAllCategories,
+} from "../../states/wallet";
 
 const transactions = [
   { id: 1, description: "Transaction 1", amount: 20.0, category: "Groceries" },
@@ -61,7 +65,7 @@ const transactions = [
 ];
 
 const Wallet = () => {
-  /* const [newTransaction, setNewTransaction] = useState({
+  const [newTransaction, setNewTransaction] = useState({
     amount: 0,
     date: "",
     description: "",
@@ -69,40 +73,39 @@ const Wallet = () => {
     walletId: "",
     categoryId: "",
   });
-//Add a new category
-const handleaddTransaction = async () => {
-  if (newTransaction.description.trim() !== "") {
-    const transactionDetails = {
-      amount: newTransaction.amount || 0,
-      date: new Date(newTransaction.date), // Convert string to Date
-      description: newTransaction.description,
-      isExpense: newTransaction.isExpense || true,
-      walletId: "ddd", // You may need to adjust this value based on your application
-      categoryId: "ddd", // You may need to adjust this value based on your application
-    };
+  //Add a new category
+  const handleaddTransaction = async () => {
+    if (newTransaction.description.trim() !== "") {
+      const transactionDetails = {
+        amount: newTransaction.amount || 0,
+        date: new Date(newTransaction.date), // Convert string to Date
+        description: newTransaction.description,
+        isExpense: newTransaction.isExpense || true,
+        walletId: "ddd", // You may need to adjust this value based on your application
+        categoryId: "ddd", // You may need to adjust this value based on your application
+      };
 
-    try {
-      // Assuming addTransaction is an asynchronous function
-      await addTransaction(transactionDetails);
+      try {
+        // Assuming addTransaction is an asynchronous function
+        await addTransaction(transactionDetails);
 
-      // Assuming setNewTransaction is a state-setting function
-      setNewTransaction({
-        amount: 0,
-        date: "", // You may need to set a default date or leave it as an empty string
-        description: "",
-        walletId: "",
-        categoryId: "",
-        isExpense: true,
-      });
+        // Assuming setNewTransaction is a state-setting function
+        setNewTransaction({
+          amount: 0,
+          date: "", // You may need to set a default date or leave it as an empty string
+          description: "",
+          walletId: "",
+          categoryId: "",
+          isExpense: true,
+        });
 
-      console.log('Transaction added successfully:');
-    } catch (error) {
-      console.error('Error adding transaction:', error);
-      throw error; // Rethrow the error for the caller to handle
+        console.log("Transaction added successfully:");
+      } catch (error) {
+        console.error("Error adding transaction:", error);
+        throw error; // Rethrow the error for the caller to handle
+      }
     }
-  }
-};
-*/
+  };
   const [newCategory, setNewCategory] = useState({
     categoryName: "",
     maxBudget: 0,
@@ -122,7 +125,6 @@ const handleaddTransaction = async () => {
     };
     fetchAllCateg();
   }, []);
-  console.log("gggggg", allCateg);
 
   //Add a new category
   const handleAddCateg = async () => {
