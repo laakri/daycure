@@ -2,7 +2,6 @@ import axios from "axios";
 
 const BASE_URL = "http://localhost:4401/api";
 
-
 //add Category
 export const addCategory = async (categoryDetails: {
   categoryName: string;
@@ -10,7 +9,7 @@ export const addCategory = async (categoryDetails: {
 }) => {
   try {
     const response = await axios.post(
-      `${BASE_URL}/category/category`, 
+      `${BASE_URL}/category/category`,
       categoryDetails
     );
     return response.data;
@@ -24,6 +23,7 @@ export const addCategory = async (categoryDetails: {
 export const fetchAllCategories = async () => {
   try {
     const response = await axios.get(`${BASE_URL}/category/categories`);
+    console.log(response.data);
     return response.data;
   } catch (err) {
     console.error("Error fetching categories", err);
@@ -32,7 +32,7 @@ export const fetchAllCategories = async () => {
 };
 
 //Create a new transaction
-export const addTransaction = async (transactionDetails: {
+/*export const addTransaction = async (transactionDetails: {
   amount: number;
   date: Date;
   description: string;
@@ -57,4 +57,4 @@ export const addTransaction = async (transactionDetails: {
     console.error("Error creating transaction:", error);
     throw new Error("Failed to create transaction");
   }
-};
+};*/

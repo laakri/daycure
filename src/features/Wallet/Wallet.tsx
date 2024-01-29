@@ -50,7 +50,7 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import Category from "./categoryModel";
-import { addCategory, fetchAllCategories ,addTransaction} from "../../states/wallet";
+import { addCategory, fetchAllCategories } from "../../states/wallet";
 
 const transactions = [
   { id: 1, description: "Transaction 1", amount: 20.0, category: "Groceries" },
@@ -61,7 +61,7 @@ const transactions = [
 ];
 
 const Wallet = () => {
-  const [newTransaction, setNewTransaction] = useState({
+  /* const [newTransaction, setNewTransaction] = useState({
     amount: 0,
     date: "",
     description: "",
@@ -70,7 +70,7 @@ const Wallet = () => {
     categoryId: "",
   });
 //Add a new category
-/*const handleaddTransaction = async () => {
+const handleaddTransaction = async () => {
   if (newTransaction.description.trim() !== "") {
     const transactionDetails = {
       amount: newTransaction.amount || 0,
