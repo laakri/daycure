@@ -171,7 +171,7 @@ const Schedule = () => {
               <Text fontSize="sm">{suggestedTask}</Text>
             </Box>
           ))}
-        </Wrap>
+        </Wrap> 
       </Box>
     );
   };

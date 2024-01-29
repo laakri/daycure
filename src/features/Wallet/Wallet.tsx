@@ -48,17 +48,10 @@ import {
   ModalFooter,
   Textarea,
 } from "@chakra-ui/react";
-import { useState } from "react";
-const categories = [
-  "Groceries",
-  "Shopping",
-  "Entertainment",
-  "Utilities",
-  "Utilities",
-  "Utilities",
-  "Utilities",
-  "Other",
-];
+import { useEffect, useState } from "react";
+import Category from "./categoryModel";
+import { addCategory, fetchAllCategories ,addTransaction} from "../../states/wallet";
+
 const transactions = [
   { id: 1, description: "Transaction 1", amount: 20.0, category: "Groceries" },
   { id: 2, description: "Transaction 2", amount: -15.0, category: "Shopping" },
@@ -68,11 +61,92 @@ const transactions = [
 ];
 
 const Wallet = () => {
+  const [newTransaction, setNewTransaction] = useState({
+    amount: 0,
+    date: "",
+    description: "",
+    isExpense: false,
+    walletId: "",
+    categoryId: "",
+  });
+//Add a new category
+/*const handleaddTransaction = async () => {
+  if (newTransaction.description.trim() !== "") {
+    const transactionDetails = {
+      amount: newTransaction.amount || 0,
+      date: new Date(newTransaction.date), // Convert string to Date
+      description: newTransaction.description,
+      isExpense: newTransaction.isExpense || true,
+      walletId: "ddd", // You may need to adjust this value based on your application
+      categoryId: "ddd", // You may need to adjust this value based on your application
+    };
+
+    try {
+      // Assuming addTransaction is an asynchronous function
+      await addTransaction(transactionDetails);
+
+      // Assuming setNewTransaction is a state-setting function
+      setNewTransaction({
+        amount: 0,
+        date: "", // You may need to set a default date or leave it as an empty string
+        description: "",
+        walletId: "",
+        categoryId: "",
+        isExpense: true,
+      });
+
+      console.log('Transaction added successfully:');
+    } catch (error) {
+      console.error('Error adding transaction:', error);
+      throw error; // Rethrow the error for the caller to handle
+    }
+  }
+};
+*/
+  const [newCategory, setNewCategory] = useState({
+    categoryName: "",
+    maxBudget: 0,
+  });
+
+  const [allCateg, setAllCateg] = useState<Category[]>([]);
+
+  // Fetch All Categories
+  useEffect(() => {
+    const fetchAllCateg = async () => {
+      try {
+        const response = await fetchAllCategories();
+        setAllCateg(response);
+      } catch (err) {
+        console.error("Error fetching categories ddd", err);
+      }
+    };
+    fetchAllCateg();
+  }, []);
+  console.log("gggggg", allCateg);
+
+  //Add a new category
+  const handleAddCateg = async () => {
+    if (newCategory.categoryName.trim() !== "") {
+      const categoryDetails = {
+        categoryName: newCategory.categoryName,
+        maxBudget: newCategory.maxBudget || 0,
+      };
+
+      try {
+        // Assuming addCategory is an asynchronous function
+        await addCategory(categoryDetails);
+        setNewCategory({ categoryName: "", maxBudget: 0 });
+      } catch (error) {
+        console.error("Error adding category:", error);
+      }
+    }
+  };
+
   const borderColor = useColorModeValue("gray.700", "gray.300");
   const circleRadius = 160; // Adjust the radius as needed
   const center = { x: circleRadius, y: circleRadius };
   const calculatePosition = (index: number) => {
-    const angle = (index * 2 * Math.PI) / categories.length;
+    const angle = (index * 2 * Math.PI) / allCateg.length;
     const x = center.x + circleRadius * Math.cos(angle);
     const y = center.y + circleRadius * Math.sin(angle);
     return { x, y };
@@ -87,6 +161,7 @@ const Wallet = () => {
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
+
   return (
     <Box>
       <Flex justifyContent={"space-between"} alignItems={"center"}>
@@ -250,12 +325,12 @@ const Wallet = () => {
                   shadow="md"
                   position="relative"
                 >
-                  {categories.map((category, index) => {
+                  {allCateg.map((category, index) => {
                     const { x, y } = calculatePosition(index);
                     return (
                       <Button
                         key={index}
-                        aria-label={category}
+                        aria-label={category.categoryName}
                         size="sm"
                         fontSize="md"
                         color="gray.1000"
@@ -265,9 +340,9 @@ const Wallet = () => {
                         _hover={{ bg: "teal.600" }}
                         top={y}
                         transform="translate(-50%, -50%)"
-                        onClick={() => handleOpenModal(category)}
+                        onClick={() => handleOpenModal(category.categoryName)}
                       >
-                        {category}
+                        {category.categoryName}
                       </Button>
                     );
                   })}
@@ -282,7 +357,7 @@ const Wallet = () => {
                       <ModalHeader>
                         {selectedCategory} transaction
                         <Stat>
-                          <StatNumber >0.00 Dt</StatNumber>
+                          <StatNumber>0.00 Dt</StatNumber>
                         </Stat>
                       </ModalHeader>
                       <ModalCloseButton />
@@ -372,7 +447,17 @@ const Wallet = () => {
                               <InputLeftElement pointerEvents="none">
                                 <PlusSquareIcon color="gray.300" />
                               </InputLeftElement>
-                              <Input type="text" placeholder="Name category" />
+                              <Input
+                                type="text"
+                                placeholder="Name category"
+                                value={newCategory.categoryName}
+                                onChange={(e) =>
+                                  setNewCategory({
+                                    ...newCategory,
+                                    categoryName: e.target.value,
+                                  })
+                                }
+                              />
                             </InputGroup>
 
                             <InputGroup borderColor={"gray.700"}>
@@ -383,13 +468,27 @@ const Wallet = () => {
                               >
                                 $
                               </InputLeftElement>
-                              <Input placeholder="Enter max amount" />
+                              <Input
+                                placeholder="Enter max amount"
+                                value={newCategory.maxBudget}
+                                onChange={(e) =>
+                                  setNewCategory({
+                                    ...newCategory,
+                                    maxBudget: parseFloat(e.target.value),
+                                  })
+                                }
+                              />
                               <InputRightElement>
                                 <CheckIcon color="green.500" />
                               </InputRightElement>
                             </InputGroup>
 
-                            <Button colorScheme="--bordercolor">Add</Button>
+                            <Button
+                              colorScheme="--bordercolor"
+                              onClick={handleAddCateg}
+                            >
+                              Add
+                            </Button>
                           </Stack>
                         </PopoverBody>
                       </PopoverContent>

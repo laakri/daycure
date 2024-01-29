@@ -6,6 +6,8 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const userRoutes = require("./routes/user");
 const taskRoutes = require("./routes/task");
+const categoryRoutes = require("./routes/category");
+const transactionRoutes = require("./routes/transaction");
 
 const cors = require("cors");
 const app = express();
@@ -43,5 +45,8 @@ app.use((req, res, next) => {
 
 app.use("/api/users", userRoutes);
 app.use("/api/tasks", taskRoutes);
+app.use("/api/category", categoryRoutes);
+app.use("/api/transactions", transactionRoutes);
+
 
 module.exports = app;
