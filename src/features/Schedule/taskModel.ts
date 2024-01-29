@@ -6,7 +6,15 @@ interface Task {
   isImportant: boolean;
   isCompleted: boolean;
   position: any;
-  __v: number;
+  type: TaskType;
+}
+
+export enum TaskType {
+  Goal = "Goal",
+  Social = "Social",
+  Routine = "Routine",
+  Timing = "Timing",
+  Normal = "Normal",
 }
 
 export default Task;

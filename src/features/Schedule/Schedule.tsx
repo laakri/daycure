@@ -14,6 +14,7 @@ import {
   Checkbox,
   Button,
   useDisclosure,
+  Select,
   Input,
 } from "@chakra-ui/react";
 import CalendarComponent from "./CalendarComponent";
@@ -42,6 +43,7 @@ const Schedule = () => {
     "Learn a new technology",
   ]);
   const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
+  const [taskType, setTaskType] = useState<string | null>(null);
 
   const toast = useToast();
 
@@ -104,6 +106,7 @@ const Schedule = () => {
         description: newTask.trim(),
         isImportant: important,
         isCompleted: false,
+        type: taskType || "Normal",
       };
 
       try {
@@ -123,6 +126,7 @@ const Schedule = () => {
       }
       setImportant(false);
       setNewTask("");
+      setTaskType(null); // Reset task type to null
       onClose();
     }
   };
@@ -168,7 +172,7 @@ const Schedule = () => {
               <Text fontSize="sm">{suggestedTask}</Text>
             </Box>
           ))}
-        </Wrap> 
+        </Wrap>
       </Box>
     );
   };
@@ -242,8 +246,23 @@ const Schedule = () => {
               value={newTask}
               onChange={(e) => setNewTask(e.target.value)}
             />
-            <Checkbox
+
+            <Select
               mt={2}
+              value={taskType || ""}
+              onChange={(e) => setTaskType(e.target.value || null)}
+              borderColor={"gray.700"}
+              colorScheme="purple"
+            >
+              <option value="">Select Type</option>
+              <option value="Goal">Goal</option>
+              <option value="Social">Social</option>
+              <option value="Routine">Routine</option>
+              <option value="Timing">Timing</option>
+            </Select>
+            <Checkbox
+              mt={4}
+              ml={2}
               colorScheme="purple"
               isChecked={important}
               onChange={toggleImportant}
@@ -269,12 +288,13 @@ const Schedule = () => {
               Cancel
             </Button>
             <Button
-              colorScheme="gray"
               border={"solid 1px"}
               borderColor={"gray.700"}
               onClick={handleAddTask}
               mr={3}
               bg="var(--lvl3-lightcolor)"
+              color={"gray.100"}
+              ml={"10px"}
               _hover={{
                 bg: "var(--lvl3-darkcolor)",
                 color: "gray.300",

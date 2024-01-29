@@ -9,6 +9,7 @@ export const addTask = async (taskDetails: {
   description: string;
   isImportant: boolean;
   isCompleted: boolean;
+  type: string;
 }) => {
   try {
     const response = await axios.post(

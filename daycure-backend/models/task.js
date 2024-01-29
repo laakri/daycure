@@ -22,8 +22,12 @@ const taskSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  order: {
-    type: Number,
+  position: {
+    type: Object,
+  },
+  type: {
+    type: String,
+    enum: ["Goal", "Social", "Routine", "Timing", "Normal"],
   },
 });
 

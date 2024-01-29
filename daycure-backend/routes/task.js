@@ -2,19 +2,19 @@ const express = require("express");
 const router = express.Router();
 const Task = require("../models/task");
 
+// Add task
 router.post("/add-task", async (req, res) => {
   try {
-    const { userId, date, description, isImportant } = req.body;
+    const { userId, date, description, isImportant, type } = req.body;
 
-    // Create a new task with the provided data, including the user reference
     const newTask = new Task({
       user: userId,
       date,
       description,
       isImportant,
+      type,
     });
-    console.log(newTask);
-    // Save the task to the database
+
     const savedTask = await newTask.save();
 
     res
@@ -26,6 +26,7 @@ router.post("/add-task", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
 // Update task by ID
 router.put("/update-task-iscompleted/:taskId", async (req, res) => {
   const { taskId } = req.params;
