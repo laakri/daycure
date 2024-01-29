@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ReactElement, useState } from "react";
 import {
   Box,
   Text,
@@ -9,12 +9,23 @@ import {
   Checkbox,
   Tag,
   TagLabel,
+  Stack,
+  InputGroup,
+  InputLeftAddon,
+  Icon,
 } from "@chakra-ui/react";
 import {
   AddIcon,
   EditIcon,
   DeleteIcon,
   DragHandleIcon,
+  StarIcon,
+  WarningTwoIcon,
+  HamburgerIcon,
+  BellIcon,
+  EmailIcon,
+  ArrowBackIcon,
+  SunIcon,
 } from "@chakra-ui/icons";
 import dayjs from "dayjs";
 import Task from "./taskModel";
@@ -107,6 +118,11 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
 
     const formattedDate = dayjs(selected).format("YYYY-MM-DD");
     const dateTasks = tasks[formattedDate] || [];
+    let istype: string = ""; // Déclarée en dehors de la boucle
+
+    for (const task of dateTasks) {
+      istype = task.type; // Mettez à jour la variable à chaque itération
+    }
 
     return (
       <Box mt={4}>
@@ -149,7 +165,8 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
                 p={2}
                 justifyContent={"space-between"}
                 rounded={5}
-                bg="var(--lvl1-darkcolor)"
+                border={"solid 1px"}
+                borderColor={getBackgroundColorByType(task.type)}
                 _hover={{
                   bg: "var(--lvl2-darkcolor)",
                   cursor: "pointer",
@@ -159,28 +176,36 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
                 onDragOver={(e) => handleDragOver(e, task._id)}
                 onDrop={() => handleDrop(task._id)}
               >
-                <Checkbox
-                  display={"flex"}
-                  colorScheme="purple"
-                  isChecked={task.isCompleted}
-                  onChange={() =>
-                    handleToggleTaskCompletion(task._id, !task.isCompleted)
-                  }
-                >
-                  {task.isImportant && (
-                    <Tag
-                      size={"sm"}
-                      variant="outline"
-                      colorScheme="gray"
-                      color={"white"}
-                      mt={"2px"}
-                      mr={"5px"}
-                    >
-                      <TagLabel> Important</TagLabel>
-                    </Tag>
-                  )}
-                  {task.description}
-                </Checkbox>
+                <InputGroup>
+                  <Checkbox
+                    display={"flex"}
+                    flexDirection={"row"}
+                    gap={2}
+                    colorScheme="purple"
+                    isChecked={task.isCompleted}
+                    onChange={() =>
+                      handleToggleTaskCompletion(task._id, !task.isCompleted)
+                    }
+                  >
+                    {getIconByType(task.type)}
+                    {task.isImportant && (
+                      <Tag
+                        size={"sm"}
+                        variant="outline"
+                        colorScheme="gray"
+                        color={"white"}
+                        mt={"2px"}
+                        mr={"5px"}
+                        ml={"8px"}
+                      >
+                        <TagLabel> Important</TagLabel>
+                      </Tag>
+                    )}
+
+                    {task.description}
+                  </Checkbox>
+                </InputGroup>
+
                 <Flex>
                   <IconButton
                     icon={<EditIcon />}
@@ -256,5 +281,33 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
     </Box>
   );
 };
+function getBackgroundColorByType(type: string): string {
+  switch (type) {
+    case "Social":
+      return "#eac02a31";
+    case "Goal":
+      return "#6ce2ff25";
+    case "Routine":
+      return "#ea6d2a25";
+    case "Timing":
+      return "#2aea4a25";
+    default:
+      return "#ea2a9055";
+  }
+}
 
+function getIconByType(type: string): ReactElement {
+  switch (type) {
+    case "Social":
+      return <SunIcon color={"#ff38b3"} mr={"5px"} />;
+    case "Goal":
+      return <StarIcon color={"gold"} mr={"5px"} />;
+    case "Routine":
+      return <EmailIcon color={"white"} mr={"5px"} />;
+    case "Timing":
+      return <ArrowBackIcon color={"white"} mr={"5px"} />;
+    default:
+      return <HamburgerIcon color="white" mr={"5px"} />;
+  }
+}
 export default TasksComponent;

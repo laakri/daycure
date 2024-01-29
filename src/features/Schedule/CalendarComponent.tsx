@@ -19,6 +19,7 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
   const renderDay = (paramDate: Date) => {
     const date = dayjs(paramDate).format("YYYY-MM-DD");
     const currentDay = dayjs().format("YYYY-MM-DD");
+// const checkType 
 
     const isCurrentDay = date === currentDay;
     const isSelectedDay =
