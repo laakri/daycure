@@ -1,5 +1,12 @@
 import React, { ReactElement, useState } from "react";
 import {
+  CiClock2,
+  CiCalendarDate,
+  CiStar,
+  CiTrophy,
+  CiGrid42,
+} from "react-icons/ci";
+import {
   Box,
   Text,
   Button,
@@ -9,23 +16,13 @@ import {
   Checkbox,
   Tag,
   TagLabel,
-  Stack,
   InputGroup,
-  InputLeftAddon,
-  Icon,
 } from "@chakra-ui/react";
 import {
   AddIcon,
   EditIcon,
   DeleteIcon,
   DragHandleIcon,
-  StarIcon,
-  WarningTwoIcon,
-  HamburgerIcon,
-  BellIcon,
-  EmailIcon,
-  ArrowBackIcon,
-  SunIcon,
 } from "@chakra-ui/icons";
 import dayjs from "dayjs";
 import Task from "./taskModel";
@@ -125,7 +122,8 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
     }
 
     return (
-      <Box mt={4}>
+      <Box mt={4}
+      >
         <Box>
           <Text fontSize="lg" fontWeight="bold" mb={2} mt={10}>
             Tasks
@@ -183,26 +181,32 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
                     gap={2}
                     colorScheme="purple"
                     isChecked={task.isCompleted}
+                    alignItems={"center"}
                     onChange={() =>
                       handleToggleTaskCompletion(task._id, !task.isCompleted)
                     }
                   >
-                    {getIconByType(task.type)}
-                    {task.isImportant && (
-                      <Tag
-                        size={"sm"}
-                        variant="outline"
-                        colorScheme="gray"
-                        color={"white"}
-                        mt={"2px"}
-                        mr={"5px"}
-                        ml={"8px"}
-                      >
-                        <TagLabel> Important</TagLabel>
-                      </Tag>
-                    )}
+                    <Flex
+                      justifyContent={"center"}
+                      alignContent={"center"}
+                      gap={2}
+                    >
+                      {getIconByType(task.type)}
+                      {task.isImportant && (
+                        <Tag
+                          size={"sm"}
+                          variant="outline"
+                          colorScheme="gray"
+                          color={"white"}
+                          mt={"2px"}
+                          mr={"5px"}
+                        >
+                          <TagLabel> Important</TagLabel>
+                        </Tag>
+                      )}
 
-                    {task.description}
+                      {task.description}
+                    </Flex>
                   </Checkbox>
                 </InputGroup>
 
@@ -257,9 +261,25 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
     <Box
       w={520}
       border={"solid 1px "}
-      borderColor={"gray.800"}
-      p={"10px 20px"}
+      borderColor={"#3b3a3a44"}
+      p={"20px 20px"}
       rounded={10}
+      style={{
+        background: 'linear-gradient( black,#6e6d6d12 )'
+      }}
+      _before={{
+        content: '""',
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: "50%",
+        background: "linear-gradient(to bottom, rgba(255, 255, 255, 0.090), transparent)",
+        zIndex: 1,
+        pointerEvents: "none",
+      }}
+    borderRadius={'30px'}
+
     >
       {selected && (
         <Flex justifyContent={"space-between"} alignItems={"center"}>
@@ -284,13 +304,13 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
 function getBackgroundColorByType(type: string): string {
   switch (type) {
     case "Social":
-      return "#eac02a31";
+      return "#2aeada40";
     case "Goal":
-      return "#6ce2ff25";
+      return "#eab72a40";
     case "Routine":
-      return "#ea6d2a25";
+      return "#9400d859";
     case "Timing":
-      return "#2aea4a25";
+      return "#1dd80044";
     default:
       return "#ea2a9055";
   }
@@ -299,15 +319,15 @@ function getBackgroundColorByType(type: string): string {
 function getIconByType(type: string): ReactElement {
   switch (type) {
     case "Social":
-      return <SunIcon color={"#ff38b3"} mr={"5px"} />;
+      return <CiStar size={18} />;
     case "Goal":
-      return <StarIcon color={"gold"} mr={"5px"} />;
+      return <CiTrophy color={"gold"} size={19} />;
     case "Routine":
-      return <EmailIcon color={"white"} mr={"5px"} />;
+      return <CiGrid42 color={"white"} size={19} />;
     case "Timing":
-      return <ArrowBackIcon color={"white"} mr={"5px"} />;
+      return <CiClock2 color={"white"} size={19} />;
     default:
-      return <HamburgerIcon color="white" mr={"5px"} />;
+      return <CiCalendarDate color="white" size={19} />;
   }
 }
 export default TasksComponent;
