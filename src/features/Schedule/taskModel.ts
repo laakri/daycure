@@ -5,6 +5,7 @@ interface Task {
   description: string;
   isImportant: boolean;
   isCompleted: boolean;
+  position: any;
   __v: number;
 }
 
