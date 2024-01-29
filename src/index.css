@@ -7,7 +7,7 @@
   --chakra-colors-chakra-body-bg:#060707 !important; 
   --chakra-colors-chakra-body-text:white !important; 
   --lvl1-darkcolor: #131314;
-  --lvl2-darkcolor: #232324;
+  --lvl2-darkcolor: #1b212c;
   --lvl3-darkcolor: #28292b;
   --bordercolor: #38393b;
   --maincolor: #a98edb;
@@ -27,7 +27,7 @@ a {
   text-decoration: inherit;
 }
 a:hover {
-  color: var(--hover-maincolor);
+  color: #a7a5aa;
 
 }
 a.active {

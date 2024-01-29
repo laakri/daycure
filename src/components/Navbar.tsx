@@ -17,6 +17,7 @@ const Navbar = () => {
           alignItems="center"
           rounded="5px"
           padding="5px 20px"
+          minW={"150px"}
         >
           <Link to="/">
             <Text fontSize="2xl">DailyCure</Text>
@@ -31,10 +32,11 @@ const Navbar = () => {
         padding="5px 10px"
         display="flex"
         gap="15px"
-        background="var(--lvl2-darkcolor)"
+        background="gray.800"
         rounded="10px"
         maxW="500px"
         margin="auto"
+        mt={"10px"}
       >
         <Box display="flex" gap="10px" alignItems="center">
           <NavLink to="/dashboard">

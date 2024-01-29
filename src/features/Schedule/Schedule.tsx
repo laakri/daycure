@@ -48,12 +48,14 @@ const Schedule = () => {
   // to fetch the data when the page loaded
   useEffect(() => {
     fetchData();
+    console.log(tasks);
   }, [toast]);
 
   // function that fetch the data
   const fetchData = async () => {
     try {
       const allTasks = await fetchAllTasks("65b0320bb3870b156e159462");
+
       const tasksByDate: { [key: string]: Task[] } = {};
 
       allTasks.forEach((task: Task, index: number) => {

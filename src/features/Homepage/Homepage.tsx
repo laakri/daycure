@@ -31,7 +31,7 @@ const Homepage = () => {
         display={"flex"}
         w={"100%"}
         spacing={5}
-        mt={"25px"}
+        mt={"55px"}
         justifyContent="center"
         alignItems="center"
       >
@@ -41,7 +41,7 @@ const Homepage = () => {
           borderWidth="1px"
           borderRadius="lg"
           border="1px solid"
-          borderColor={"gray.700"}
+          borderColor={"purple.700"}
         >
           <Heading size="lg" mb={4}>
             Manage Finances
@@ -57,7 +57,7 @@ const Homepage = () => {
           borderWidth="1px"
           borderRadius="lg"
           border="1px solid"
-          borderColor={"gray.700"}
+          borderColor={"purple.700"}
         >
           <Heading size="lg" mb={4}>
             Stay Productive
@@ -73,7 +73,7 @@ const Homepage = () => {
           borderWidth="1px"
           borderRadius="lg"
           border="1px solid"
-          borderColor={"gray.700"}
+          borderColor={"purple.700"}
         >
           <Heading size="lg" mb={4}>
             Get Daily News
@@ -89,7 +89,7 @@ const Homepage = () => {
           borderWidth="1px"
           borderRadius="lg"
           border="1px solid"
-          borderColor={"gray.700"}
+          borderColor={"purple.700"}
         >
           <Heading size="lg" mb={4}>
             Track Your Fitness
