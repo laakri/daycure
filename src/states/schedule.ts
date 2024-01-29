@@ -8,8 +8,11 @@ export const addTask = async (taskDetails: {
   date: any;
   description: string;
   isImportant: boolean;
-  isCompleted: boolean;
   type: string;
+  duration: {
+    hours: number;
+    minutes: number;
+  };
 }) => {
   try {
     const response = await axios.post(

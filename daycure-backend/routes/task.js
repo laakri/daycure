@@ -5,7 +5,7 @@ const Task = require("../models/task");
 // Add task
 router.post("/add-task", async (req, res) => {
   try {
-    const { userId, date, description, isImportant, type } = req.body;
+    const { userId, date, description, isImportant, type, duration } = req.body;
 
     const newTask = new Task({
       user: userId,
@@ -13,6 +13,14 @@ router.post("/add-task", async (req, res) => {
       description,
       isImportant,
       type,
+      duration: {
+        hours: duration && duration.hours ? duration.hours : 0,
+        minutes: duration && duration.minutes ? duration.minutes : 0,
+      },
+      progress: {
+        hours: 0,
+        minutes: 0,
+      },
     });
 
     const savedTask = await newTask.save();
@@ -31,7 +39,6 @@ router.post("/add-task", async (req, res) => {
 router.put("/update-task-iscompleted/:taskId", async (req, res) => {
   const { taskId } = req.params;
   const { isCompleted } = req.body;
-
   try {
     const taskToUpdate = await Task.findById(taskId);
 

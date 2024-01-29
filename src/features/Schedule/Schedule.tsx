@@ -16,6 +16,7 @@ import {
   useDisclosure,
   Select,
   Input,
+  Flex,
 } from "@chakra-ui/react";
 import CalendarComponent from "./CalendarComponent";
 import TasksComponent from "./TasksComponent";
@@ -44,13 +45,16 @@ const Schedule = () => {
   ]);
   const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
   const [taskType, setTaskType] = useState<string | null>(null);
+  const [taskDuration, setTaskDuration] = useState<{
+    hours: number;
+    minutes: number;
+  } | null>(null);
 
   const toast = useToast();
 
   // to fetch the data when the page loaded
   useEffect(() => {
     fetchData();
-    console.log(tasks);
   }, [toast]);
 
   // function that fetch the data
@@ -107,6 +111,7 @@ const Schedule = () => {
         isImportant: important,
         isCompleted: false,
         type: taskType || "Normal",
+        duration: taskDuration,
       };
 
       try {
@@ -126,7 +131,8 @@ const Schedule = () => {
       }
       setImportant(false);
       setNewTask("");
-      setTaskType(null); // Reset task type to null
+      setTaskType(null);
+      setTaskDuration(null);
       onClose();
     }
   };
@@ -223,6 +229,8 @@ const Schedule = () => {
       <Modal
         isOpen={isOpen}
         onClose={() => {
+          setTaskType(null);
+          setTaskDuration(null);
           onClose();
           setNewTask("");
           setSelectedTaskIndex(null);
@@ -260,6 +268,65 @@ const Schedule = () => {
               <option value="Routine">Routine</option>
               <option value="Timing">Timing</option>
             </Select>
+
+            {taskType === "Timing" && (
+              <Flex direction="column" mt={2}>
+                <Text fontSize="md" fontWeight="bold" mb={2}>
+                  Select Task Duration
+                </Text>
+                <Flex>
+                  <Input
+                    type="number"
+                    min={0}
+                    max={23}
+                    placeholder="Hours"
+                    value={taskDuration?.hours ?? ""}
+                    onChange={(e) => {
+                      const hoursValue =
+                        e.target.value !== "" ? Number(e.target.value) : 0;
+                      const clampedHours = Math.min(
+                        23,
+                        Math.max(0, hoursValue)
+                      );
+
+                      setTaskDuration((prevDuration) => ({
+                        ...prevDuration,
+                        hours: clampedHours,
+                        minutes: prevDuration?.minutes ?? 0,
+                      }));
+                    }}
+                    borderColor={"gray.700"}
+                    colorScheme="purple"
+                    mr={2}
+                  />
+
+                  <Input
+                    type="number"
+                    min={0}
+                    max={59}
+                    placeholder="Minutes"
+                    value={taskDuration?.minutes ?? ""}
+                    onChange={(e) => {
+                      const minutesValue =
+                        e.target.value !== "" ? Number(e.target.value) : 0;
+                      const clampedMinutes = Math.min(
+                        59,
+                        Math.max(0, minutesValue)
+                      );
+
+                      setTaskDuration((prevDuration) => ({
+                        ...prevDuration,
+                        minutes: clampedMinutes,
+                        hours: prevDuration?.hours ?? 0,
+                      }));
+                    }}
+                    borderColor={"gray.700"}
+                    colorScheme="purple"
+                  />
+                </Flex>
+              </Flex>
+            )}
+
             <Checkbox
               mt={4}
               ml={2}

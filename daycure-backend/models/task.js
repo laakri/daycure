@@ -22,12 +22,32 @@ const taskSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  position: {
-    type: Object,
-  },
   type: {
     type: String,
     enum: ["Goal", "Social", "Routine", "Timing", "Normal"],
+  },
+  duration: {
+    hours: {
+      type: Number,
+      default: 0,
+    },
+    minutes: {
+      type: Number,
+      default: 0,
+    },
+  },
+  progress: {
+    hours: {
+      type: Number,
+      default: 0,
+    },
+    minutes: {
+      type: Number,
+      default: 0,
+    },
+  },
+  position: {
+    type: Object,
   },
 });
 

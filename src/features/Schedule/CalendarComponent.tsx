@@ -1,8 +1,9 @@
 import React from "react";
 import { Calendar } from "@mantine/dates";
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Flex, Link, Text } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Task from "./taskModel";
+import { DeleteIcon } from "@chakra-ui/icons";
 
 interface CalendarComponentProps {
   selected: Date | null;
@@ -70,7 +71,7 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
   };
 
   return (
-    <Box rounded={10} p={10}>
+    <Flex p={10} flexDirection={"column"} gap={10}>
       <Calendar
         getDayProps={(date) => ({
           onClick: () => handleSelect(date),
@@ -78,7 +79,33 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
         size={"xl"}
         renderDay={renderDay}
       />
-    </Box>
+      <Box border="solid 1px" borderColor={"gray.800"} rounded={10} minH={40}>
+        <Text fontSize={"md"} p={"5px 10px"} color={"gray.200"}>
+          Routine
+        </Text>
+        <Flex
+          border={"solid 1px"}
+          borderColor={"gray.800"}
+          minH="30px"
+          m={"10px"}
+          rounded={5}
+          bg={"var(--lvl1-darkcolor)"}
+          display={"flex"}
+          alignItems={"center"}
+          px={2}
+          justifyContent={"space-between"}
+          maxW={"370px"}
+        >
+          <Text fontSize={"sm"}>
+            ye chaima rahoy saif yahki alik bl khayeb bl khayeb alekherweny
+            habet nkolk ema m 9etch kifh
+          </Text>
+          <Link display={"flex"} alignItems={"center"}>
+            <DeleteIcon color={"red.300"} fontSize={"xs"} />
+          </Link>
+        </Flex>
+      </Box>
+    </Flex>
   );
 };
 

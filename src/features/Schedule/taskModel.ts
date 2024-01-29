@@ -7,6 +7,14 @@ interface Task {
   isCompleted: boolean;
   position: any;
   type: TaskType;
+  duration: {
+    hours: number;
+    minutes: number;
+  } | null;
+  progress: {
+    hours: number;
+    minutes: number;
+  } | null;
 }
 
 export enum TaskType {
