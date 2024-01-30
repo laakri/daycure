@@ -1,6 +1,6 @@
 import React from "react";
 import { Calendar } from "@mantine/dates";
-import { Box, Flex, Link, Skeleton, Text } from "@chakra-ui/react";
+import { Box, Flex, Link, Text } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Task from "./taskModel";
 import { DeleteIcon } from "@chakra-ui/icons";
@@ -19,7 +19,6 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
   const renderDay = (paramDate: Date) => {
     const date = dayjs(paramDate).format("YYYY-MM-DD");
     const currentDay = dayjs().format("YYYY-MM-DD");
-    // const checkType
 
     const isCurrentDay = date === currentDay;
     const isSelectedDay =
@@ -44,20 +43,24 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
     const dateTasks = tasks[date] || [];
     const hasGoalTask = dateTasks.some((task) => task.type === "Goal");
 
-    
-   
-
     return (
       <Box
         position="relative"
         border={"1px solid"}
-        p={"4px 5px"}
+        w={"90%"}
+        h={"90%"}
+        display={"flex"}
+        justifyContent={"center"}
+        alignItems={"center"}
         rounded={7}
-        borderColor={isCurrentDay ? "purple.400" : "transparent"}
+        borderColor={
+          isCurrentDay
+            ? "purple.200"
+            : hasGoalTask
+            ? "#e7fc00a2"
+            : "transparent"
+        }
         bg={isSelectedDay ? "gray.800" : undefined}
-        style={{
-          borderColor: hasGoalTask ? "#e7fc00a2" : "transparent",
-        }}
       >
         <Text color={isCurrentDay ? "purple.400" : undefined}>
           {dayjs(paramDate).format("D")}
@@ -67,7 +70,7 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
             position="absolute"
             right="50%"
             left="50%"
-            top="-4px"
+            top="4px"
             w="6px"
             h="6px"
             rounded="50%"
@@ -84,10 +87,8 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
       p={10}
       flexDirection={"column"}
       gap={10}
-      border={"1px solid #3b3a3a44"}
       borderRadius={"30px"}
       alignItems={"center"}
-     
       _before={{
         content: '""',
         position: "absolute",
@@ -95,7 +96,8 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
         left: 0,
         right: 0,
         bottom: "50%",
-        background: "linear-gradient(to bottom, rgba(255, 255, 255, 0.01), transparent)",
+        background:
+          "linear-gradient(to bottom, rgba(255, 255, 255, 0.01), transparent)",
         zIndex: 1,
         pointerEvents: "none",
       }}
@@ -188,6 +190,5 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
     </Flex>
   );
 };
-
 
 export default CalendarComponent;

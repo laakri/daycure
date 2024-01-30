@@ -209,9 +209,9 @@ const Schedule = () => {
     <Wrap
       mt={50}
       spacing={4}
-      display={"flex"}
       justifyContent={"center"}
       alignItems={"center"}
+      display={"flex"}
     >
       <CalendarComponent
         selected={selected}
