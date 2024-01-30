@@ -41,6 +41,11 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
     } else if (completedTasks.length > 0) {
       circleColor = "orange"; // Some tasks completed
     }
+    const dateTasks = tasks[date] || [];
+    const hasGoalTask = dateTasks.some((task) => task.type === "Goal");
+
+    
+   
 
     return (
       <Box
@@ -50,6 +55,9 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
         rounded={7}
         borderColor={isCurrentDay ? "purple.400" : "transparent"}
         bg={isSelectedDay ? "gray.800" : undefined}
+        style={{
+          borderColor: hasGoalTask ? "#e7fc00a2" : "transparent",
+        }}
       >
         <Text color={isCurrentDay ? "purple.400" : undefined}>
           {dayjs(paramDate).format("D")}
@@ -72,7 +80,26 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
   };
 
   return (
-    <Flex p={10} flexDirection={"column"} gap={10}>
+    <Flex
+      p={10}
+      flexDirection={"column"}
+      gap={10}
+      border={"1px solid #3b3a3a44"}
+      borderRadius={"30px"}
+      alignItems={"center"}
+     
+      _before={{
+        content: '""',
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: "50%",
+        background: "linear-gradient(to bottom, rgba(255, 255, 255, 0.01), transparent)",
+        zIndex: 1,
+        pointerEvents: "none",
+      }}
+    >
       <Calendar
         getDayProps={(date) => ({
           onClick: () => handleSelect(date),
@@ -161,5 +188,6 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
     </Flex>
   );
 };
+
 
 export default CalendarComponent;
