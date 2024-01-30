@@ -1,6 +1,6 @@
 import React from "react";
 import { Calendar } from "@mantine/dates";
-import { Box, Flex, Link, Text } from "@chakra-ui/react";
+import { Box, Flex, Link, Skeleton, Text } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Task from "./taskModel";
 import { DeleteIcon } from "@chakra-ui/icons";
@@ -19,7 +19,7 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
   const renderDay = (paramDate: Date) => {
     const date = dayjs(paramDate).format("YYYY-MM-DD");
     const currentDay = dayjs().format("YYYY-MM-DD");
-// const checkType 
+    // const checkType
 
     const isCurrentDay = date === currentDay;
     const isSelectedDay =
@@ -80,20 +80,27 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
         size={"xl"}
         renderDay={renderDay}
       />
-      <Box border="solid 1px" borderColor={"gray.800"} rounded={10} minH={40}>
-        <Text fontSize={"md"} p={"5px 10px"} color={"gray.200"}>
+      <Box
+        border="solid 1px"
+        borderColor={"#00007a"}
+        rounded={10}
+        minH={40}
+        bg={"#000017"}
+      >
+        <Text fontSize={"md"} p={"10px 15px"} color={"gray.200"}>
           Routine
         </Text>
+
         <Flex
           border={"solid 1px"}
           borderColor={"gray.800"}
           minH="30px"
           m={"10px"}
           rounded={5}
-          bg={"var(--lvl1-darkcolor)"}
+          bg={"#000045"}
           display={"flex"}
           alignItems={"center"}
-          px={2}
+          p={2}
           justifyContent={"space-between"}
           maxW={"370px"}
         >
@@ -101,6 +108,51 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
             ye chaima rahoy saif yahki alik bl khayeb bl khayeb alekherweny
             habet nkolk ema m 9etch kifh
           </Text>
+
+          <Link display={"flex"} alignItems={"center"}>
+            <DeleteIcon color={"red.300"} fontSize={"xs"} />
+          </Link>
+        </Flex>
+        <Flex
+          border={"solid 1px"}
+          borderColor={"gray.800"}
+          minH="30px"
+          m={"10px"}
+          rounded={5}
+          bg={"#000045"}
+          display={"flex"}
+          alignItems={"center"}
+          p={2}
+          justifyContent={"space-between"}
+          maxW={"370px"}
+        >
+          <Text fontSize={"sm"}>
+            ye chaima rahoy saif yahki alik bl khayeb bl khayeb alekherweny
+            habet nkolk ema m 9etch kifh
+          </Text>
+
+          <Link display={"flex"} alignItems={"center"}>
+            <DeleteIcon color={"red.300"} fontSize={"xs"} />
+          </Link>
+        </Flex>
+        <Flex
+          border={"solid 1px"}
+          borderColor={"gray.800"}
+          minH="30px"
+          m={"10px"}
+          rounded={5}
+          bg={"#000045"}
+          display={"flex"}
+          alignItems={"center"}
+          p={2}
+          justifyContent={"space-between"}
+          maxW={"370px"}
+        >
+          <Text fontSize={"sm"}>
+            ye chaima rahoy saif yahki alik bl khayeb bl khayeb alekherweny
+            habet nkolk ema m 9etch kifh
+          </Text>
+
           <Link display={"flex"} alignItems={"center"}>
             <DeleteIcon color={"red.300"} fontSize={"xs"} />
           </Link>

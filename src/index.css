@@ -29,6 +29,9 @@ a:hover {
   color: #a7a5aa;
 
 }
+option{
+  color: var(--chakra-colors-chakra-body-bg);
+}
 a.active {
   color: #f5f0ff;
   background-color: var(--chakra-colors-chakra-body-bg);

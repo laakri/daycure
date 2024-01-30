@@ -260,9 +260,11 @@ const Schedule = () => {
               value={taskType || ""}
               onChange={(e) => setTaskType(e.target.value || null)}
               borderColor={"gray.700"}
-              colorScheme="purple"
+              colorScheme="white"
             >
-              <option value="">Select Type</option>
+              <option value="" color="black">
+                Select Type
+              </option>
               <option value="Goal">Goal</option>
               <option value="Social">Social</option>
               <option value="Routine">Routine</option>
