@@ -11,6 +11,8 @@ interface Task {
     hours: number;
     minutes: number;
   } | null;
+  subType: eventType;
+ 
   progress: {
     hours: number;
     minutes: number;
@@ -23,6 +25,12 @@ export enum TaskType {
   Routine = "Routine",
   Timing = "Timing",
   Normal = "Normal",
+}
+export enum eventType {
+  birthday = "birthday",
+  wedding = "wedding",
+  party = "party",
+  event = "event",
 }
 
 export default Task;

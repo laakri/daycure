@@ -45,6 +45,8 @@ const Schedule = () => {
   ]);
   const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
   const [taskType, setTaskType] = useState<string | null>(null);
+  const [eventType, setEventType] = useState<string | null>(null);
+
   const [taskDuration, setTaskDuration] = useState<{
     hours: number;
     minutes: number;
@@ -111,6 +113,7 @@ const Schedule = () => {
         isImportant: important,
         isCompleted: false,
         type: taskType || "Normal",
+        subType:eventType || "",
         duration: taskDuration,
       };
 
@@ -132,6 +135,8 @@ const Schedule = () => {
       setImportant(false);
       setNewTask("");
       setTaskType(null);
+      setEventType(null);
+
       setTaskDuration(null);
       onClose();
     }
@@ -230,6 +235,7 @@ const Schedule = () => {
         isOpen={isOpen}
         onClose={() => {
           setTaskType(null);
+          setEventType(null);
           setTaskDuration(null);
           onClose();
           setNewTask("");
@@ -270,6 +276,30 @@ const Schedule = () => {
               <option value="Routine">Routine</option>
               <option value="Timing">Timing</option>
             </Select>
+            {taskType === "Social" && (
+              <Flex direction="column" mt={2}>
+                <Text fontSize="md" fontWeight="bold" mb={2}>
+                  Select event type
+                </Text>
+                <Flex>
+                  <Select
+                    mt={2}
+                    value={eventType || ""}
+                    onChange={(e) => setEventType(e.target.value || null)}
+                    borderColor={"gray.700"}
+                    colorScheme="white"
+                  >
+                    <option value="" color="black">
+                      Select Type
+                    </option>
+                    <option value="birthday">birthday</option>
+                    <option value="wedding">wedding</option>
+                    <option value="party">party</option>
+                    <option value="event">event</option>
+                  </Select>
+                </Flex>
+              </Flex>
+            )}
 
             {taskType === "Timing" && (
               <Flex direction="column" mt={2}>
@@ -378,5 +408,4 @@ const Schedule = () => {
     </Wrap>
   );
 };
-
 export default Schedule;

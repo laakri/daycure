@@ -26,6 +26,10 @@ const taskSchema = new mongoose.Schema({
     type: String,
     enum: ["Goal", "Social", "Routine", "Timing", "Normal"],
   },
+  subType: {
+    type: String,
+    enum: ["birthday", "wedding", "party", "event"],
+  },
   duration: {
     hours: {
       type: Number,

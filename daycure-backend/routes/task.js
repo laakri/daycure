@@ -5,7 +5,7 @@ const Task = require("../models/task");
 // Add task
 router.post("/add-task", async (req, res) => {
   try {
-    const { userId, date, description, isImportant, type, duration } = req.body;
+    const { userId, date, description, isImportant, type, subType,duration } = req.body;
 
     const newTask = new Task({
       user: userId,
@@ -13,6 +13,7 @@ router.post("/add-task", async (req, res) => {
       description,
       isImportant,
       type,
+      subType,
       duration: {
         hours: duration && duration.hours ? duration.hours : 0,
         minutes: duration && duration.minutes ? duration.minutes : 0,

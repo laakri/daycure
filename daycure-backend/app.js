@@ -8,6 +8,7 @@ const userRoutes = require("./routes/user");
 const taskRoutes = require("./routes/task");
 const categoryRoutes = require("./routes/category");
 const transactionRoutes = require("./routes/transaction");
+const eventRoutes= require("./routes/event");
 
 const cors = require("cors");
 const app = express();
@@ -47,5 +48,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/tasks", taskRoutes);
 app.use("/api/category", categoryRoutes);
 app.use("/api/transactions", transactionRoutes);
+app.use("/api/events", eventRoutes);
+
 
 module.exports = app;
