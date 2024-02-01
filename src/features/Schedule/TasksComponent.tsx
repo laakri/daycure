@@ -81,10 +81,8 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
     draggedTaskId: string,
     targetTaskId: string
   ): { [key: string]: Task[] } => {
-    // Clone the current tasks to avoid modifying the original state directly
     const updatedTasks = { ...currentTasks };
 
-    // Find the dragged task and target task
     let draggedTask;
     let targetTask;
 
@@ -99,7 +97,6 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
       });
     });
 
-    // Ensure both tasks are found
     if (!draggedTask || !targetTask) {
       console.error("Could not find dragged or target task");
       return currentTasks;
@@ -114,7 +111,6 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
 
     useEffect(() => {
       let interval: any;
-
       if (isTimerRunning) {
         interval = setInterval(() => {
           setCurrentTime((prevTime) => (prevTime < maxTime ? prevTime + 1 : 0));
@@ -187,7 +183,6 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
     );
   };
 
-  
   const renderTasks = () => {
     if (!selected)
       return (
@@ -207,77 +202,81 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
     }
     return (
       <Box mt={4} h={"max-content"}>
-      <Box>
-        <Text fontSize="lg" fontWeight="bold" mb={2} mt={10}>
-          Events
-        </Text>
-        {dateTasks
-  .filter(task => task.type === "Social" && task.subType !== null)
-  .map((task, index) =>
-          <HStack
-            key={index}
-            mt={3}
-            p={2}
-            justifyContent={"space-between"}
-            rounded={5}
-            border={"solid 1px"}
-            borderColor={getBackgroundColorByType(task.type)}
-            _hover={{
-              bg: "var(--lvl2-darkcolor)",
-              cursor: "pointer",
-            }}
-          >
-            <InputGroup>
-              <Flex justifyContent={"center"} alignContent={"center"} gap={2}>
-                {getIconByType(task.type)} 
-               
-                {task.description}
-              </Flex>
-            </InputGroup>
-            <Flex>
-              <IconButton
-                icon={<EditIcon />}
-                size="xs"
-                color="gray.500"
-                variant="ghost"
+        <Box>
+          <Text fontSize="lg" fontWeight="bold" mb={2} mt={10}>
+            Events
+          </Text>
+          {dateTasks
+            .filter((task) => task.type === "Social" && task.subType !== null)
+            .map((task, index) => (
+              <HStack
+                key={index}
+                mt={3}
+                p={2}
+                justifyContent={"space-between"}
+                rounded={5}
+                border={"solid 1px"}
+                borderColor={getBackgroundColorByType(task.type)}
                 _hover={{
-                  bg: "var(--lvl3-darkcolor)",
+                  bg: "var(--lvl2-darkcolor)",
                   cursor: "pointer",
                 }}
-                aria-label="Edit Event"
-              />
-              <IconButton
-                icon={<DeleteIcon />}
-                size="xs"
-                color="red.500"
-                variant="ghost"
-                _hover={{
-                  bg: "red.900",
-                  color: "red.200",
-                  cursor: "pointer",
-                }}
-                aria-label="Delete Event"
-              />
-              <IconButton
-                icon={<DragHandleIcon />}
-                size="xs"
-                cursor="grab"
-                color="gray.200"
-                colorScheme="black"
-                draggable
-                _hover={{
-                  bg: "gray.400",
-                  color: "gray.900",
-                  cursor: "grab", 
-                }}
-                aria-label="Drag Task"
-              />
-            </Flex>
-            {dateTasks.length !== 0 && dateTasks.some(task => task.type === "Social")}
-          </HStack>
-        )}
-      
-      </Box>
+              >
+                <InputGroup>
+                  <Flex
+                    justifyContent={"center"}
+                    alignContent={"center"}
+                    gap={2}
+                  >
+                    {getIconByType(task.type)}
+
+                    {task.description}
+                  </Flex>
+                </InputGroup>
+                <Flex>
+                  <IconButton
+                    icon={<EditIcon />}
+                    size="xs"
+                    color="gray.500"
+                    variant="ghost"
+                    _hover={{
+                      bg: "var(--lvl3-darkcolor)",
+                      cursor: "pointer",
+                    }}
+                    aria-label="Edit Event"
+                  />
+                  <IconButton
+                    icon={<DeleteIcon />}
+                    size="xs"
+                    color="red.500"
+                    variant="ghost"
+                    _hover={{
+                      bg: "red.900",
+                      color: "red.200",
+                      cursor: "pointer",
+                    }}
+                    aria-label="Delete Event"
+                  />
+                  <IconButton
+                    icon={<DragHandleIcon />}
+                    size="xs"
+                    cursor="grab"
+                    color="gray.200"
+                    colorScheme="black"
+                    draggable
+                    _hover={{
+                      bg: "gray.400",
+                      color: "gray.900",
+                      cursor: "grab",
+                    }}
+                    aria-label="Drag Task"
+                  />
+                </Flex>
+                {dateTasks.length !== 0 &&
+                  dateTasks.some((task) => task.type === "Social")}
+              </HStack>
+            ))}
+        </Box>
         <Box>
           <Text fontSize="lg" fontWeight="bold" mb={2} mt={10}>
             Tasks
@@ -480,10 +479,5 @@ function getIconByType(type: string): ReactElement {
       return <CiCalendarDate size={15} />;
   }
 }
-
-
-
-
-
 
 export default TasksComponent;

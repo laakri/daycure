@@ -9,7 +9,6 @@ import {
   IconButton,
   Flex,
   HStack,
-  Checkbox,
   Tag,
   TagLabel,
   InputGroup,
@@ -101,28 +100,27 @@ const SpecialEventComponent: React.FC<EventComponentProps> = ({
                 }}
               >
                 <InputGroup>
-                  
-                    <Flex
-                      justifyContent={"center"}
-                      alignContent={"center"}
-                      gap={2}
-                    >
-                      {getIconByType(event.type)}
-                      {event.isImportant && (
-                        <Tag
-                          size={"sm"}
-                          variant="outline"
-                          colorScheme="gray"
-                          color={"white"}
-                          mt={"2px"}
-                          mr={"5px"}
-                        >
-                          <TagLabel> Important</TagLabel>
-                        </Tag>
-                      )}
+                  <Flex
+                    justifyContent={"center"}
+                    alignContent={"center"}
+                    gap={2}
+                  >
+                    {getIconByType(event.type)}
+                    {event.isImportant && (
+                      <Tag
+                        size={"sm"}
+                        variant="outline"
+                        colorScheme="gray"
+                        color={"white"}
+                        mt={"2px"}
+                        mr={"5px"}
+                      >
+                        <TagLabel> Important</TagLabel>
+                      </Tag>
+                    )}
 
-                      {event.description}
-                    </Flex>
+                    {event.description}
+                  </Flex>
                 </InputGroup>
 
                 <Flex>
