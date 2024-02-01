@@ -1,4 +1,7 @@
 import React, { ReactElement, useEffect, useState } from "react";
+import { GiPartyPopper, GiPartyFlags } from "react-icons/gi";
+import { PiCakeThin } from "react-icons/pi";
+import { CiPlane } from "react-icons/ci";
 import {
   CiClock2,
   CiCalendarDate,
@@ -231,7 +234,8 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
             Events
           </Text>
           {dateTasks
-            .filter((task) => task.type === "Social" && task.subType !== null)
+
+            .filter((task) => task.subType !== undefined)
             .map((task, index) => (
               <HStack
                 key={index}
@@ -240,7 +244,7 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
                 justifyContent={"space-between"}
                 rounded={5}
                 border={"solid 1px"}
-                borderColor={getBackgroundColorByType(task.type)}
+                borderColor={getBackgroundColorBysubType(task.subType)}
                 _hover={{
                   bg: "var(--lvl2-darkcolor)",
                   cursor: "pointer",
@@ -252,7 +256,7 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
                     alignContent={"center"}
                     gap={2}
                   >
-                    {getIconByType(task.type)}
+                    {getIconBysubType(task.subType)}
 
                     {task.description}
                   </Flex>
@@ -506,4 +510,34 @@ function getIconByType(type: string): ReactElement {
   }
 }
 
+function getIconBysubType(type: string): ReactElement {
+  switch (type) {
+    case "event":
+      return <CiPlane size={18} />;
+    case "birthday":
+      return <PiCakeThin color={"gold"} size={19} />;
+    case "wedding":
+      return <GiPartyPopper color={"white"} size={19} />;
+    case "party":
+      return <GiPartyFlags color={"white"} size={19} />;
+
+    default:
+      return <CiCalendarDate color="white" size={19} />;
+  }
+}
+function getBackgroundColorBysubType(type: string): string {
+  switch (type) {
+    case "event":
+      return "#2aeada40";
+    case "birthday":
+      return "#eab72a40";
+    case "wedding":
+      return "#9400d859";
+    case "party":
+      return "cyan.200";
+
+    default:
+      return "#ea2a9055";
+  }
+}
 export default TasksComponent;
