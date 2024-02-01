@@ -1,4 +1,7 @@
 import React, { ReactElement, useEffect, useState } from "react";
+import { GiPartyPopper, GiPartyFlags } from "react-icons/gi";
+import { PiCakeThin } from "react-icons/pi";
+import { CiPlane } from "react-icons/ci";
 import {
   CiClock2,
   CiCalendarDate,
@@ -187,7 +190,6 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
     );
   };
 
-  
   const renderTasks = () => {
     if (!selected)
       return (
@@ -207,77 +209,81 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
     }
     return (
       <Box mt={4} h={"max-content"}>
-      <Box>
-        <Text fontSize="lg" fontWeight="bold" mb={2} mt={10}>
-          Events
-        </Text>
-        {dateTasks
-  .filter(task => task.type === "Social" && task.subType !== null)
-  .map((task, index) =>
-          <HStack
-            key={index}
-            mt={3}
-            p={2}
-            justifyContent={"space-between"}
-            rounded={5}
-            border={"solid 1px"}
-            borderColor={getBackgroundColorByType(task.type)}
-            _hover={{
-              bg: "var(--lvl2-darkcolor)",
-              cursor: "pointer",
-            }}
-          >
-            <InputGroup>
-              <Flex justifyContent={"center"} alignContent={"center"} gap={2}>
-                {getIconByType(task.type)} 
-               
-                {task.description}
-              </Flex>
-            </InputGroup>
-            <Flex>
-              <IconButton
-                icon={<EditIcon />}
-                size="xs"
-                color="gray.500"
-                variant="ghost"
+        <Box>
+          <Text fontSize="lg" fontWeight="bold" mb={2} mt={10}>
+            Events
+          </Text>
+          {dateTasks
+            .filter((task) => task.subType !== undefined)
+            .map((task, index) => (
+              <HStack
+                key={index}
+                mt={3}
+                p={2}
+                justifyContent={"space-between"}
+                rounded={5}
+                border={"solid 1px"}
+                borderColor={getBackgroundColorBysubType(task.subType)}
                 _hover={{
-                  bg: "var(--lvl3-darkcolor)",
+                  bg: "var(--lvl2-darkcolor)",
                   cursor: "pointer",
                 }}
-                aria-label="Edit Event"
-              />
-              <IconButton
-                icon={<DeleteIcon />}
-                size="xs"
-                color="red.500"
-                variant="ghost"
-                _hover={{
-                  bg: "red.900",
-                  color: "red.200",
-                  cursor: "pointer",
-                }}
-                aria-label="Delete Event"
-              />
-              <IconButton
-                icon={<DragHandleIcon />}
-                size="xs"
-                cursor="grab"
-                color="gray.200"
-                colorScheme="black"
-                draggable
-                _hover={{
-                  bg: "gray.400",
-                  color: "gray.900",
-                  cursor: "grab", 
-                }}
-                aria-label="Drag Task"
-              />
-            </Flex>
-            {dateTasks.length !== 0 && dateTasks.some(task => task.type === "Social")}
-          </HStack>
-        )}
-      
-      </Box>
+              >
+                <InputGroup>
+                  <Flex
+                    justifyContent={"center"}
+                    alignContent={"center"}
+                    gap={2}
+                  >
+                    {getIconBysubType(task.subType)}
+
+                    {task.description}
+                  </Flex>
+                </InputGroup>
+                <Flex>
+                  <IconButton
+                    icon={<EditIcon />}
+                    size="xs"
+                    color="gray.500"
+                    variant="ghost"
+                    _hover={{
+                      bg: "var(--lvl3-darkcolor)",
+                      cursor: "pointer",
+                    }}
+                    aria-label="Edit Event"
+                  />
+                  <IconButton
+                    icon={<DeleteIcon />}
+                    size="xs"
+                    color="red.500"
+                    variant="ghost"
+                    _hover={{
+                      bg: "red.900",
+                      color: "red.200",
+                      cursor: "pointer",
+                    }}
+                    aria-label="Delete Event"
+                  />
+                  <IconButton
+                    icon={<DragHandleIcon />}
+                    size="xs"
+                    cursor="grab"
+                    color="gray.200"
+                    colorScheme="black"
+                    draggable
+                    _hover={{
+                      bg: "gray.400",
+                      color: "gray.900",
+                      cursor: "grab",
+                    }}
+                    aria-label="Drag Task"
+                  />
+                </Flex>
+                {dateTasks.length !== 0 &&
+                  dateTasks.some((task) => task.type === "Social")}
+              </HStack>
+            ))}
+        </Box>
         <Box>
           <Text fontSize="lg" fontWeight="bold" mb={2} mt={10}>
             Tasks
@@ -311,112 +317,112 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
             </Box>
           ) : (
             dateTasks.map((task, index) => (
-              <Flex direction={"column"} alignItems={"center"}>
-                <HStack
-                  key={index}
-                  w={"100%"}
-                  mt={3}
-                  p={2}
-                  justifyContent={"space-between"}
-                  rounded={5}
-                  bg={"gray.900"}
-                  _hover={{
-                    bg: "var(--lvl2-darkcolor)",
-                    cursor: "pointer",
-                  }}
-                  draggable
-                  onDragStart={() => handleDragStart(task._id)}
-                  onDragOver={(e) => handleDragOver(e, task._id)}
-                  onDrop={() => handleDrop(task._id)}
-                >
-                  <Checkbox
-                    gap={2}
-                    colorScheme="purple"
-                    isChecked={task.isCompleted}
-                    onChange={() =>
-                      handleToggleTaskCompletion(task._id, !task.isCompleted)
-                    }
+                <Flex direction={"column"} alignItems={"center"}>
+                  <HStack
+                    key={index}
+                    w={"100%"}
+                    mt={3}
+                    p={2}
+                    justifyContent={"space-between"}
+                    rounded={5}
+                    bg={"gray.900"}
+                    _hover={{
+                      bg: "var(--lvl2-darkcolor)",
+                      cursor: "pointer",
+                    }}
+                    draggable
+                    onDragStart={() => handleDragStart(task._id)}
+                    onDragOver={(e) => handleDragOver(e, task._id)}
+                    onDrop={() => handleDrop(task._id)}
                   >
-                    {task.isImportant && (
-                      <Tag
-                        size={"sm"}
-                        variant="outline"
-                        colorScheme="red"
-                        color={"white"}
-                        maxH={"25px"}
-                        mt={"2px"}
-                        mr={"5px"}
-                      >
-                        <TagLabel>Important</TagLabel>
-                      </Tag>
-                    )}
-                    {task.type !== "Normal" && (
-                      <Tag
-                        size={"sm"}
-                        variant="outline"
-                        border={"solid 1px"}
-                        pb={"1px"}
-                        color={getBackgroundColorByType(task.type)}
-                        borderColor={getBackgroundColorByType(task.type)}
-                        maxH={"25px"}
-                        mt={"2px"}
-                        mr={"5px"}
-                      >
-                        <TagLabel
-                          display={"flex"}
-                          alignItems={"center"}
-                          gap={2}
+                    <Checkbox
+                      gap={2}
+                      colorScheme="purple"
+                      isChecked={task.isCompleted}
+                      onChange={() =>
+                        handleToggleTaskCompletion(task._id, !task.isCompleted)
+                      }
+                    >
+                      {task.isImportant && (
+                        <Tag
+                          size={"sm"}
+                          variant="outline"
+                          colorScheme="red"
+                          color={"white"}
+                          maxH={"25px"}
+                          mt={"2px"}
+                          mr={"5px"}
                         >
-                          {getIconByType(task.type)} {task.type}
-                        </TagLabel>
-                      </Tag>
-                    )}
+                          <TagLabel>Important</TagLabel>
+                        </Tag>
+                      )}
+                      {task.type !== "Normal" && (
+                        <Tag
+                          size={"sm"}
+                          variant="outline"
+                          border={"solid 1px"}
+                          pb={"1px"}
+                          color={getBackgroundColorByType(task.type)}
+                          borderColor={getBackgroundColorByType(task.type)}
+                          maxH={"25px"}
+                          mt={"2px"}
+                          mr={"5px"}
+                        >
+                          <TagLabel
+                            display={"flex"}
+                            alignItems={"center"}
+                            gap={2}
+                          >
+                            {getIconByType(task.type)} {task.type}
+                          </TagLabel>
+                        </Tag>
+                      )}
 
-                    {task.description}
-                  </Checkbox>
-                  <Flex>
-                    <IconButton
-                      icon={<EditIcon />}
-                      size="xs"
-                      color="gray.500"
-                      variant="ghost"
-                      _hover={{
-                        bg: "var(--lvl3-darkcolor)",
-                        cursor: "pointer",
-                      }}
-                      aria-label="Edit Task"
-                    />
-                    <IconButton
-                      icon={<DeleteIcon />}
-                      size="xs"
-                      color="red.500"
-                      variant="ghost"
-                      _hover={{
-                        bg: "red.900",
-                        color: "red.200",
-                        cursor: "pointer",
-                      }}
-                      aria-label="Delete Task"
-                    />
-                    <IconButton
-                      icon={<DragHandleIcon />}
-                      size="xs"
-                      cursor="grab"
-                      color="gray.200"
-                      colorScheme="black"
-                      draggable
-                      _hover={{
-                        bg: "gray.400",
-                        color: "gray.900",
-                        cursor: "grap",
-                      }}
-                      aria-label="Drag Task"
-                    />
-                  </Flex>
-                </HStack>
-                {task.type == "Timing" && <TimerSlider />}
-              </Flex>
-            ))
+                      {task.description}
+                    </Checkbox>
+                    <Flex>
+                      <IconButton
+                        icon={<EditIcon />}
+                        size="xs"
+                        color="gray.500"
+                        variant="ghost"
+                        _hover={{
+                          bg: "var(--lvl3-darkcolor)",
+                          cursor: "pointer",
+                        }}
+                        aria-label="Edit Task"
+                      />
+                      <IconButton
+                        icon={<DeleteIcon />}
+                        size="xs"
+                        color="red.500"
+                        variant="ghost"
+                        _hover={{
+                          bg: "red.900",
+                          color: "red.200",
+                          cursor: "pointer",
+                        }}
+                        aria-label="Delete Task"
+                      />
+                      <IconButton
+                        icon={<DragHandleIcon />}
+                        size="xs"
+                        cursor="grab"
+                        color="gray.200"
+                        colorScheme="black"
+                        draggable
+                        _hover={{
+                          bg: "gray.400",
+                          color: "gray.900",
+                          cursor: "grap",
+                        }}
+                        aria-label="Drag Task"
+                      />
+                    </Flex>
+                  </HStack>
+                  {task.type == "Timing" && <TimerSlider />}
+                </Flex>
+              ))
           )}
         </Box>
       </Box>
@@ -481,9 +487,34 @@ function getIconByType(type: string): ReactElement {
   }
 }
 
+function getIconBysubType(type: string): ReactElement {
+  switch (type) {
+    case "event":
+      return <CiPlane size={18} />;
+    case "birthday":
+      return <PiCakeThin color={"gold"} size={19} />;
+    case "wedding":
+      return <GiPartyPopper color={"white"} size={19} />;
+    case "party":
+      return <GiPartyFlags color={"white"} size={19} />;
 
-
-
-
-
+    default:
+      return <CiCalendarDate color="white" size={19} />;
+  }
+}
+function getBackgroundColorBysubType(type: string): string {
+  switch (type) {
+    case "event":
+      return "#2aeada40";
+    case "birthday":
+      return "#eab72a40";
+    case "wedding":
+      return "#9400d859";
+      case "party":
+        return "cyan.200";
+  
+    default:
+      return "#ea2a9055";
+  }
+}
 export default TasksComponent;

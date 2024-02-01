@@ -106,6 +106,7 @@ const Schedule = () => {
   // the add task function
   const handleAddTask = async () => {
     if (selected && newTask.trim() !== "") {
+      const subTypeValue = taskType === "Social" ? eventType || "" : "";
       const taskDetails = {
         userId: "65b0320bb3870b156e159462",
         date: dayjs(selected).format("YYYY-MM-DD"),
@@ -113,6 +114,8 @@ const Schedule = () => {
         isImportant: important,
         isCompleted: false,
         type: taskType || "Normal",
+        // Exclure subType si sa valeur est une chaîne vide
+        ...(subTypeValue !== "" && { subType: subTypeValue }),
         duration: taskDuration,
       };
 
