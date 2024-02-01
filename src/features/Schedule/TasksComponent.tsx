@@ -56,22 +56,18 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
   ) => {
     event.preventDefault();
     if (draggedTaskId !== null && draggedTaskId !== targetTaskId) {
-      // Move the dragged task to the new position
       const updatedTasks = updateTaskPosition(
         tasks,
         draggedTaskId,
         targetTaskId
       );
 
-      // You would need to implement the logic to update the order of tasks in your state
       console.log("Updated Tasks:", updatedTasks);
       setDraggedTaskId(null);
     }
   };
 
   const handleDrop = (targetTaskId: string) => {
-    // Move the dragged task to the new position
-    // You would need to implement the logic to update the order of tasks in your state
     console.log(`Move task ${draggedTaskId} to position ${targetTaskId}`);
     setDraggedTaskId(null);
   };
@@ -104,28 +100,49 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
 
     return updatedTasks;
   };
-  const TimerSlider = () => {
+
+  const TimerSlider = ({
+    taskDuration,
+  }: {
+    taskDuration: { hours: number; minutes: number } | null;
+    taskId: string;
+  }) => {
     const [currentTime, setCurrentTime] = useState(0);
     const [isTimerRunning, setIsTimerRunning] = useState(false);
-    const maxTime = 180; // Adjust the max time as needed (180 seconds = 3 minutes)
 
     useEffect(() => {
-      let interval: any;
-      if (isTimerRunning) {
-        interval = setInterval(() => {
-          setCurrentTime((prevTime) => (prevTime < maxTime ? prevTime + 1 : 0));
-        }, 1000);
+      if (taskDuration) {
+        setCurrentTime(0); // Start from 00:00:00
+      }
+    }, [taskDuration]);
+
+    useEffect(() => {
+      let interval: number | undefined;
+
+      if (isTimerRunning && taskDuration) {
+        const totalSeconds =
+          taskDuration.hours * 3600 + taskDuration.minutes * 60;
+        if (currentTime < totalSeconds) {
+          interval = setInterval(() => {
+            setCurrentTime((prevTime) =>
+              prevTime < totalSeconds ? prevTime + 1 : prevTime
+            );
+          }, 1000);
+        }
       }
 
       return () => clearInterval(interval);
-    }, [isTimerRunning, maxTime]);
+    }, [isTimerRunning, currentTime, taskDuration]);
 
     const formatTime = (time: number) => {
-      const minutes = Math.floor(time / 60)
+      const hours = Math.floor(time / 3600)
+        .toString()
+        .padStart(2, "0");
+      const minutes = Math.floor((time % 3600) / 60)
         .toString()
         .padStart(2, "0");
       const seconds = (time % 60).toString().padStart(2, "0");
-      return `${minutes}:${seconds}`;
+      return `${hours}:${minutes}:${seconds}`;
     };
 
     const handleStart = () => {
@@ -137,49 +154,56 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
     };
 
     return (
-      <HStack
-        height={"25px"}
-        bg={"gray.700"}
-        w={"100%"}
-        roundedBottom={5}
-        p={2}
-        px={4}
-        spacing={4}
-      >
-        <Slider
-          aria-label="timer-slider"
-          max={maxTime}
-          value={currentTime}
-          flex={1}
-        >
-          <SliderTrack>
-            <SliderFilledTrack bg="purple.500" />
-          </SliderTrack>
-          <SliderThumb boxSize={3} />
-        </Slider>
-        <Flex>
-          <Button
-            colorScheme="unstyled"
-            size="xs"
-            onClick={handleStart}
-            isDisabled={isTimerRunning}
+      <>
+        {taskDuration && (
+          <HStack
+            height={"25px"}
+            bg={"gray.700"}
+            w={"100%"}
+            roundedBottom={5}
+            p={2}
+            px={4}
+            spacing={4}
           >
-            <MdNotStarted fontSize={"20px"} color="gray.100" />
-          </Button>
+            <Slider
+              aria-label="timer-slider"
+              max={taskDuration.hours * 3600 + taskDuration.minutes * 60}
+              value={currentTime}
+              flex={1}
+            >
+              <SliderTrack>
+                <SliderFilledTrack bg="purple.500" />
+              </SliderTrack>
+              <SliderThumb boxSize={3} />
+            </Slider>
+            <Flex>
+              <Button
+                colorScheme="unstyled"
+                size="xs"
+                onClick={handleStart}
+                isDisabled={isTimerRunning}
+              >
+                <MdNotStarted fontSize={"20px"} color="gray.100" />
+              </Button>
 
-          <Button
-            colorScheme="unstyled"
-            size="xs"
-            onClick={handleStop}
-            isDisabled={!isTimerRunning}
-          >
-            <MdPauseCircleFilled fontSize={"20px"} color="red.200" />
-          </Button>
-        </Flex>
-        <span>
-          {formatTime(currentTime)} / {formatTime(maxTime)}
-        </span>
-      </HStack>
+              <Button
+                colorScheme="unstyled"
+                size="xs"
+                onClick={handleStop}
+                isDisabled={!isTimerRunning}
+              >
+                <MdPauseCircleFilled fontSize={"20px"} color="red.200" />
+              </Button>
+            </Flex>
+            <span>
+              {formatTime(currentTime)} /{" "}
+              {formatTime(
+                taskDuration.hours * 3600 + taskDuration.minutes * 60
+              )}
+            </span>
+          </HStack>
+        )}
+      </>
     );
   };
 
@@ -413,7 +437,9 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
                     />
                   </Flex>
                 </HStack>
-                {task.type == "Timing" && <TimerSlider />}
+                {task.type == "Timing" && (
+                  <TimerSlider taskDuration={task.duration} taskId={task._id} />
+                )}
               </Flex>
             ))
           )}
