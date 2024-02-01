@@ -46,14 +46,17 @@ const CryptoPrices: React.FC = () => {
 
   return (
     <Box
-      border="1px solid var(--bordercolor)"
-      borderRadius="10px"
+      borderRadius="20px"
+      border={'1px solid'}
+      borderColor={"RGBA(255, 255, 255, 0.06)"}
       p="10px"
       width="max-content"
-      background="var(--lvl1-darkcolor)"
+      background="linear-gradient(to bottom, rgba(127, 57, 218, 0.111), transparent)"
       position="relative"
       w="320px"
-      h="max-content"
+      height={"299px"}
+     
+     
     >
       <Box position={"absolute"} right="10px">
         <button>

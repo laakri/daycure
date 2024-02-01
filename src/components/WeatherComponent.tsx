@@ -42,14 +42,14 @@ const Weather: React.FC = () => {
   }, []);
   return (
     <Box
-      border="1px  solid var(--bordercolor)"
-      borderRadius={"10px"}
+      border="1px  solid #07b4ee16"
+      borderRadius={"20px"}
       p="10px"
       width={"max-content"}
-      background={"var(--lvl1-darkcolor)"}
+      background={" rgba(87, 87, 87, 0.209)"}
       position={"relative"}
       w="320px"
-      h="max-content"
+      h="320px"
     >
       <Box position={"absolute"} right="10px">
         <button>

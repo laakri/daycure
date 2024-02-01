@@ -39,19 +39,32 @@ const RandomQuotes: React.FC = () => {
 
   return (
     <Box
-      border="1px solid var(--bordercolor)"
-      borderRadius="10px"
-      p="20px"
+      border={"1px solid "}
+      borderColor={"RGBA(255, 255, 255, 0.06)"}
+      borderRadius="20px"
+      p="15px"
+      textAlign={'justify'}
       width="max-content"
       position="relative"
       background="var(--lvl1-darkcolor)"
-      w="320px"
-      h="max-content"
+      w="300px"
+      h="200px"
     >
       <Flex justify="space-between" align="center" mb="2">
-        <Text fontSize="md" fontWeight="bold">
-          Daily Quote
+        <Text
+          fontSize="2xl"
+          fontWeight="bold"
+          color={"purple.400"}
+          display={"flex"}
+          alignItems={"end"}
+          gap={"4px"}
+        >
+          Daily{" "}
+          <Text color={"white"} fontSize="md">
+            Quote
+          </Text>
         </Text>
+
         <Box position={"absolute"} right="10px" top="10px">
           <button>
             <DragHandleIcon />

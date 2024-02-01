@@ -23,25 +23,27 @@ const Horoscope: React.FC = () => {
   return (
     <div>
       <Box
-        border="1px var(--bordercolor) solid"
-        borderRadius="10px"
+        borderRadius="20px"
+        border={"1px solid"}
+        borderColor={"RGBA(255, 255, 255, 0.06)"}
+        height={"250px"}
         maxW="300px"
         display="flex"
         flexDirection="column"
         justifyContent="center"
-        background="var(--lvl1-darkcolor)"
+        background="linear-gradient(to bottom, rgba(127, 57, 218, 0.111), transparent)"
         position="relative"
-        p="10px"
-        minW="320px"
+        p="15px"
+        minW="300px"
       >
         <Box position={"absolute"} right="10px" top="10px">
           <button>
             <DragHandleIcon />
           </button>
         </Box>
-        <Box maxW="150px" maxH="120px" borderColor="gray.200" p="10px" m="auto">
+        <Box maxW="150px" maxH="120px" borderColor="gray.200" p="10px" m="auto " mt={'20px'}>
           <Image
-            maxH="100px"
+            maxH="80px"
             src="https://pngimg.com/uploads/scorpio/small/scorpio_PNG31.png"
           />
         </Box>
@@ -57,57 +59,32 @@ const Horoscope: React.FC = () => {
         </Box>
 
         {horoscopeData ? (
-          <Box>{horoscopeData.prediction}</Box>
+          <Flex
+            direction="column"
+            bg="rgba(226, 226, 226, 0.111)"
+            p="10px"
+            mt="10px"
+            rounded="20px"
+            mb={"15px"}
+          >
+            <p>{horoscopeData.prediction}</p>
+
+          </Flex>
         ) : (
           <Flex
             direction="column"
-            bg="var(--lvl3-darkcolor)"
+            bg="rgba(226, 226, 226, 0.111)"
+
             p="10px"
             mt="10px"
-            rounded="10px"
+            rounded="20px"
+            mb={"15px"}
           >
             <p>
               Lorem ipsum dolor veritatis exercitationem debitis, reprehenderit
               natus ex eum nemo.
             </p>
 
-            <Box
-              display="flex"
-              flexDirection="row"
-              justifyContent="space-between"
-              mt="10px"
-            >
-              <Box
-                display="flex"
-                alignItems="center"
-                borderRadius={20}
-                backgroundColor="rgba(5, 172, 194, 0.966)"
-                gap="5px"
-                p="0 10px"
-              >
-                <SunIcon /> 100%
-              </Box>
-              <Box
-                display="flex"
-                alignItems="center"
-                borderRadius={20}
-                backgroundColor="rgba(118, 126, 6, 0.966)"
-                gap="5px"
-                p="0 10px"
-              >
-                <StarIcon /> 60%
-              </Box>
-              <Box
-                display="flex"
-                alignItems="center"
-                borderRadius={20}
-                backgroundColor="rgba(2--38, 7, 207, 0.966)"
-                gap="5px"
-                p="0 10px"
-              >
-                <ViewIcon /> 30%
-              </Box>
-            </Box>
           </Flex>
         )}
       </Box>
