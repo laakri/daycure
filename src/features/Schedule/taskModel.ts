@@ -12,7 +12,7 @@ interface Task {
     minutes: number;
   } | null;
   subType: eventType;
- 
+  RoutineType: RoutineType;
   progress: {
     hours: number;
     minutes: number;
@@ -32,5 +32,9 @@ export enum eventType {
   party = "party",
   event = "event",
 }
-
+export enum RoutineType {
+  Daily = "Daily",
+  Weekly = "Weekly",
+  Monthly = "Monthly",
+}
 export default Task;

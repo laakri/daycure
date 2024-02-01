@@ -5,8 +5,16 @@ const Task = require("../models/task");
 // Add task
 router.post("/add-task", async (req, res) => {
   try {
-    const { userId, date, description, isImportant, type, subType, duration } =
-      req.body;
+    const {
+      userId,
+      date,
+      description,
+      isImportant,
+      type,
+      subType,
+      duration,
+      routineType,
+    } = req.body;
 
     const newTask = new Task({
       user: userId,
@@ -15,6 +23,7 @@ router.post("/add-task", async (req, res) => {
       isImportant,
       type,
       subType,
+      routineType,
       duration: {
         hours: duration && duration.hours ? duration.hours : 0,
         minutes: duration && duration.minutes ? duration.minutes : 0,
@@ -77,12 +86,10 @@ router.put("/update-task-progress/:taskId", async (req, res) => {
 
     const updatedTask = await taskToUpdate.save();
 
-    res
-      .status(200)
-      .json({
-        message: "Task progress updated successfully",
-        task: updatedTask,
-      });
+    res.status(200).json({
+      message: "Task progress updated successfully",
+      task: updatedTask,
+    });
   } catch (error) {
     console.error("Error updating task progress:", error);
     res.status(500).json({ error: "Internal Server Error" });

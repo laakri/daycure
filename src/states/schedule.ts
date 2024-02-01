@@ -9,6 +9,7 @@ export const addTask = async (taskDetails: {
   description: string;
   isImportant: boolean;
   type: string;
+  RoutineType: string;
   duration: {
     hours: number;
     minutes: number;

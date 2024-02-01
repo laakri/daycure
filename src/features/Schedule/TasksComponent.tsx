@@ -1,7 +1,6 @@
 import React, { ReactElement, useEffect, useState } from "react";
 import { GiPartyPopper, GiPartyFlags } from "react-icons/gi";
 import { PiCakeThin } from "react-icons/pi";
-import { CiPlane } from "react-icons/ci";
 import {
   CiClock2,
   CiCalendarDate,
@@ -23,7 +22,6 @@ import {
   SliderTrack,
   Slider,
   SliderFilledTrack,
-  InputGroup,
 } from "@chakra-ui/react";
 import {
   AddIcon,
@@ -34,7 +32,9 @@ import {
 import dayjs from "dayjs";
 import Task from "./taskModel";
 import { MdNotStarted, MdPauseCircleFilled } from "react-icons/md";
-
+import { updateTaskProgress } from "../../states/schedule";
+import { BsStars } from "react-icons/bs";
+import { GoKebabHorizontal } from "react-icons/go";
 interface TasksComponentProps {
   selected: Date | null;
   tasks: { [key: string]: Task[] };
@@ -103,11 +103,13 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
 
     return updatedTasks;
   };
-
   const TimerSlider = ({
     taskDuration,
+    taskProgress,
+    taskId,
   }: {
     taskDuration: { hours: number; minutes: number } | null;
+    taskProgress: { hours: number; minutes: number } | null;
     taskId: string;
   }) => {
     const [currentTime, setCurrentTime] = useState(0);
@@ -115,9 +117,13 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
 
     useEffect(() => {
       if (taskDuration) {
-        setCurrentTime(0); // Start from 00:00:00
+        setCurrentTime(
+          taskProgress
+            ? taskProgress.hours * 3600 + taskProgress.minutes * 60
+            : 0
+        );
       }
-    }, [taskDuration]);
+    }, [taskDuration, taskProgress]);
 
     useEffect(() => {
       let interval: number | undefined;
@@ -131,6 +137,8 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
               prevTime < totalSeconds ? prevTime + 1 : prevTime
             );
           }, 1000);
+        } else {
+          handleStop();
         }
       }
 
@@ -152,8 +160,19 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
       setIsTimerRunning(true);
     };
 
-    const handleStop = () => {
+    const handleStop = async () => {
       setIsTimerRunning(false);
+
+      const progressHours = Math.floor(currentTime / 3600);
+      const progressMinutes = Math.floor((currentTime % 3600) / 60);
+
+      try {
+        await updateTaskProgress(taskId, progressHours, progressMinutes);
+        await handleToggleTaskCompletion(taskId, true);
+        console.log("Task progress updated successfully");
+      } catch (error) {
+        console.error("Error updating task progress:", error);
+      }
     };
 
     return (
@@ -230,15 +249,17 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
     return (
       <Box mt={4} h={"max-content"}>
         <Box>
-          <Text fontSize="lg" fontWeight="bold" mb={2} mt={10}>
+          {/* 
+          <Text fontSize="lg" fontWeight="bold" mb={2}>
             Events
           </Text>
+          */}
           {dateTasks
 
             .filter((task) => task.subType !== undefined)
             .map((task, index) => (
               <HStack
-                key={index}
+                key={`${task._id}-${index}`}
                 mt={3}
                 p={2}
                 justifyContent={"space-between"}
@@ -246,56 +267,29 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
                 border={"solid 1px"}
                 borderColor={getBackgroundColorBysubType(task.subType)}
                 _hover={{
-                  bg: "var(--lvl2-darkcolor)",
-                  cursor: "pointer",
+                  bg: "var(--lvl1-darkcolor)",
                 }}
               >
-                <InputGroup>
-                  <Flex
-                    justifyContent={"center"}
-                    alignContent={"center"}
-                    gap={2}
-                  >
-                    {getIconBysubType(task.subType)}
+                <Flex
+                  display={"flex"}
+                  justifyContent={"center"}
+                  alignContent={"center"}
+                  gap={"15px"}
+                >
+                  {getIconBysubType(task.subType)}
 
-                    {task.description}
-                  </Flex>
-                </InputGroup>
+                  {task.description}
+                </Flex>
                 <Flex>
                   <IconButton
-                    icon={<EditIcon />}
+                    icon={<GoKebabHorizontal />}
                     size="xs"
-                    color="gray.500"
-                    variant="ghost"
-                    _hover={{
-                      bg: "var(--lvl3-darkcolor)",
-                      cursor: "pointer",
-                    }}
-                    aria-label="Edit Event"
-                  />
-                  <IconButton
-                    icon={<DeleteIcon />}
-                    size="xs"
-                    color="red.500"
-                    variant="ghost"
-                    _hover={{
-                      bg: "red.900",
-                      color: "red.200",
-                      cursor: "pointer",
-                    }}
-                    aria-label="Delete Event"
-                  />
-                  <IconButton
-                    icon={<DragHandleIcon />}
-                    size="xs"
-                    cursor="grab"
-                    color="gray.200"
+                    color="gray.50"
                     colorScheme="black"
-                    draggable
                     _hover={{
                       bg: "gray.400",
                       color: "gray.900",
-                      cursor: "grab",
+                      cursor: "point",
                     }}
                     aria-label="Drag Task"
                   />
@@ -306,10 +300,9 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
             ))}
         </Box>
         <Box>
-          <Text fontSize="lg" fontWeight="bold" mb={2} mt={10}>
+          <Text fontSize="lg" fontWeight="bold" mt={4}>
             Tasks
           </Text>
-
           {dateTasks.length === 0 ? (
             <Box
               m={"40px auto"}
@@ -337,115 +330,100 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
               </Button>
             </Box>
           ) : (
-            dateTasks.map((task, index) => (
-              <Flex direction={"column"} alignItems={"center"}>
-                <HStack
-                  key={index}
-                  w={"100%"}
-                  mt={3}
-                  p={2}
-                  justifyContent={"space-between"}
-                  rounded={5}
-                  bg={"gray.900"}
-                  _hover={{
-                    bg: "var(--lvl2-darkcolor)",
-                    cursor: "pointer",
-                  }}
-                  draggable
-                  onDragStart={() => handleDragStart(task._id)}
-                  onDragOver={(e) => handleDragOver(e, task._id)}
-                  onDrop={() => handleDrop(task._id)}
+            dateTasks
+              .filter((task) => task.type !== "Social")
+              .map((task, index) => (
+                <Flex
+                  key={`${task._id}-${index}`}
+                  direction={"column"}
+                  alignItems={"center"}
                 >
-                  <Checkbox
-                    gap={2}
-                    colorScheme="purple"
-                    isChecked={task.isCompleted}
-                    onChange={() =>
-                      handleToggleTaskCompletion(task._id, !task.isCompleted)
-                    }
+                  <HStack
+                    key={index}
+                    w={"100%"}
+                    mt={3}
+                    p={2}
+                    justifyContent={"space-between"}
+                    rounded={5}
+                    bg={"gray.900"}
+                    _hover={{
+                      bg: "var(--lvl2-darkcolor)",
+                      cursor: "pointer",
+                    }}
+                    draggable
+                    onDragStart={() => handleDragStart(task._id)}
+                    onDragOver={(e) => handleDragOver(e, task._id)}
+                    onDrop={() => handleDrop(task._id)}
                   >
-                    {task.isImportant && (
-                      <Tag
-                        size={"sm"}
-                        variant="outline"
-                        colorScheme="red"
-                        color={"white"}
-                        maxH={"25px"}
-                        mt={"2px"}
-                        mr={"5px"}
-                      >
-                        <TagLabel>Important</TagLabel>
-                      </Tag>
-                    )}
-                    {task.type !== "Normal" && (
-                      <Tag
-                        size={"sm"}
-                        variant="outline"
-                        border={"solid 1px"}
-                        pb={"1px"}
-                        color={getBackgroundColorByType(task.type)}
-                        borderColor={getBackgroundColorByType(task.type)}
-                        maxH={"25px"}
-                        mt={"2px"}
-                        mr={"5px"}
-                      >
-                        <TagLabel
-                          display={"flex"}
-                          alignItems={"center"}
-                          gap={2}
+                    <Checkbox
+                      gap={2}
+                      colorScheme="purple"
+                      isChecked={task.isCompleted}
+                      onChange={() =>
+                        handleToggleTaskCompletion(task._id, !task.isCompleted)
+                      }
+                    >
+                      {task.isImportant && (
+                        <Tag
+                          size={"sm"}
+                          variant="outline"
+                          colorScheme="red"
+                          color={"white"}
+                          maxH={"25px"}
+                          mt={"2px"}
+                          mr={"5px"}
                         >
-                          {getIconByType(task.type)} {task.type}
-                        </TagLabel>
-                      </Tag>
-                    )}
+                          <TagLabel>Important</TagLabel>
+                        </Tag>
+                      )}
+                      {task.type !== "Normal" && (
+                        <Tag
+                          size={"sm"}
+                          variant="outline"
+                          border={"solid 1px"}
+                          pb={"1px"}
+                          color={getBackgroundColorByType(task.type)}
+                          borderColor={getBackgroundColorByType(task.type)}
+                          maxH={"25px"}
+                          mt={"2px"}
+                          mr={"5px"}
+                        >
+                          <TagLabel
+                            display={"flex"}
+                            alignItems={"center"}
+                            gap={2}
+                          >
+                            {getIconByType(task.type)} {task.type}
+                          </TagLabel>
+                        </Tag>
+                      )}
 
-                    {task.description}
-                  </Checkbox>
-                  <Flex>
-                    <IconButton
-                      icon={<EditIcon />}
-                      size="xs"
-                      color="gray.500"
-                      variant="ghost"
-                      _hover={{
-                        bg: "var(--lvl3-darkcolor)",
-                        cursor: "pointer",
-                      }}
-                      aria-label="Edit Task"
+                      {task.description}
+                    </Checkbox>
+                    <Flex>
+                      <IconButton
+                        icon={<GoKebabHorizontal />}
+                        size="xs"
+                        color="gray.50"
+                        colorScheme="black"
+                        _hover={{
+                          bg: "gray.400",
+                          color: "gray.900",
+                          cursor: "point",
+                        }}
+                        aria-label="Drag Task"
+                      />
+                    </Flex>
+                  </HStack>
+                  {task.type == "Timing" && (
+                    <TimerSlider
+                      taskDuration={task.duration}
+                      taskProgress={task.progress}
+                      taskId={task._id}
                     />
-                    <IconButton
-                      icon={<DeleteIcon />}
-                      size="xs"
-                      color="red.500"
-                      variant="ghost"
-                      _hover={{
-                        bg: "red.900",
-                        color: "red.200",
-                        cursor: "pointer",
-                      }}
-                      aria-label="Delete Task"
-                    />
-                    <IconButton
-                      icon={<DragHandleIcon />}
-                      size="xs"
-                      cursor="grab"
-                      color="gray.200"
-                      colorScheme="black"
-                      draggable
-                      _hover={{
-                        bg: "gray.400",
-                        color: "gray.900",
-                        cursor: "grap",
-                      }}
-                      aria-label="Drag Task"
-                    />
-                  </Flex>
-                </HStack>
-                {task.type == "Timing" && (
-                  <TimerSlider taskDuration={task.duration} taskId={task._id} />
-                )}
-              </Flex>
-            ))
+                  )}
+                </Flex>
+              ))
           )}
         </Box>
       </Box>
@@ -513,28 +491,28 @@ function getIconByType(type: string): ReactElement {
 function getIconBysubType(type: string): ReactElement {
   switch (type) {
     case "event":
-      return <CiPlane size={18} />;
+      return <BsStars color="green.200" size={18} />;
     case "birthday":
-      return <PiCakeThin color={"gold"} size={19} />;
+      return <PiCakeThin color={"yellow.300"} size={22} />;
     case "wedding":
-      return <GiPartyPopper color={"white"} size={19} />;
+      return <GiPartyPopper color={"cyan.200"} size={22} />;
     case "party":
-      return <GiPartyFlags color={"white"} size={19} />;
+      return <GiPartyFlags color={"pink.200"} size={22} />;
 
     default:
-      return <CiCalendarDate color="white" size={19} />;
+      return <CiCalendarDate color="white" size={22} />;
   }
 }
 function getBackgroundColorBysubType(type: string): string {
   switch (type) {
     case "event":
-      return "#2aeada40";
+      return "green.200";
     case "birthday":
-      return "#eab72a40";
+      return "yellow.300";
     case "wedding":
-      return "#9400d859";
-    case "party":
       return "cyan.200";
+    case "party":
+      return "pink.200";
 
     default:
       return "#ea2a9055";
