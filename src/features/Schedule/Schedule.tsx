@@ -113,7 +113,6 @@ const Schedule = () => {
         isImportant: important,
         isCompleted: false,
         type: taskType || "Normal",
-        subType:eventType || "",
         duration: taskDuration,
       };
 
