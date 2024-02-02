@@ -1,7 +1,6 @@
 import React, { ReactElement, useEffect, useState } from "react";
 import { GiPartyPopper, GiPartyFlags } from "react-icons/gi";
 import { PiCakeThin } from "react-icons/pi";
-import { CiPlane } from "react-icons/ci";
 import {
   CiClock2,
   CiCalendarDate,
@@ -23,7 +22,6 @@ import {
   SliderTrack,
   Slider,
   SliderFilledTrack,
-  InputGroup,
 } from "@chakra-ui/react";
 import {
   AddIcon,
@@ -34,7 +32,9 @@ import {
 import dayjs from "dayjs";
 import Task from "./taskModel";
 import { MdNotStarted, MdPauseCircleFilled } from "react-icons/md";
-
+import { updateTaskProgress } from "../../states/schedule";
+import { BsStars } from "react-icons/bs";
+import { GoKebabHorizontal } from "react-icons/go";
 interface TasksComponentProps {
   selected: Date | null;
   tasks: { [key: string]: Task[] };
@@ -59,22 +59,18 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
   ) => {
     event.preventDefault();
     if (draggedTaskId !== null && draggedTaskId !== targetTaskId) {
-      // Move the dragged task to the new position
       const updatedTasks = updateTaskPosition(
         tasks,
         draggedTaskId,
         targetTaskId
       );
 
-      // You would need to implement the logic to update the order of tasks in your state
       console.log("Updated Tasks:", updatedTasks);
       setDraggedTaskId(null);
     }
   };
 
   const handleDrop = (targetTaskId: string) => {
-    // Move the dragged task to the new position
-    // You would need to implement the logic to update the order of tasks in your state
     console.log(`Move task ${draggedTaskId} to position ${targetTaskId}`);
     setDraggedTaskId(null);
   };
@@ -84,10 +80,8 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
     draggedTaskId: string,
     targetTaskId: string
   ): { [key: string]: Task[] } => {
-    // Clone the current tasks to avoid modifying the original state directly
     const updatedTasks = { ...currentTasks };
 
-    // Find the dragged task and target task
     let draggedTask;
     let targetTask;
 
@@ -102,7 +96,6 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
       });
     });
 
-    // Ensure both tasks are found
     if (!draggedTask || !targetTask) {
       console.error("Could not find dragged or target task");
       return currentTasks;
@@ -110,83 +103,129 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
 
     return updatedTasks;
   };
-  const TimerSlider = () => {
+  const TimerSlider = ({
+    taskDuration,
+    taskProgress,
+    taskId,
+  }: {
+    taskDuration: { hours: number; minutes: number } | null;
+    taskProgress: { hours: number; minutes: number } | null;
+    taskId: string;
+  }) => {
     const [currentTime, setCurrentTime] = useState(0);
     const [isTimerRunning, setIsTimerRunning] = useState(false);
-    const maxTime = 180; // Adjust the max time as needed (180 seconds = 3 minutes)
 
     useEffect(() => {
-      let interval: any;
+      if (taskDuration) {
+        setCurrentTime(
+          taskProgress
+            ? taskProgress.hours * 3600 + taskProgress.minutes * 60
+            : 0
+        );
+      }
+    }, [taskDuration, taskProgress]);
 
-      if (isTimerRunning) {
-        interval = setInterval(() => {
-          setCurrentTime((prevTime) => (prevTime < maxTime ? prevTime + 1 : 0));
-        }, 1000);
+    useEffect(() => {
+      let interval: number | undefined;
+
+      if (isTimerRunning && taskDuration) {
+        const totalSeconds =
+          taskDuration.hours * 3600 + taskDuration.minutes * 60;
+        if (currentTime < totalSeconds) {
+          interval = setInterval(() => {
+            setCurrentTime((prevTime) =>
+              prevTime < totalSeconds ? prevTime + 1 : prevTime
+            );
+          }, 1000);
+        } else {
+          handleStop();
+        }
       }
 
       return () => clearInterval(interval);
-    }, [isTimerRunning, maxTime]);
+    }, [isTimerRunning, currentTime, taskDuration]);
 
     const formatTime = (time: number) => {
-      const minutes = Math.floor(time / 60)
+      const hours = Math.floor(time / 3600)
+        .toString()
+        .padStart(2, "0");
+      const minutes = Math.floor((time % 3600) / 60)
         .toString()
         .padStart(2, "0");
       const seconds = (time % 60).toString().padStart(2, "0");
-      return `${minutes}:${seconds}`;
+      return `${hours}:${minutes}:${seconds}`;
     };
 
     const handleStart = () => {
       setIsTimerRunning(true);
     };
 
-    const handleStop = () => {
+    const handleStop = async () => {
       setIsTimerRunning(false);
+
+      const progressHours = Math.floor(currentTime / 3600);
+      const progressMinutes = Math.floor((currentTime % 3600) / 60);
+
+      try {
+        await updateTaskProgress(taskId, progressHours, progressMinutes);
+        await handleToggleTaskCompletion(taskId, true);
+        console.log("Task progress updated successfully");
+      } catch (error) {
+        console.error("Error updating task progress:", error);
+      }
     };
 
     return (
-      <HStack
-        height={"25px"}
-        bg={"gray.700"}
-        w={"100%"}
-        roundedBottom={5}
-        p={2}
-        px={4}
-        spacing={4}
-      >
-        <Slider
-          aria-label="timer-slider"
-          max={maxTime}
-          value={currentTime}
-          flex={1}
-        >
-          <SliderTrack>
-            <SliderFilledTrack bg="purple.500" />
-          </SliderTrack>
-          <SliderThumb boxSize={3} />
-        </Slider>
-        <Flex>
-          <Button
-            colorScheme="unstyled"
-            size="xs"
-            onClick={handleStart}
-            isDisabled={isTimerRunning}
+      <>
+        {taskDuration && (
+          <HStack
+            height={"25px"}
+            bg={"gray.700"}
+            w={"100%"}
+            roundedBottom={5}
+            p={2}
+            px={4}
+            spacing={4}
           >
-            <MdNotStarted fontSize={"20px"} color="gray.100" />
-          </Button>
+            <Slider
+              aria-label="timer-slider"
+              max={taskDuration.hours * 3600 + taskDuration.minutes * 60}
+              value={currentTime}
+              flex={1}
+            >
+              <SliderTrack>
+                <SliderFilledTrack bg="purple.500" />
+              </SliderTrack>
+              <SliderThumb boxSize={3} />
+            </Slider>
+            <Flex>
+              <Button
+                colorScheme="unstyled"
+                size="xs"
+                onClick={handleStart}
+                isDisabled={isTimerRunning}
+              >
+                <MdNotStarted fontSize={"20px"} color="gray.100" />
+              </Button>
 
-          <Button
-            colorScheme="unstyled"
-            size="xs"
-            onClick={handleStop}
-            isDisabled={!isTimerRunning}
-          >
-            <MdPauseCircleFilled fontSize={"20px"} color="red.200" />
-          </Button>
-        </Flex>
-        <span>
-          {formatTime(currentTime)} / {formatTime(maxTime)}
-        </span>
-      </HStack>
+              <Button
+                colorScheme="unstyled"
+                size="xs"
+                onClick={handleStop}
+                isDisabled={!isTimerRunning}
+              >
+                <MdPauseCircleFilled fontSize={"20px"} color="red.200" />
+              </Button>
+            </Flex>
+            <span>
+              {formatTime(currentTime)} /{" "}
+              {formatTime(
+                taskDuration.hours * 3600 + taskDuration.minutes * 60
+              )}
+            </span>
+          </HStack>
+        )}
+      </>
     );
   };
 
@@ -210,14 +249,17 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
     return (
       <Box mt={4} h={"max-content"}>
         <Box>
-          <Text fontSize="lg" fontWeight="bold" mb={2} mt={10}>
+          {/* 
+          <Text fontSize="lg" fontWeight="bold" mb={2}>
             Events
           </Text>
+          */}
           {dateTasks
+
             .filter((task) => task.subType !== undefined)
             .map((task, index) => (
               <HStack
-                key={index}
+                key={`${task._id}-${index}`}
                 mt={3}
                 p={2}
                 justifyContent={"space-between"}
@@ -225,56 +267,29 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
                 border={"solid 1px"}
                 borderColor={getBackgroundColorBysubType(task.subType)}
                 _hover={{
-                  bg: "var(--lvl2-darkcolor)",
-                  cursor: "pointer",
+                  bg: "var(--lvl1-darkcolor)",
                 }}
               >
-                <InputGroup>
-                  <Flex
-                    justifyContent={"center"}
-                    alignContent={"center"}
-                    gap={2}
-                  >
-                    {getIconBysubType(task.subType)}
+                <Flex
+                  display={"flex"}
+                  justifyContent={"center"}
+                  alignContent={"center"}
+                  gap={"15px"}
+                >
+                  {getIconBysubType(task.subType)}
 
-                    {task.description}
-                  </Flex>
-                </InputGroup>
+                  {task.description}
+                </Flex>
                 <Flex>
                   <IconButton
-                    icon={<EditIcon />}
+                    icon={<GoKebabHorizontal />}
                     size="xs"
-                    color="gray.500"
-                    variant="ghost"
-                    _hover={{
-                      bg: "var(--lvl3-darkcolor)",
-                      cursor: "pointer",
-                    }}
-                    aria-label="Edit Event"
-                  />
-                  <IconButton
-                    icon={<DeleteIcon />}
-                    size="xs"
-                    color="red.500"
-                    variant="ghost"
-                    _hover={{
-                      bg: "red.900",
-                      color: "red.200",
-                      cursor: "pointer",
-                    }}
-                    aria-label="Delete Event"
-                  />
-                  <IconButton
-                    icon={<DragHandleIcon />}
-                    size="xs"
-                    cursor="grab"
-                    color="gray.200"
+                    color="gray.50"
                     colorScheme="black"
-                    draggable
                     _hover={{
                       bg: "gray.400",
                       color: "gray.900",
-                      cursor: "grab",
+                      cursor: "point",
                     }}
                     aria-label="Drag Task"
                   />
@@ -285,10 +300,9 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
             ))}
         </Box>
         <Box>
-          <Text fontSize="lg" fontWeight="bold" mb={2} mt={10}>
+          <Text fontSize="lg" fontWeight="bold" mt={4}>
             Tasks
           </Text>
-
           {dateTasks.length === 0 ? (
             <Box
               m={"40px auto"}
@@ -316,8 +330,14 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
               </Button>
             </Box>
           ) : (
-            dateTasks.map((task, index) => (
-                <Flex direction={"column"} alignItems={"center"}>
+            dateTasks
+              .filter((task) => task.type !== "Social")
+              .map((task, index) => (
+                <Flex
+                  key={`${task._id}-${index}`}
+                  direction={"column"}
+                  alignItems={"center"}
+                >
                   <HStack
                     key={index}
                     w={"100%"}
@@ -382,45 +402,26 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
                     </Checkbox>
                     <Flex>
                       <IconButton
-                        icon={<EditIcon />}
+                        icon={<GoKebabHorizontal />}
                         size="xs"
-                        color="gray.500"
-                        variant="ghost"
-                        _hover={{
-                          bg: "var(--lvl3-darkcolor)",
-                          cursor: "pointer",
-                        }}
-                        aria-label="Edit Task"
-                      />
-                      <IconButton
-                        icon={<DeleteIcon />}
-                        size="xs"
-                        color="red.500"
-                        variant="ghost"
-                        _hover={{
-                          bg: "red.900",
-                          color: "red.200",
-                          cursor: "pointer",
-                        }}
-                        aria-label="Delete Task"
-                      />
-                      <IconButton
-                        icon={<DragHandleIcon />}
-                        size="xs"
-                        cursor="grab"
-                        color="gray.200"
+                        color="gray.50"
                         colorScheme="black"
-                        draggable
                         _hover={{
                           bg: "gray.400",
                           color: "gray.900",
-                          cursor: "grap",
+                          cursor: "point",
                         }}
                         aria-label="Drag Task"
                       />
                     </Flex>
                   </HStack>
-                  {task.type == "Timing" && <TimerSlider />}
+                  {task.type == "Timing" && (
+                    <TimerSlider
+                      taskDuration={task.duration}
+                      taskProgress={task.progress}
+                      taskId={task._id}
+                    />
+                  )}
                 </Flex>
               ))
           )}
@@ -490,29 +491,29 @@ function getIconByType(type: string): ReactElement {
 function getIconBysubType(type: string): ReactElement {
   switch (type) {
     case "event":
-      return <CiPlane size={18} />;
+      return <BsStars color="green.200" size={18} />;
     case "birthday":
-      return <PiCakeThin color={"gold"} size={19} />;
+      return <PiCakeThin color={"yellow.300"} size={22} />;
     case "wedding":
-      return <GiPartyPopper color={"white"} size={19} />;
+      return <GiPartyPopper color={"cyan.200"} size={22} />;
     case "party":
-      return <GiPartyFlags color={"white"} size={19} />;
+      return <GiPartyFlags color={"pink.200"} size={22} />;
 
     default:
-      return <CiCalendarDate color="white" size={19} />;
+      return <CiCalendarDate color="white" size={22} />;
   }
 }
 function getBackgroundColorBysubType(type: string): string {
   switch (type) {
     case "event":
-      return "#2aeada40";
+      return "green.200";
     case "birthday":
-      return "#eab72a40";
+      return "yellow.300";
     case "wedding":
-      return "#9400d859";
-      case "party":
-        return "cyan.200";
-  
+      return "cyan.200";
+    case "party":
+      return "pink.200";
+
     default:
       return "#ea2a9055";
   }

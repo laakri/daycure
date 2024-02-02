@@ -9,6 +9,7 @@ export const addTask = async (taskDetails: {
   description: string;
   isImportant: boolean;
   type: string;
+  RoutineType: string;
   duration: {
     hours: number;
     minutes: number;
@@ -52,5 +53,22 @@ export const updateTaskIsCompleted = async (
   } catch (error) {
     console.error("Error updating task isCompleted status:", error);
     throw new Error("Failed to update task isCompleted status");
+  }
+};
+// Update task progress
+export const updateTaskProgress = async (
+  taskId: string,
+  progressHours: number,
+  progressMinutes: number
+) => {
+  try {
+    const response = await axios.put(
+      `${BASE_URL}/tasks/update-task-progress/${taskId}`,
+      { progressHours, progressMinutes }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error updating task progress:", error);
+    throw new Error("Failed to update task progress");
   }
 };

@@ -51,6 +51,9 @@ const Schedule = () => {
     hours: number;
     minutes: number;
   } | null>(null);
+  const [selectedRoutineType, setSelectedRoutineType] = useState<string | null>(
+    null
+  );
 
   const toast = useToast();
 
@@ -78,7 +81,7 @@ const Schedule = () => {
 
         tasksByDate[date].push(task);
       });
-
+      console.log(allTasks);
       setTasks(tasksByDate);
     } catch (error) {
       console.error("Error fetching tasks:", error);
@@ -107,6 +110,8 @@ const Schedule = () => {
   const handleAddTask = async () => {
     if (selected && newTask.trim() !== "") {
       const subTypeValue = taskType === "Social" ? eventType || "" : "";
+      const routineTypeValue =
+        taskType === "Routine" ? selectedRoutineType || "" : "";
       const taskDetails = {
         userId: "65b0320bb3870b156e159462",
         date: dayjs(selected).format("YYYY-MM-DD"),
@@ -114,8 +119,8 @@ const Schedule = () => {
         isImportant: important,
         isCompleted: false,
         type: taskType || "Normal",
-        // Exclure subType si sa valeur est une chaîne vide
         ...(subTypeValue !== "" && { subType: subTypeValue }),
+        ...(routineTypeValue !== "" && { routineType: routineTypeValue }),
         duration: taskDuration,
       };
 
@@ -138,7 +143,7 @@ const Schedule = () => {
       setNewTask("");
       setTaskType(null);
       setEventType(null);
-
+      setSelectedRoutineType(null);
       setTaskDuration(null);
       onClose();
     }
@@ -360,7 +365,31 @@ const Schedule = () => {
                 </Flex>
               </Flex>
             )}
-
+            {taskType === "Routine" && (
+              <Flex direction="column" mt={2}>
+                <Text fontSize="md" fontWeight="bold" mb={2}>
+                  Select Routine Type
+                </Text>
+                <Flex>
+                  <Select
+                    mt={2}
+                    value={selectedRoutineType || ""}
+                    onChange={(e) =>
+                      setSelectedRoutineType(e.target.value || null)
+                    }
+                    borderColor={"gray.700"}
+                    colorScheme="white"
+                  >
+                    <option value="" color="black">
+                      Select Routine Type
+                    </option>
+                    <option value="Daily">Daily</option>
+                    <option value="Weekly">Weekly</option>
+                    <option value="Monthly">Monthly</option>
+                  </Select>
+                </Flex>
+              </Flex>
+            )}
             <Checkbox
               mt={4}
               ml={2}

@@ -5,7 +5,16 @@ const Task = require("../models/task");
 // Add task
 router.post("/add-task", async (req, res) => {
   try {
-    const { userId, date, description, isImportant, type, subType,duration } = req.body;
+    const {
+      userId,
+      date,
+      description,
+      isImportant,
+      type,
+      subType,
+      duration,
+      routineType,
+    } = req.body;
 
     const newTask = new Task({
       user: userId,
@@ -14,6 +23,7 @@ router.post("/add-task", async (req, res) => {
       isImportant,
       type,
       subType,
+      routineType,
       duration: {
         hours: duration && duration.hours ? duration.hours : 0,
         minutes: duration && duration.minutes ? duration.minutes : 0,
@@ -56,6 +66,32 @@ router.put("/update-task-iscompleted/:taskId", async (req, res) => {
       .json({ message: "Task updated successfully", task: updatedTask });
   } catch (error) {
     console.error("Error updating task:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+router.put("/update-task-progress/:taskId", async (req, res) => {
+  const { taskId } = req.params;
+  const { progressHours, progressMinutes } = req.body;
+
+  try {
+    const taskToUpdate = await Task.findById(taskId);
+
+    if (!taskToUpdate) {
+      return res.status(404).json({ error: "Task not found" });
+    }
+
+    // Update the task progress
+    taskToUpdate.progress.hours = progressHours;
+    taskToUpdate.progress.minutes = progressMinutes;
+
+    const updatedTask = await taskToUpdate.save();
+
+    res.status(200).json({
+      message: "Task progress updated successfully",
+      task: updatedTask,
+    });
+  } catch (error) {
+    console.error("Error updating task progress:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });

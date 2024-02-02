@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Calendar } from "@mantine/dates";
-import { Box, Flex, Link, Text } from "@chakra-ui/react";
+import { Box, Flex, Link, Tag, TagLabel, Text } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Task from "./taskModel";
 import { DeleteIcon } from "@chakra-ui/icons";
@@ -16,6 +16,9 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
   handleSelect,
   tasks,
 }) => {
+  const routineTasks: Task[] = Object.values(tasks).flatMap((dateTasks) =>
+    dateTasks.filter((task) => task.type === "Routine")
+  );
   const renderDay = (paramDate: Date) => {
     const date = dayjs(paramDate).format("YYYY-MM-DD");
     const currentDay = dayjs().format("YYYY-MM-DD");
@@ -31,14 +34,14 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
     let circleColor = "transparent";
 
     if (completedTasks.length === 0 && hasTasks) {
-      circleColor = "red"; // Uncompleted tasks
+      circleColor = "red";
     } else if (
       completedTasks.length > 0 &&
       completedTasks.length === tasks[date].length
     ) {
-      circleColor = "green.400"; // All tasks completed
+      circleColor = "green.400";
     } else if (completedTasks.length > 0) {
-      circleColor = "orange"; // Some tasks completed
+      circleColor = "orange";
     }
     const dateTasks = tasks[date] || [];
     const hasGoalTask = dateTasks.some((task) => task.type === "Goal");
@@ -111,81 +114,70 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
       />
       <Box
         border="solid 1px"
-        borderColor={"#00007a"}
+        borderColor={"#7a006e"}
         rounded={10}
-        minH={40}
-        bg={"#000017"}
+        minH={"40px"}
+        w={"100%"}
+        bg={"#170015"}
       >
         <Text fontSize={"md"} p={"10px 15px"} color={"gray.200"}>
           Routine
         </Text>
 
-        <Flex
-          border={"solid 1px"}
-          borderColor={"gray.800"}
-          minH="30px"
-          m={"10px"}
-          rounded={5}
-          bg={"#000045"}
-          display={"flex"}
-          alignItems={"center"}
-          p={2}
-          justifyContent={"space-between"}
-          maxW={"370px"}
-        >
-          <Text fontSize={"sm"}>
-            ye chaima rahoy saif yahki alik bl khayeb bl khayeb alekherweny
-            habet nkolk ema m 9etch kifh
+        {routineTasks.length === 0 ? (
+          <Text p={2} color={"gray.400"} textAlign={"center"}>
+            No routine tasks available.
           </Text>
-
-          <Link display={"flex"} alignItems={"center"}>
-            <DeleteIcon color={"red.300"} fontSize={"xs"} />
-          </Link>
-        </Flex>
-        <Flex
-          border={"solid 1px"}
-          borderColor={"gray.800"}
-          minH="30px"
-          m={"10px"}
-          rounded={5}
-          bg={"#000045"}
-          display={"flex"}
-          alignItems={"center"}
-          p={2}
-          justifyContent={"space-between"}
-          maxW={"370px"}
-        >
-          <Text fontSize={"sm"}>
-            ye chaima rahoy saif yahki alik bl khayeb bl khayeb alekherweny
-            habet nkolk ema m 9etch kifh
-          </Text>
-
-          <Link display={"flex"} alignItems={"center"}>
-            <DeleteIcon color={"red.300"} fontSize={"xs"} />
-          </Link>
-        </Flex>
-        <Flex
-          border={"solid 1px"}
-          borderColor={"gray.800"}
-          minH="30px"
-          m={"10px"}
-          rounded={5}
-          bg={"#000045"}
-          display={"flex"}
-          alignItems={"center"}
-          p={2}
-          justifyContent={"space-between"}
-          maxW={"370px"}
-        >
-          <Text fontSize={"sm"}>
-            ye chaima rahoy saif yahki alik bl khayeb bl khayeb alekherweny
-            habet nkolk ema m 9etch kifh
-          </Text>
-
-          <Link display={"flex"} alignItems={"center"}>
-            <DeleteIcon color={"red.300"} fontSize={"xs"} />
-          </Link>
-        </Flex>
+        ) : (
+          routineTasks.map((task: any, index: any) => (
+            <Flex
+              key={index}
+              border={"solid 1px"}
+              borderColor={"gray.800"}
+              minH="30px"
+              m={"10px"}
+              rounded={5}
+              bg={"#450040"}
+              display={"flex"}
+              alignItems={"center"}
+              p={2}
+              justifyContent={"space-between"}
+              maxW={"370px"}
+            >
+              <Flex>
+                <Tag
+                  size={"sm"}
+                  variant="outline"
+                  border={"solid 1px"}
+                  pb={"1px"}
+                  color={"gray.100"}
+                  borderColor={"gray.500"}
+                  maxH={"25px"}
+                  mt={"2px"}
+                  mr={"5px"}
+                >
+                  <TagLabel display={"flex"} alignItems={"center"} gap={2}>
+                    {task.routineType}
+                  </TagLabel>
+                </Tag>
+                <Text key={index} fontSize="sm" color="gray.100">
+                  {task.description}
+                </Text>
+              </Flex>
+              <Link
+                display={"flex"}
+                alignItems={"center"}
+                _hover={{
+                  color: "red.200",
+                  cursor: "pointer",
+                }}
+                color="red.500"
+              >
+                <DeleteIcon fontSize="xs" />
+              </Link>
+            </Flex>
+          ))
+        )}
       </Box>
     </Flex>
   );
