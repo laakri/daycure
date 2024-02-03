@@ -32,7 +32,7 @@ const Navbar = () => {
         padding="5px 10px"
         display="flex"
         gap="15px"
-        background="gray.800"
+        bg="var(--lvl3-darkcolor)"
         rounded="10px"
         maxW="500px"
         margin="auto"
@@ -84,9 +84,8 @@ const Navbar = () => {
           gap="10px"
           alignItems="center"
           rounded="5px"
-          padding="5px 10px"
-          background="var(--lvl1-darkcolor)"
-          border={"var(--bordercolor) solid 1px"}
+          p="5px 10px"
+          border={"var(--maincolor) solid 1px"}
         >
           <Link to="/">
             <Text fontSize="md">Sign Up</Text>

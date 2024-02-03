@@ -5,14 +5,18 @@
   font-weight: 400;
 
   color-scheme: light dark;
-  --chakra-colors-chakra-body-bg:#060707 !important; 
+  --chakra-colors-chakra-body-bg:#070c14 !important; 
   --chakra-colors-chakra-body-text:white !important; 
-  --lvl1-darkcolor: #131314;
-  --lvl2-darkcolor: #1b212c;
-  --lvl3-darkcolor: #28292b;
-  --bordercolor: #38393b;
-  --maincolor: #a98edb;
-  --hover-maincolor: #976ebe;
+  --lvl1-darkcolor: #06070a;
+  --lvl2-darkcolor: #070a10;
+  --lvl3-darkcolor: #131823;
+  --lvl4-darkcolor: #334154;
+  --bordercolor: #2f3b4b;
+  --maincolor: #6a30ca;
+  --hover-maincolor: #5420a8;
+  --secend-maincolor: #e8683e;
+  --hover-secend-maincolor: #bf4a22;
+  
   background-color: var(--chakra-colors-chakra-body-bg);
   color: var(--chakra-colors-chakra-body-text);
   font-synthesis: none;
@@ -26,7 +30,7 @@ a {
   text-decoration: inherit;
 }
 a:hover {
-  color: #a7a5aa;
+  color: rgb(216, 193, 254);
 
 }
 option{
