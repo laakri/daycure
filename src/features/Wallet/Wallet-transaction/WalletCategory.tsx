@@ -8,7 +8,7 @@ import {
   addCategory,
   addTransaction,
   fetchAllCategories,
-} from "../../states/wallet";
+} from "../../../states/wallet";
 
 import { useEffect, useState } from "react";
 import Category from "./categoryModel";
