@@ -46,17 +46,14 @@ const CryptoPrices: React.FC = () => {
 
   return (
     <Box
-      borderRadius="20px"
-      border={'1px solid'}
-      borderColor={"RGBA(255, 255, 255, 0.06)"}
+      rounded={10}
+      border={"1px solid"}
+      borderColor={"var(--bordercolor)"}
       p="10px"
-      width="max-content"
-      background="linear-gradient(to bottom, rgba(127, 57, 218, 0.111), transparent)"
+      bg={"var(--lvl3-darkcolor)"}
       position="relative"
       w="320px"
-      height={"299px"}
-     
-     
+      h={320}
     >
       <Box position={"absolute"} right="10px">
         <button>
@@ -87,7 +84,7 @@ const CryptoPrices: React.FC = () => {
       {cryptoData && (
         <Flex
           direction="column"
-          bg="var(--lvl3-darkcolor)"
+          bg="var(--lvl2-darkcolor)"
           p="0 10px 10px 10px"
           mt="10px"
           rounded="10px"

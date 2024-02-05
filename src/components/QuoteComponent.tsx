@@ -38,18 +38,36 @@ const RandomQuotes: React.FC = () => {
   };
 
   return (
-    <Box
-      border={"1px solid "}
-      borderColor={"RGBA(255, 255, 255, 0.06)"}
-      borderRadius="20px"
-      p="15px"
-      textAlign={'justify'}
-      width="max-content"
+    <Flex
+      rounded={10}
+      border={"1px solid"}
+      borderColor={"var(--bordercolor)"}
+      p="10px"
+      bg={"var(--lvl3-darkcolor)"}
+      w="320px"
+      h={320}
+      textAlign={"justify"}
       position="relative"
-      background="var(--lvl1-darkcolor)"
-      w="300px"
-      h="200px"
+      flexDirection={"column"}
     >
+      <Box
+        border={"1px solid "}
+        borderColor={"RGBA(255, 255, 255, 0.06)"}
+        borderRadius={"20px"}
+        background="linear-gradient(to bottom, rgba(127, 57, 218, 0.111), transparent)"
+        height={"90px"}
+        width={"300px"}
+      >
+        <Text
+          fontSize="2xl"
+          fontWeight="bold"
+          color={"white"}
+          textAlign={"center"}
+          p={"30px"}
+        >
+          1th February
+        </Text>
+      </Box>
       <Flex justify="space-between" align="center" mb="2">
         <Text
           fontSize="2xl"
@@ -79,7 +97,7 @@ const RandomQuotes: React.FC = () => {
           </Text>
         </Box>
       )}
-    </Box>
+    </Flex>
   );
 };
 

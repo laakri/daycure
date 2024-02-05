@@ -9,7 +9,6 @@ import {
   Portal,
   MenuList,
   MenuItem,
-  Select,
 } from "@chakra-ui/react";
 
 const WalletExpense = () => {
@@ -58,6 +57,16 @@ const WalletExpense = () => {
                 color: "var(--chakra-colors-chakra-body-text)",
               }}
             >
+              Add Category
+            </MenuItem>
+            <MenuItem
+              bg={"var(--lvl1-darkcolor)"}
+              borderColor={"transparent"}
+              _hover={{
+                bg: "var(--lvl3-darkcolor)",
+                color: "var(--chakra-colors-chakra-body-text)",
+              }}
+            >
               Category 1
             </MenuItem>
             <MenuItem
@@ -73,11 +82,12 @@ const WalletExpense = () => {
           </MenuList>
         </Portal>
       </Menu>
+      {/* 
       <Select placeholder="Select option">
         <option value="option1">Option 1</option>
         <option value="option2">Option 2</option>
         <option value="option3">Option 3</option>
-      </Select>
+      </Select>*/}
       <Button
         color={"var(--chakra-colors-chakra-body-text)"}
         bg={"var(--maincolor)"}
@@ -93,4 +103,5 @@ const WalletExpense = () => {
     </Flex>
   );
 };
+
 export default WalletExpense;
