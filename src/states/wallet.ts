@@ -36,8 +36,8 @@ export const addTransaction = async (transactionDetails: {
   date: Date;
   description: string;
   isExpense: boolean;
-  walletId: string;
-  categoryId: string;
+  userId: string;
+  category: string;
 }) => {
   try {
     const response = await axios.post(`${BASE_URL}/transactions/transaction`, {
@@ -45,12 +45,22 @@ export const addTransaction = async (transactionDetails: {
       date: transactionDetails.date, // Convert Date to string
       description: transactionDetails.description,
       isExpense: transactionDetails.isExpense,
-      walletId: transactionDetails.walletId,
-      categoryId: transactionDetails.categoryId,
+      userId: transactionDetails.userId,
+      category: transactionDetails.category,
     });
     return response.data;
   } catch (error) {
     console.error("Error creating transaction:", error);
     throw new Error("Failed to create transaction");
+  }
+};
+//fetch All transactions
+export const fetchAllTransactions = async () => {
+  try {
+    const response = await axios.get(`${BASE_URL}/transactions/transactions`);
+    return response.data;
+  } catch (err) {
+    console.error("Error fetching transactions", err);
+    throw new Error("Error fetching transactions");
   }
 };

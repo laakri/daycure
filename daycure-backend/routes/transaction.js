@@ -2,14 +2,29 @@ const express = require("express");
 const router = express.Router();
 const Transaction = require("../models/transaction");
 
-// Create a transaction
 router.post("/transaction", async (req, res) => {
   try {
-    const transaction = new Transaction(req.body);
+    const { amount, description, userId, category, isExpense } = req.body;
+    if (!amount || !userId) {
+      return res
+        .status(400)
+        .json({ error: "Amount and userId are required fields." });
+    }
+
+    const transaction = new Transaction({
+      amount,
+      description,
+      userId,
+      category,
+      isExpense,
+    });
+
     await transaction.save();
-    res.status(201).send(transaction);
+
+    res.status(201).json(transaction);
   } catch (error) {
-    res.status(400).send(error);
+    console.error("Error creating transaction:", error);
+    res.status(500).json({ error: "Internal server error." });
   }
 });
 

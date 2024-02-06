@@ -87,7 +87,7 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
 
   return (
     <Flex
-      p={10}
+      px={10}
       flexDirection={"column"}
       gap={10}
       borderRadius={"30px"}
@@ -114,11 +114,11 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
       />
       <Box
         border="solid 1px"
-        borderColor={"#7a006e"}
+        borderColor={"#5e007a"}
         rounded={10}
         minH={"40px"}
         w={"100%"}
-        bg={"#170015"}
+        bg={"#0e0017"}
       >
         <Text fontSize={"md"} p={"10px 15px"} color={"gray.200"}>
           Routine
@@ -137,7 +137,7 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
               minH="30px"
               m={"10px"}
               rounded={5}
-              bg={"#450040"}
+              bg={"#2d0045"}
               display={"flex"}
               alignItems={"center"}
               p={2}

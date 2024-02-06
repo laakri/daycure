@@ -1,5 +1,6 @@
 import { Link, NavLink } from "react-router-dom";
-import { Flex, Text, Box } from "@chakra-ui/react";
+import { Flex, Text, Box, Img } from "@chakra-ui/react";
+import logo from "../assets/logo.png";
 
 const Navbar = () => {
   return (
@@ -11,18 +12,17 @@ const Navbar = () => {
       px="10px"
     >
       <Flex>
-        <Box
-          display="flex"
+        <Flex
           gap="10px"
           alignItems="center"
-          rounded="5px"
+          justifyContent={"center"}
           padding="5px 20px"
-          minW={"150px"}
         >
+          <Img h={"28px"} w={"28px"} src={logo}></Img>
           <Link to="/">
             <Text fontSize="2xl">DailyCure</Text>
           </Link>
-        </Box>
+        </Flex>
       </Flex>
       <Flex
         as="nav"
@@ -32,7 +32,7 @@ const Navbar = () => {
         padding="5px 10px"
         display="flex"
         gap="15px"
-        background="gray.800"
+        bg="var(--lvl3-darkcolor)"
         rounded="10px"
         maxW="500px"
         margin="auto"
@@ -67,31 +67,24 @@ const Navbar = () => {
           </NavLink>
         </Box>
       </Flex>
-      <Flex>
-        <Box
-          display="flex"
-          gap="10px"
-          alignItems="center"
-          rounded="5px"
-          padding="5px 20px"
-        >
+      <Flex gap={"20px"}>
+        <Flex alignItems="center" rounded="5px" padding="5px 20px">
           <Link to="/">
             <Text fontSize="md">Login</Text>
           </Link>
-        </Box>
-        <Box
-          display="flex"
+        </Flex>
+        <Flex
           gap="10px"
           alignItems="center"
           rounded="5px"
-          padding="5px 10px"
-          background="var(--lvl1-darkcolor)"
-          border={"var(--bordercolor) solid 1px"}
+          p="5px 10px"
+          border={"1px solid "}
+          borderColor={"purple.700"}
         >
-          <Link to="/">
+          <Link to="/signup">
             <Text fontSize="md">Sign Up</Text>
           </Link>
-        </Box>
+        </Flex>
       </Flex>
     </Flex>
   );

@@ -12,14 +12,13 @@ const transactionSchema = new mongoose.Schema({
   description: {
     type: String,
   },
-  walletId: {
+  userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Wallet",
     required: true,
   },
-  categoryId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Category",
+  category: {
+    type: String,
   },
   isExpense: {
     type: Boolean,

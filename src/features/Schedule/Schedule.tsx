@@ -218,26 +218,21 @@ const Schedule = () => {
   };
 
   return (
-    <Wrap
-      mt={50}
-      spacing={4}
-      justifyContent={"center"}
-      alignItems={"center"}
-      display={"flex"}
-    >
-      <CalendarComponent
-        selected={selected}
-        handleSelect={handleSelect}
-        tasks={tasks}
-      />
+    <Box>
+      <Flex mt={50} gap={4} justifyContent={"center"} alignItems={"start"}>
+        <CalendarComponent
+          selected={selected}
+          handleSelect={handleSelect}
+          tasks={tasks}
+        />
 
-      <TasksComponent
-        selected={selected}
-        tasks={tasks}
-        handleOpenModal={handleOpenModal}
-        handleToggleTaskCompletion={handleToggleTaskCompletion}
-      />
-
+        <TasksComponent
+          selected={selected}
+          tasks={tasks}
+          handleOpenModal={handleOpenModal}
+          handleToggleTaskCompletion={handleToggleTaskCompletion}
+        />
+      </Flex>
       <Modal
         isOpen={isOpen}
         onClose={() => {
@@ -436,7 +431,7 @@ const Schedule = () => {
           </ModalFooter>
         </ModalContent>
       </Modal>
-    </Wrap>
+    </Box>
   );
 };
 export default Schedule;

@@ -23,12 +23,7 @@ import {
   Slider,
   SliderFilledTrack,
 } from "@chakra-ui/react";
-import {
-  AddIcon,
-  EditIcon,
-  DeleteIcon,
-  DragHandleIcon,
-} from "@chakra-ui/icons";
+import { AddIcon } from "@chakra-ui/icons";
 import dayjs from "dayjs";
 import Task from "./taskModel";
 import { MdNotStarted, MdPauseCircleFilled } from "react-icons/md";
@@ -180,7 +175,7 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
         {taskDuration && (
           <HStack
             height={"25px"}
-            bg={"gray.700"}
+            bg={"var(--lvl4-darkcolor)"}
             w={"100%"}
             roundedBottom={5}
             p={2}
@@ -249,11 +244,6 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
     return (
       <Box mt={4} h={"max-content"}>
         <Box>
-          {/* 
-          <Text fontSize="lg" fontWeight="bold" mb={2}>
-            Events
-          </Text>
-          */}
           {dateTasks
 
             .filter((task) => task.subType !== undefined)
@@ -267,7 +257,7 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
                 border={"solid 1px"}
                 borderColor={getBackgroundColorBysubType(task.subType)}
                 _hover={{
-                  bg: "var(--lvl1-darkcolor)",
+                  bg: "var(--lvl2-darkcolor)",
                 }}
               >
                 <Flex
@@ -345,7 +335,7 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
                     p={2}
                     justifyContent={"space-between"}
                     rounded={5}
-                    bg={"gray.900"}
+                    bg="var(--lvl1-darkcolor)"
                     _hover={{
                       bg: "var(--lvl2-darkcolor)",
                       cursor: "pointer",
@@ -429,14 +419,74 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
       </Box>
     );
   };
+  function getBackgroundColorByType(type: string): string {
+    switch (type) {
+      case "Social":
+        return "green.200";
+      case "Goal":
+        return "yellow.200";
+      case "Routine":
+        return "purple.200";
+      case "Timing":
+        return "cyan.200";
+      default:
+        return "gray.200";
+    }
+  }
 
+  function getIconByType(type: string): ReactElement {
+    switch (type) {
+      case "Social":
+        return <CiStar size={15} />;
+      case "Goal":
+        return <CiTrophy size={15} />;
+      case "Routine":
+        return <CiGrid42 size={15} />;
+      case "Timing":
+        return <CiClock2 size={15} />;
+      default:
+        return <CiCalendarDate size={15} />;
+    }
+  }
+
+  function getIconBysubType(type: string): ReactElement {
+    switch (type) {
+      case "event":
+        return <BsStars color="green.200" size={18} />;
+      case "birthday":
+        return <PiCakeThin color={"yellow.300"} size={22} />;
+      case "wedding":
+        return <GiPartyPopper color={"cyan.200"} size={22} />;
+      case "party":
+        return <GiPartyFlags color={"pink.200"} size={22} />;
+
+      default:
+        return <CiCalendarDate color="white" size={22} />;
+    }
+  }
+  function getBackgroundColorBysubType(type: string): string {
+    switch (type) {
+      case "event":
+        return "green.200";
+      case "birthday":
+        return "yellow.300";
+      case "wedding":
+        return "cyan.200";
+      case "party":
+        return "pink.200";
+
+      default:
+        return "#ea2a9055";
+    }
+  }
   return (
     <Box
       w={520}
       border={"solid 1px "}
       borderColor={"#3b3a3a44"}
-      p={"20px 20px"}
+      p={"20px 10px"}
       rounded={10}
+      bg={"var(--lvl3-darkcolor)"}
     >
       {selected && (
         <Flex justifyContent={"space-between"} alignItems={"center"}>
@@ -447,7 +497,11 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
             color={"gray.100"}
             border={"dashed 1px"}
             borderColor={"gray.500"}
-            _hover={{ background: "gray.100" }}
+            _hover={{
+              bg: "var(--lvl2-darkcolor)",
+              color: "white",
+              borderColor: "var(--lvl2-darkcolor)",
+            }}
             onClick={handleOpenModal}
           >
             <AddIcon />
@@ -458,64 +512,5 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
     </Box>
   );
 };
-function getBackgroundColorByType(type: string): string {
-  switch (type) {
-    case "Social":
-      return "green.200";
-    case "Goal":
-      return "yellow.200";
-    case "Routine":
-      return "purple.200";
-    case "Timing":
-      return "cyan.200";
-    default:
-      return "gray.200";
-  }
-}
 
-function getIconByType(type: string): ReactElement {
-  switch (type) {
-    case "Social":
-      return <CiStar size={15} />;
-    case "Goal":
-      return <CiTrophy size={15} />;
-    case "Routine":
-      return <CiGrid42 size={15} />;
-    case "Timing":
-      return <CiClock2 size={15} />;
-    default:
-      return <CiCalendarDate size={15} />;
-  }
-}
-
-function getIconBysubType(type: string): ReactElement {
-  switch (type) {
-    case "event":
-      return <BsStars color="green.200" size={18} />;
-    case "birthday":
-      return <PiCakeThin color={"yellow.300"} size={22} />;
-    case "wedding":
-      return <GiPartyPopper color={"cyan.200"} size={22} />;
-    case "party":
-      return <GiPartyFlags color={"pink.200"} size={22} />;
-
-    default:
-      return <CiCalendarDate color="white" size={22} />;
-  }
-}
-function getBackgroundColorBysubType(type: string): string {
-  switch (type) {
-    case "event":
-      return "green.200";
-    case "birthday":
-      return "yellow.300";
-    case "wedding":
-      return "cyan.200";
-    case "party":
-      return "pink.200";
-
-    default:
-      return "#ea2a9055";
-  }
-}
 export default TasksComponent;

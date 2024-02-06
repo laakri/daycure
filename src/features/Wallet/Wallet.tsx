@@ -1,57 +1,19 @@
-import { CalendarIcon } from "@chakra-ui/icons";
-import {
-  Box,
-  Button,
-  Flex,
-  Input,
-  InputGroup,
-  InputRightElement,
-  Text,
-} from "@chakra-ui/react";
-import WalletCategory from "./WalletCategory";
+import { Box, Flex, Stack } from "@chakra-ui/react";
 import WalletStats from "./WalletStats";
+import WalletTransaction from "./Wallet-transaction/WalletTransaction";
 
 const Wallet = () => {
   return (
-    <Box maxW={"900px"} m={"40px auto"}>
-      <Flex justifyContent={"space-between"} alignItems={"center"}>
-        <Flex gap={4}>
-          <Text fontSize="2xl" fontWeight="bold">
-            Wallet Stats
-          </Text>
-          <Text
-            fontSize="md"
-            fontWeight="bold"
-            border={"var(--bordercolor) solid 1px"}
-            p={"5px 8px "}
-            rounded={8}
-            gap={3}
-            display={"flex"}
-            alignItems={"center"}
-          >
-            <CalendarIcon color={"gray.500"} />
-            2024
-          </Text>
-        </Flex>
-        <InputGroup size="md" borderColor={"gray.700"} maxW={"300px"}>
-          <Input pr="4.5rem" placeholder="Search.." />
-          <InputRightElement width="4.5rem">
-            <Button
-              h="1.75rem"
-              size="xs"
-              color="white"
-              bg={"gray.800"}
-              _hover={{ bg: "teal.600" }}
-            >
-              Search
-            </Button>
-          </InputRightElement>
-        </InputGroup>
-      </Flex>
-      <WalletStats />
-
-      <Flex justifyContent={"center"}>
-        <WalletCategory />
+    <Box maxW={"1400px"} m={"40px auto"}>
+      <Flex
+        gap={{ base: "20px", xl: "none" }}
+        mt={50}
+        justifyContent={"space-between"}
+        alignItems={{ base: "center", xl: "start" }}
+        direction={{ base: "column", xl: "row" }}
+      >
+        <WalletStats />
+        <WalletTransaction />
       </Flex>
     </Box>
   );
