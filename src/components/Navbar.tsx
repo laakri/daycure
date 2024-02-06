@@ -17,7 +17,6 @@ const Navbar = () => {
           alignItems="center"
           justifyContent={"center"}
           padding="5px 20px"
-          minW={"150px"}
         >
           <Img h={"28px"} w={"28px"} src={logo}></Img>
           <Link to="/">
@@ -68,20 +67,13 @@ const Navbar = () => {
           </NavLink>
         </Box>
       </Flex>
-      <Flex>
-        <Box
-          display="flex"
-          gap="10px"
-          alignItems="center"
-          rounded="5px"
-          padding="5px 20px"
-        >
+      <Flex gap={"20px"}>
+        <Flex alignItems="center" rounded="5px" padding="5px 20px">
           <Link to="/">
             <Text fontSize="md">Login</Text>
           </Link>
-        </Box>
-        <Box
-          display="flex"
+        </Flex>
+        <Flex
           gap="10px"
           alignItems="center"
           rounded="5px"
@@ -89,10 +81,10 @@ const Navbar = () => {
           border={"1px solid "}
           borderColor={"purple.700"}
         >
-          <Link to="/">
+          <Link to="/signup">
             <Text fontSize="md">Sign Up</Text>
           </Link>
-        </Box>
+        </Flex>
       </Flex>
     </Flex>
   );
