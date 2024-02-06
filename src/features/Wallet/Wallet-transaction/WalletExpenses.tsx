@@ -1,93 +1,95 @@
-import { ChevronDownIcon } from "@chakra-ui/icons";
-import {
-  Text,
-  Flex,
-  Input,
-  Button,
-  Menu,
-  MenuButton,
-  Portal,
-  MenuList,
-  MenuItem,
-} from "@chakra-ui/react";
+import { Text, Flex, Input, Button, Select } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import { fetchAllCategories, addTransaction } from "../../../states/wallet";
+import Category from "./categoryModel";
 
 const WalletExpense = () => {
+  const [allCateg, setAllCateg] = useState<Category[]>([]);
+  const [amount, setAmount] = useState(0);
+  const [description, setDescription] = useState("");
+  const [category, setCategory] = useState("");
+
+  useEffect(() => {
+    const fetchAllCateg = async () => {
+      try {
+        const response = await fetchAllCategories();
+        setAllCateg(response);
+      } catch (err) {
+        console.error("Error fetching categories", err);
+      }
+    };
+    fetchAllCateg();
+  }, []);
+
+  const handleConfirmClick = async () => {
+    try {
+      console.log({ amount, description, category });
+      await addTransaction({
+        amount,
+        date: new Date(),
+        description,
+        isExpense: true,
+        userId: "65b38749dabf0c792c357f12",
+        category,
+      });
+      setAmount(0);
+      setDescription("");
+      setCategory("");
+      console.log("Transaction added successfully!");
+    } catch (error) {
+      console.error("Error adding transaction", error);
+    }
+  };
+
   return (
     <Flex flexDirection={"column"} gap={2}>
       <Text fontSize={"xl"} color={"purple.100"}>
         Add Expense Transaction
       </Text>
       <Input
-        placeholder="Amount DT"
+        placeholder="Enter amount"
         bg={"var(--lvl1-darkcolor)"}
         h={"40px"}
         border={"1px solid transparent"}
         mb={"10px"}
+        value={amount}
+        onChange={(e) => setAmount(parseFloat(e.target.value))}
+        onKeyPress={(e) => {
+          const charCode = e.which ? e.which : e.keyCode;
+          if (
+            charCode !== 46 &&
+            charCode > 31 &&
+            (charCode < 48 || charCode > 57)
+          ) {
+            e.preventDefault();
+          }
+        }}
       />
+
       <Input
         placeholder="Description"
         bg={"var(--lvl1-darkcolor)"}
         h={"40px"}
         border={"1px solid transparent"}
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
       />
-      <Menu>
-        <MenuButton
-          textAlign={"start"}
-          rightIcon={<ChevronDownIcon />}
-          as={Button}
-          color={"var(--chakra-colors-chakra-body-text)"}
-          bg={"var(--lvl1-darkcolor)"}
-          _hover={{
-            bg: "var(--lvl2-darkcolor)",
-            color: "var(--chakra-colors-chakra-body-text)",
-          }}
-        >
-          Categories
-        </MenuButton>{" "}
-        <Portal>
-          <MenuList
-            bg={"var(--lvl1-darkcolor)"}
-            borderColor={"var(--bordercolor)"}
-          >
-            <MenuItem
-              bg={"var(--lvl1-darkcolor)"}
-              borderColor={"transparent"}
-              _hover={{
-                bg: "var(--lvl3-darkcolor)",
-                color: "var(--chakra-colors-chakra-body-text)",
-              }}
-            >
-              Add Category
-            </MenuItem>
-            <MenuItem
-              bg={"var(--lvl1-darkcolor)"}
-              borderColor={"transparent"}
-              _hover={{
-                bg: "var(--lvl3-darkcolor)",
-                color: "var(--chakra-colors-chakra-body-text)",
-              }}
-            >
-              Category 1
-            </MenuItem>
-            <MenuItem
-              bg={"var(--lvl1-darkcolor)"}
-              borderColor={"transparent"}
-              _hover={{
-                bg: "var(--lvl3-darkcolor)",
-                color: "var(--chakra-colors-chakra-body-text)",
-              }}
-            >
-              Category 2
-            </MenuItem>
-          </MenuList>
-        </Portal>
-      </Menu>
-      {/* 
-      <Select placeholder="Select option">
-        <option value="option1">Option 1</option>
-        <option value="option2">Option 2</option>
-        <option value="option3">Option 3</option>
-      </Select>*/}
+
+      <Select
+        placeholder="Select category"
+        bg={"var(--lvl1-darkcolor)"}
+        mt={3}
+        borderColor={"transparent"}
+        color={"gray.400"}
+        value={category}
+        onChange={(e) => setCategory(e.target.value)}
+      >
+        {allCateg.map((category, index) => (
+          <option key={index} value={category.categoryName}>
+            {category.categoryName}
+          </option>
+        ))}
+      </Select>
       <Button
         color={"var(--chakra-colors-chakra-body-text)"}
         bg={"var(--maincolor)"}
@@ -97,6 +99,7 @@ const WalletExpense = () => {
         }}
         mt={5}
         w={"100%"}
+        onClick={handleConfirmClick}
       >
         Confirm
       </Button>

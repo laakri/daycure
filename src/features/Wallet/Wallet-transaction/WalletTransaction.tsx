@@ -8,7 +8,6 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
   Input,
@@ -28,6 +27,7 @@ const WalletTransaction = () => {
   const [activeComponent, setActiveComponent] = useState("expenses");
   // State to control the modal visibility
   const [isModalOpen, setIsModalOpen] = React.useState(false);
+
   const wallets = [
     "Car",
     "Family",
@@ -42,7 +42,6 @@ const WalletTransaction = () => {
   // Function to open the modal
   const openModal = () => {
     setIsModalOpen(true);
-    console.log("fazjopfj");
   };
 
   // Function to close the modal
@@ -54,7 +53,7 @@ const WalletTransaction = () => {
   return (
     <Box>
       <Box
-        w={520}
+        w={{ base: "420px", md: "720px", xl: "520px" }}
         border={"solid 1px "}
         borderColor={"#3b3a3a44"}
         p={"20px 10px"}
@@ -96,6 +95,11 @@ const WalletTransaction = () => {
             color={"white"}
             variant="outline"
             onClick={openModal}
+            _hover={{
+              bg: "var(--lvl2-darkcolor)",
+              color: "white",
+              borderColor: "var(--lvl2-darkcolor)",
+            }}
           >
             Add Category
           </Button>
@@ -113,7 +117,7 @@ const WalletTransaction = () => {
           <ModalBody>
             <InputGroup>
               <InputLeftElement pointerEvents="none">
-                <SearchIcon color="gray.700" />
+                <SearchIcon color="gray.500" />
               </InputLeftElement>
               <Input borderColor="gray.700" placeholder="Search .." />
             </InputGroup>

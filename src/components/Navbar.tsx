@@ -1,5 +1,6 @@
 import { Link, NavLink } from "react-router-dom";
-import { Flex, Text, Box } from "@chakra-ui/react";
+import { Flex, Text, Box, Img } from "@chakra-ui/react";
+import logo from "../assets/logo.png";
 
 const Navbar = () => {
   return (
@@ -11,18 +12,18 @@ const Navbar = () => {
       px="10px"
     >
       <Flex>
-        <Box
-          display="flex"
+        <Flex
           gap="10px"
           alignItems="center"
-          rounded="5px"
+          justifyContent={"center"}
           padding="5px 20px"
           minW={"150px"}
         >
+          <Img h={"28px"} w={"28px"} src={logo}></Img>
           <Link to="/">
             <Text fontSize="2xl">DailyCure</Text>
           </Link>
-        </Box>
+        </Flex>
       </Flex>
       <Flex
         as="nav"
@@ -85,7 +86,8 @@ const Navbar = () => {
           alignItems="center"
           rounded="5px"
           p="5px 10px"
-          border={"var(--maincolor) solid 1px"}
+          border={"1px solid "}
+          borderColor={"purple.700"}
         >
           <Link to="/">
             <Text fontSize="md">Sign Up</Text>

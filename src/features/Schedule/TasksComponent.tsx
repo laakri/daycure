@@ -497,7 +497,11 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
             color={"gray.100"}
             border={"dashed 1px"}
             borderColor={"gray.500"}
-            _hover={{ background: "gray.100" }}
+            _hover={{
+              bg: "var(--lvl2-darkcolor)",
+              color: "white",
+              borderColor: "var(--lvl2-darkcolor)",
+            }}
             onClick={handleOpenModal}
           >
             <AddIcon />

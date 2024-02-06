@@ -16,12 +16,59 @@ import {
   StatArrow,
   Image,
 } from "@chakra-ui/react";
-import { BiCategory } from "react-icons/bi";
 import { FaArrowTrendDown, FaArrowTrendUp } from "react-icons/fa6";
+import { useEffect, useState } from "react";
+import { fetchAllTransactions } from "../../states/wallet";
+import React from "react";
+import { initialCategoryIcons } from "./CategoriesIcons";
 
 const WalletStats = () => {
+  const [transactions, setTransactions] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await fetchAllTransactions();
+        setTransactions(data);
+      } catch (error) {
+        console.error("Error fetching transactions", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const groupTransactionsByDate = (transactions: any[]): any => {
+    const sortedTransactions = transactions.sort((a, b) => {
+      const dateA = new Date(a.date);
+      const dateB = new Date(b.date);
+      const currentDate = new Date();
+
+      const diffA = Math.abs(dateA.getTime() - currentDate.getTime());
+      const diffB = Math.abs(dateB.getTime() - currentDate.getTime());
+
+      return diffA - diffB;
+    });
+
+    const groupedTransactions: any = {};
+    sortedTransactions.forEach((transaction) => {
+      const date = new Date(transaction.date).toLocaleDateString();
+      if (!groupedTransactions[date]) {
+        groupedTransactions[date] = [];
+      }
+      groupedTransactions[date].push(transaction);
+    });
+    return groupedTransactions;
+  };
+
+  const groupedTransactions: any = groupTransactionsByDate(transactions);
+
   return (
-    <Flex flexDirection={"column"} w={"calc(100% - 540px)"} gap={5}>
+    <Flex
+      flexDirection={"column"}
+      w={{ base: "80%", xl: "calc(100% - 540px)" }}
+      gap={5}
+    >
       <Flex justifyContent={"space-between"} alignItems={"center"}>
         <Flex gap={4}>
           <Text fontSize="2xl" fontWeight="bold">
@@ -68,7 +115,12 @@ const WalletStats = () => {
         border={"1px solid var(--bordercolor)"}
         h={"100%"}
       >
-        <Flex flexDirection={"column"} gap={3} justifyContent={"space-between"}>
+        <Flex
+          flexDirection={"column"}
+          gap={3}
+          justifyContent={"space-between"}
+          w={150}
+        >
           <Stat>
             <StatLabel color={"purple.300"}>Total Income</StatLabel>
             <StatNumber>300.00</StatNumber>
@@ -88,16 +140,12 @@ const WalletStats = () => {
             </Stat>
           </Box>
         </Flex>
-        <Box>
+        <Box w={"calc(100% - 120px)"}>
           <Image
+            rounded={10}
             src="https://i.ibb.co/qJgL357/select-chart.png"
             alt="Dan Abramov"
           />
-          {/* 
-        <Text fontSize={"xl"} color={"#6b82a0"}>
-          No Stats
-        </Text>
-        */}
         </Box>
       </Flex>
       <Flex justifyContent={"space-between"} px={5}>
@@ -126,85 +174,72 @@ const WalletStats = () => {
         </Flex>
       </Flex>
       <Divider orientation="horizontal" borderColor="var(--bordercolor)" />
-      <Text p={"2px 7px"} maxW={"max-content"} rounded={7}>
-        26 05 , 2024
-      </Text>
 
-      <HStack
-        bg={"var(--lvl3-darkcolor)"}
-        p={"10px 15px "}
-        rounded={10}
-        justifyContent={"space-between"}
-      >
-        <Flex gap={2} alignItems={"center"}>
-          <Flex alignItems={"center"} gap={3} w={"110px"}>
-            <Flex
-              justifyContent={"center"}
-              alignItems={"center"}
-              bg={"red.800"}
-              p={"7px"}
-              rounded={"50%"}
-              color={"red.200"}
+      {Object.entries(groupedTransactions).map(([date, dateTransactions]) => (
+        <React.Fragment key={date}>
+          <Text p={"2px 7px"} maxW={"max-content"} rounded={7}>
+            {date}
+          </Text>
+          {dateTransactions.map((transaction: any) => (
+            <HStack
+              key={transaction._id}
+              bg={"var(--lvl3-darkcolor)"}
+              p={"10px 15px "}
+              rounded={10}
+              justifyContent={"space-between"}
             >
-              <FaArrowTrendDown />
-            </Flex>
-            <Text fontWeight={"550"}>Expence</Text>
-          </Flex>
-          <Flex alignItems={"center"} gap={2}>
-            <Flex
-              justifyContent={"center"}
-              alignItems={"center"}
-              bg={"purple.800"}
-              p={"2px 7px"}
-              gap={2}
-              rounded={5}
-              color={"purple.100"}
-            >
-              <BiCategory />
-              <Text>Family</Text>
-            </Flex>
-          </Flex>
-          <Text fontSize={"sm"} color={"gray.300"}>
-            buy new house in another country i duno where it is
-          </Text>
-        </Flex>
-        <Flex>
-          <Text fontSize={"17px"} color={"red.300"}>
-            500.00 DT
-          </Text>
-        </Flex>
-      </HStack>
-      <HStack
-        bg={"var(--lvl3-darkcolor)"}
-        p={"10px 15px "}
-        rounded={10}
-        justifyContent={"space-between"}
-      >
-        <Flex gap={2} alignItems={"center"}>
-          <Flex alignItems={"center"} gap={3} w={"110px"}>
-            <Flex
-              justifyContent={"center"}
-              alignItems={"center"}
-              bg={"green.800"}
-              p={"7px"}
-              rounded={"50%"}
-              color={"green.200"}
-            >
-              <FaArrowTrendUp />
-            </Flex>
-            <Text fontWeight={"550"}>Income</Text>
-          </Flex>
-
-          <Text fontSize={"sm"} color={"gray.300"}>
-            buy new house in another country i duno where it is
-          </Text>
-        </Flex>
-        <Flex>
-          <Text fontSize={"17px"} color={"green.300"}>
-            500.00 DT
-          </Text>
-        </Flex>
-      </HStack>
+              <Flex gap={2} alignItems={"center"}>
+                <Flex alignItems={"center"} gap={3} w={"110px"}>
+                  <Flex
+                    justifyContent={"center"}
+                    alignItems={"center"}
+                    bg={transaction.isExpense ? "red.800" : "green.800"}
+                    p={"7px"}
+                    rounded={"50%"}
+                    color={transaction.isExpense ? "red.200" : "green.200"}
+                  >
+                    {transaction.isExpense ? (
+                      <FaArrowTrendDown />
+                    ) : (
+                      <FaArrowTrendUp />
+                    )}
+                  </Flex>
+                  <Text fontWeight={"550"}>
+                    {transaction.isExpense ? "Expense" : "Income"}
+                  </Text>
+                </Flex>
+                {transaction.category !== "" && (
+                  <Flex alignItems={"center"} gap={2}>
+                    <Flex
+                      justifyContent={"center"}
+                      alignItems={"center"}
+                      bg={"purple.900"}
+                      p={"2px 7px"}
+                      gap={2}
+                      rounded={5}
+                      color={"purple.100"}
+                    >
+                      {initialCategoryIcons[transaction.category]()}
+                      <Text>{transaction.category}</Text>
+                    </Flex>
+                  </Flex>
+                )}
+                <Text fontSize={"sm"} color={"gray.300"}>
+                  {transaction.description}
+                </Text>
+              </Flex>
+              <Flex>
+                <Text
+                  fontSize={"17px"}
+                  color={transaction.isExpense ? "red.300" : "green.300"}
+                >
+                  {transaction.amount} DT
+                </Text>
+              </Flex>
+            </HStack>
+          ))}
+        </React.Fragment>
+      ))}
     </Flex>
   );
 };

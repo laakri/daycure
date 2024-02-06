@@ -50,7 +50,7 @@ const CryptoPrices: React.FC = () => {
       border={"1px solid"}
       borderColor={"var(--bordercolor)"}
       p="10px"
-      bg={"var(--lvl3-darkcolor)"}
+      bg={"var(--Dashboard-garien-color)"}
       position="relative"
       w="320px"
       h={320}

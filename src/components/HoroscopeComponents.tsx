@@ -28,7 +28,7 @@ const Horoscope: React.FC = () => {
       border={"1px solid"}
       borderColor={"var(--bordercolor)"}
       p="10px"
-      bg={"var(--lvl3-darkcolor)"}
+      bg={"var(--Dashboard-garien-color)"}
       w="320px"
       h={320}
       display="flex"
@@ -82,7 +82,7 @@ const Horoscope: React.FC = () => {
           bg={"var(--lvl1-darkcolor)"}
           p="10px"
           mt="10px"
-          rounded="20px"
+          rounded="10px"
           mb={"15px"}
         >
           <p>
