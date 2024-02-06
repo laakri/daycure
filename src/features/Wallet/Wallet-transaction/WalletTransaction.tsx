@@ -51,7 +51,7 @@ const WalletTransaction = () => {
     setActiveComponent(tab);
   };
   return (
-    <Box>
+    <Box position="sticky" top="30px" zIndex="sticky">
       <Box
         w={{ base: "420px", md: "720px", xl: "520px" }}
         border={"solid 1px "}
