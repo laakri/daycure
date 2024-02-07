@@ -1,9 +1,7 @@
 import {
   Box,
   Heading,
-  List,
-  ListIcon,
-  ListItem,
+ 
   Table,
   TableContainer,
   Tbody,
@@ -14,7 +12,6 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import React from "react";
-import { MdCheckCircle, MdSettings } from "react-icons/md";
 import { BodyComponent } from "reactjs-human-body";
 const ProfilBodyComponent: React.FC = () => {
   return (
@@ -65,19 +62,9 @@ const ProfilBodyComponent: React.FC = () => {
               <Td>23 years</Td>
               <Td isNumeric>-</Td>
             </Tr>
-            <Tr>
-              <Td>BMI</Td>
-              <Td>33 kg/m2</Td>
-              <Td isNumeric>25 kg/m2</Td>
-            </Tr>
+            
           </Tbody>
-          <Tfoot>
-            <Tr>
-              <Th>Calories</Th>
-              <Th>3200 Kcal</Th>
-              <Th isNumeric>2120 Kcal</Th>
-            </Tr>
-          </Tfoot>
+        
         </Table>
       </TableContainer>
     </Box>
