@@ -54,7 +54,7 @@ const BodyFatComponent = () => {
         </Text>
         <InputGroup>
           <Input
-            placeholder="Healthy BMI Range"
+            placeholder="Body fat percentage"
             bg={"var(--lvl1-darkcolor)"}
             textAlign={"center"}
             h={"100px"}

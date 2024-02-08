@@ -11,8 +11,9 @@ const Fitness: React.FC = () => {
 <Flex
 gap={20}
 >
-<ProfilBodyComponent/>
 <BMICalculatorComponent/>
+<ProfilBodyComponent/>
+
 </Flex>
 
   );

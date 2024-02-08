@@ -58,8 +58,9 @@ const BMIComponent: React.FC = () => {
   });
 
   return (
-    <Flex flexDirection={"row"} gap={5}>
-      <Box display={'flex'} flexDirection={'column'} gap={2}>
+    <Box>
+    <Flex flexDirection={"row"} gap={5} justifyContent={'space-around'}>
+      <Box display={'flex'} flexDirection={'column'} gap={2} >
         <Text fontSize={"xl"} color={"purple.100"}>
           Calcul BMI
         </Text>
@@ -105,56 +106,37 @@ const BMIComponent: React.FC = () => {
            BMI Range : Obese Class II
         </Text>
       </Box>
-      <Box>
-      <Text fontSize={"xl"} color={"purple.100"}>
-          Resultat
-        </Text>
-      <InputGroup>
-        <Input
-          placeholder="Resultat BMI "
-          bg={"var(--lvl1-darkcolor)"}
-          textAlign={"center"}
-          h={"100px"}
-          fontSize={"50px"}
-          border={"1px solid transparent"}
-          mb={"10px"}
-          mt={'8px'}
-         disabled
-        />
-        <InputRightElement
-          pointerEvents="none"
-          color="gray.300"
-          fontSize="1.2em"
-        >
-          kg/m2
-        </InputRightElement>
-      </InputGroup>
-      <Flex justifyContent={"space-between"} px={'1px'}>
-      <Flex gap={4} p={"5px 10px"} bg={"var(--lvl1-darkcolor)"} rounded={4}>
-          <Box
-            bg={"var(--lvl4-darkcolor)"}
-            p={" 0 10px"}
-            rounded={4}
-            _hover={{
-              cursor: "pointer",
-            }}
-          >
-            Advices
-          </Box>
-          <Box
-            bg={"var(--lvl1-darkcolor)"}
-            p={" 0 10px"}
-            rounded={4}
-            _hover={{
-              cursor: "pointer",
-            }}
-          >
-            Exercices
-          </Box>
-        </Flex>
-        </Flex>
-      </Box>
+     
     </Flex>
+     <Box pl={10} pr={10} mt={5}>
+     
+     <InputGroup>
+       <Input
+         placeholder="Resultat BMI "
+         bg={"var(--lvl1-darkcolor)"}
+         textAlign={"center"}
+         h={"100px"}
+         fontSize={"50px"}
+         border={"1px solid transparent"}
+         mb={"10px"}
+         mt={'8px'}
+        disabled
+       />
+       <InputRightElement
+         pointerEvents="none"
+         color="gray.300"
+         fontSize="1.2em"
+        mr={5}
+        mt={2}
+       >
+         kg/m2
+       </InputRightElement>
+     </InputGroup>
+     <Flex justifyContent={"space-between"} px={'1px'}>
+     
+       </Flex>
+     </Box>
+     </Box>
   );
 };
 
