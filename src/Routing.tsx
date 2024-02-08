@@ -6,6 +6,7 @@ import Fitness from "./features/Fitness/Fitness";
 import Schedule from "./features/Schedule/Schedule";
 import Homepage from "./features/Homepage/Homepage";
 import SignUp from "./features/Auth/SignUp";
+import Login from "./features/Auth/Login";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <Route path="/fitness" element={<Fitness />} />
       <Route path="/schedule" element={<Schedule />} />
       <Route path="/signup" element={<SignUp />} />
+      <Route path="/login" element={<Login />} />
     </Routes>
   );
 }
