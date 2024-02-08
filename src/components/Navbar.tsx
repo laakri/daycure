@@ -69,7 +69,7 @@ const Navbar = () => {
       </Flex>
       <Flex gap={"20px"}>
         <Flex alignItems="center" rounded="5px" padding="5px 20px">
-          <Link to="/">
+          <Link to="/login">
             <Text fontSize="md">Login</Text>
           </Link>
         </Flex>

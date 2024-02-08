@@ -1,7 +1,6 @@
 import {
   Box,
   Heading,
- 
   Table,
   TableContainer,
   Tbody,
@@ -62,9 +61,7 @@ const ProfilBodyComponent: React.FC = () => {
               <Td>23 years</Td>
               <Td isNumeric>-</Td>
             </Tr>
-            
           </Tbody>
-        
         </Table>
       </TableContainer>
     </Box>

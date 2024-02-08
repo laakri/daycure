@@ -9,21 +9,17 @@ import {
   Image,
   Text,
   Divider,
-  useToast,
 } from "@chakra-ui/react";
 import logo from "../../assets/logo.png";
 import bgImage from "../../assets/bgAuth.png";
 import { FaGoogle } from "react-icons/fa6";
-import { signUp } from "../../states/auth";
 
-const SignUp = () => {
+const Login = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
   });
-  const [loading, setLoading] = useState(false);
-  const toast = useToast();
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
@@ -33,32 +29,9 @@ const SignUp = () => {
     }));
   };
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
-    setLoading(true);
-    try {
-      await signUp(formData);
-    } catch (error: any) {
-      if (error.response && error.response.data.message) {
-        toast({
-          title: "Error",
-          description: error.response.data.message,
-          status: "error",
-          duration: 3000,
-          isClosable: true,
-        });
-      } else {
-        toast({
-          title: "Error",
-          description: error.response.data.message,
-          status: "error",
-          duration: 3000,
-          isClosable: true,
-        });
-      }
-    }
-
-    setLoading(false);
+    console.log(formData);
   };
 
   return (
@@ -70,7 +43,7 @@ const SignUp = () => {
         justifyContent="space-between"
         alignItems="center"
         w={450}
-        h={570}
+        h={478}
         m={"100px auto"}
         bg={"var(--lvl3-darkcolor)"}
         rounded={20}
@@ -93,29 +66,19 @@ const SignUp = () => {
             }}
             leftIcon={<FaGoogle />}
           >
-            Sign up with Google
+            Login with Google
           </Button>
           <Flex my={5} gap={2} alignItems={"center"}>
             <Divider borderColor={"var(--bordercolor)"}></Divider>
             <Text w={"200px"} textAlign={"center"}>
-              Sign Up
+              Login
             </Text>
             <Divider borderColor={"var(--bordercolor)"}></Divider>
           </Flex>
           <form onSubmit={handleSubmit}>
             <FormControl mb="5" isRequired>
-              <FormLabel color={"purple.100"}>Name</FormLabel>
-              <Input
-                type="text"
-                id="name"
-                name="name"
-                placeholder="Enter your name"
-                value={formData.name}
-                onChange={handleChange}
-              />
-            </FormControl>
-            <FormControl mb="5" isRequired>
               <FormLabel color={"purple.100"}>Email</FormLabel>
+
               <Input
                 type="email"
                 id="email"
@@ -127,6 +90,7 @@ const SignUp = () => {
             </FormControl>
             <FormControl mb="5" isRequired>
               <FormLabel color={"purple.100"}>Password</FormLabel>
+
               <Input
                 type="password"
                 id="password"
@@ -146,10 +110,8 @@ const SignUp = () => {
               mt={5}
               w={"100%"}
               type="submit"
-              isLoading={loading} // Show loading spinner while submitting
-              loadingText="Signing up..."
             >
-              Sign Up
+              Login
             </Button>
           </form>
         </Box>
@@ -166,4 +128,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default Login;

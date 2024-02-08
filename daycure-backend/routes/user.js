@@ -13,6 +13,7 @@ const limiter = rateLimit({
 
 /*************-Signup-********** */
 router.post("/signup", limiter, async (req, res, next) => {
+  console.log(req.body);
   try {
     const emailExists = await User.exists({ email: req.body.email });
     if (emailExists) {
