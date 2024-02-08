@@ -21,7 +21,7 @@ const TechnologiesNews: React.FC = () => {
         const isDataValid =
           cachedData &&
           cachedTimestamp &&
-          Date.now() - parseInt(cachedTimestamp, 10) < 300000; // Cache valid for 5 minutes
+          Date.now() - parseInt(cachedTimestamp, 10) < 30 * 24 * 60 * 60 * 1000;
 
         if (isDataValid) {
           setTechnologyNews(JSON.parse(cachedData));

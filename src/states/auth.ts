@@ -18,86 +18,33 @@ interface UserData {
   userName: string;
   isAdmin: boolean;
 }
-import { useToast } from "@chakra-ui/react";
+const BASE_URL = "http://localhost:4401/api";
 
 export const signUp = async (userData: SignUpData): Promise<void> => {
-  const toast = useToast();
   try {
-    const response = await axios.post(
-      "http://localhost/:4401/api/users/signup",
-      userData
-    );
+    const response = await axios.post(`${BASE_URL}/users/signup`, userData);
     if (response.status === 201) {
-      toast({
-        title: "Success",
-        description: "User created!",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
+      return Promise.resolve();
     }
   } catch (error: any) {
-    if (error.response && error.response.data.message) {
-      toast({
-        title: "Error",
-        description: error.response.data.message,
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-    } else {
-      toast({
-        title: "Error",
-        description: "An error occurred while creating the user.",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-    }
+    return Promise.reject(error);
   }
 };
 
 export const login = async (loginData: LoginData): Promise<void> => {
-  const toast = useToast();
   try {
-    const response = await axios.post(
-      "http://localhost/:4401/api/users/login",
-      loginData
-    );
+    const response = await axios.post(`${BASE_URL}/users/login`, loginData);
     if (response.status === 200) {
       const { token, expiresIn, userId, userName, isAdmin } = response.data;
-      // Save token and user details to local storage
       localStorage.setItem("token", token);
       localStorage.setItem("expiresIn", expiresIn.toString());
       localStorage.setItem("userId", userId);
       localStorage.setItem("userName", userName);
       localStorage.setItem("isAdmin", isAdmin.toString());
-      toast({
-        title: "Success",
-        description: "Logged in successfully!",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
+      return Promise.resolve();
     }
   } catch (error: any) {
-    if (error.response && error.response.data.message) {
-      toast({
-        title: "Error",
-        description: error.response.data.message,
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-    } else {
-      toast({
-        title: "Error",
-        description: "Authentication failed. Incorrect email or password.",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-    }
+    return Promise.reject(error);
   }
 };
 

@@ -3,7 +3,6 @@ import "./Carousel.css";
 import { getSephoraProdData } from "../apis/SephoraApi";
 import { Box, Text, Flex, Image, Button, Link } from "@chakra-ui/react";
 import {
-  DragHandleIcon,
   ChevronRightIcon,
   ChevronLeftIcon,
   ExternalLinkIcon,

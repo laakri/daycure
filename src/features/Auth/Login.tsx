@@ -9,17 +9,21 @@ import {
   Image,
   Text,
   Divider,
+  useToast,
 } from "@chakra-ui/react";
 import logo from "../../assets/logo.png";
 import bgImage from "../../assets/bgAuth.png";
 import { FaGoogle } from "react-icons/fa6";
+import { login } from "../../states/auth";
+import { redirect } from "react-router-dom";
 
 const Login = () => {
   const [formData, setFormData] = useState({
-    name: "",
     email: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false);
+  const toast = useToast();
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
@@ -28,10 +32,44 @@ const Login = () => {
       [name]: value,
     }));
   };
-
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
-    console.log(formData);
+    setLoading(true);
+
+    try {
+      console.log(formData);
+      await login(formData);
+
+      toast({
+        title: "Success",
+        description: "Logged in successfully!",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+      redirect("/dashboard");
+    } catch (error: any) {
+      console.error("Error logging in:", error);
+
+      if (error.response && error.response.data.message) {
+        toast({
+          title: "Error",
+          description: error.response.data.message,
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: "Failed to log in. Please try again.",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+      }
+    }
+    setLoading(false);
   };
 
   return (
@@ -110,6 +148,8 @@ const Login = () => {
               mt={5}
               w={"100%"}
               type="submit"
+              isLoading={loading}
+              loadingText="Loging in..."
             >
               Login
             </Button>

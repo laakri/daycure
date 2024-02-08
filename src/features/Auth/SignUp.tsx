@@ -38,6 +38,13 @@ const SignUp = () => {
     setLoading(true);
     try {
       await signUp(formData);
+      toast({
+        title: "Success",
+        description: "User created!",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
     } catch (error: any) {
       if (error.response && error.response.data.message) {
         toast({
@@ -50,17 +57,15 @@ const SignUp = () => {
       } else {
         toast({
           title: "Error",
-          description: error.response.data.message,
+          description: "An error occurred while creating the user.",
           status: "error",
           duration: 3000,
           isClosable: true,
         });
       }
     }
-
     setLoading(false);
   };
-
   return (
     <Box>
       <Flex
@@ -146,7 +151,7 @@ const SignUp = () => {
               mt={5}
               w={"100%"}
               type="submit"
-              isLoading={loading} // Show loading spinner while submitting
+              isLoading={loading}
               loadingText="Signing up..."
             >
               Sign Up

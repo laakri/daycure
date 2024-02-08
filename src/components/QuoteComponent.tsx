@@ -24,7 +24,8 @@ const RandomQuotes: React.FC = () => {
       const lastFetch = JSON.parse(storedLastFetchTime);
       setLastFetchTime(lastFetch);
     }
-    const oneDayInMillis = 24 * 60 * 60 * 1000;
+
+    const oneDayInMillis = 30 * 24 * 60 * 60 * 1000;
     const shouldFetch =
       !lastFetchTime || Date.now() - lastFetchTime > oneDayInMillis;
 

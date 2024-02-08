@@ -17,7 +17,7 @@ const CryptoPrices: React.FC = () => {
         const isDataValid =
           cachedData &&
           cachedTimestamp &&
-          Date.now() - parseInt(cachedTimestamp, 10) < 300000;
+          Date.now() - parseInt(cachedTimestamp, 10) < 30 * 24 * 60 * 60 * 1000;
 
         if (isDataValid) {
           // If valid, set data from cache

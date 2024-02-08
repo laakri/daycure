@@ -18,7 +18,7 @@ const Weather: React.FC = () => {
         const isDataValid =
           cachedData &&
           cachedTimestamp &&
-          Date.now() - parseInt(cachedTimestamp, 10) < 300000;
+          Date.now() - parseInt(cachedTimestamp, 10) < 30 * 24 * 60 * 60 * 1000;
 
         if (isDataValid) {
           // If valid, set data from cache
@@ -65,11 +65,12 @@ const Weather: React.FC = () => {
       {weatherData && (
         <Flex
           direction="column"
-          bg={"var(--lvl3-darkcolor)"}
+          bg={"var(--lvl1-darkcolor)"}
           p="0 10px 10px 10px"
           mt={"10px"}
           rounded={"10px"}
           justifyContent="space-between"
+          h={"calc(100% - 60px)"}
         >
           <Flex align="center" mt={2}>
             <Icon as={WiCloudy} boxSize={28} color="blue.500" />

@@ -6,14 +6,13 @@ const router = express.Router();
 const rateLimit = require("express-rate-limit");
 
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 5, // limit each IP to 5 requests per windowMs
+  windowMs: 15 * 60 * 1000,
+  max: 5,
   message: "Too many attempts, please try again later.",
 });
 
 /*************-Signup-********** */
 router.post("/signup", limiter, async (req, res, next) => {
-  console.log(req.body);
   try {
     const emailExists = await User.exists({ email: req.body.email });
     if (emailExists) {
@@ -40,54 +39,46 @@ router.post("/signup", limiter, async (req, res, next) => {
     });
   }
 });
-
 /*************-Login-********** */
-router.post("/login", limiter, (req, res, next) => {
-  let fetchedUser;
-
-  User.findOne({ email: req.body.email })
-    .then((user) => {
-      if (!user) {
-        return res.status(409).json({
-          message: "Incorrect email or password!.",
-        });
-      }
-
-      fetchedUser = user;
-      return bcrypt.compare(req.body.password, user.password);
-    })
-    .then((result) => {
-      if (!result) {
-        return res.status(409).json({
-          message: "Incorrect email or password!.",
-        });
-      }
-
-      const token = jwt.sign(
-        {
-          email: fetchedUser.email,
-          userId: fetchedUser._id,
-          isAdmin: fetchedUser.isAdmin,
-        },
-        "secret_this_should_be_longer_secret_this_should_be_longer_secret_this_should_be_longer_secret_this_should_be_longer_",
-        { expiresIn: "1h" }
-      );
-
-      res.status(200).json({
-        token: token,
-        expiresIn: 3600,
-        userId: fetchedUser._id,
-        userName: fetchedUser.name,
-        isAdmin: fetchedUser.isAdmin,
+router.post("/login", async (req, res, next) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) {
+      return res.status(409).json({
+        message: "Incorrect email or password!.",
       });
-    })
-    .catch((err) => {
-      console.error("Authentication error:", err);
+    }
 
-      res.status(401).json({
-        message: "Authentication failed. Incorrect email or password.",
+    const result = await bcrypt.compare(req.body.password, user.password);
+    if (!result) {
+      return res.status(409).json({
+        message: "Incorrect email or password!.",
       });
+    }
+
+    const token = jwt.sign(
+      {
+        email: user.email,
+        userId: user._id,
+        isAdmin: user.isAdmin,
+      },
+      "secret_this_should_be_longer_secret_this_should_be_longer_secret_this_should_be_longer_secret_this_should_be_longer_",
+      { expiresIn: "1h" }
+    );
+
+    res.status(200).json({
+      token: token,
+      expiresIn: 3600,
+      userId: user._id,
+      userName: user.name,
+      isAdmin: user.isAdmin,
     });
+  } catch (err) {
+    console.error("Authentication error:", err);
+    res.status(401).json({
+      message: "Authentication failed. Incorrect email or password.",
+    });
+  }
 });
 
 module.exports = router;
