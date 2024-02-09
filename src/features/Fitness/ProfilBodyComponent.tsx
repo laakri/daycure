@@ -1,20 +1,14 @@
-import {
-  Box,
-  Divider,
-  Flex,
-  Heading,
-Text
-} from "@chakra-ui/react";
-import React from "react";
+import { Box, Divider, Flex, Heading, Text } from "@chakra-ui/react";
+import React, { useState } from "react";
 import { BodyComponent } from "reactjs-human-body";
 const ProfilBodyComponent: React.FC = () => {
+  const [selectedPart, setSelectedPart] = useState<string | null>(null);
+  const showBodyPart = (e: any) => {
+    setSelectedPart(e);
+  };
+  console.log("test", selectedPart);
   return (
-    <Box
-      maxW={"420px"}
-      p={"5"}
-      borderRadius={"20px"}
-    >
-    
+    <Box maxW={"420px"} p={"5"} borderRadius={"20px"}>
       <BodyComponent
         partsInput={{
           head: { show: true },
@@ -31,32 +25,41 @@ const ProfilBodyComponent: React.FC = () => {
           leftFoot: { show: true },
           rightFoot: { show: true },
         }}
+        onClick={(e: any) => showBodyPart(e)}
       />
-      <Box borderRadius={'10px'} border={'1px solid'}minW={'400px'} p={3} borderColor={'gray.700'}>
-        <Heading size={'l'} color={'gray.300'}>
+      <Box
+        borderRadius={"10px"}
+        border={"1px solid"}
+        minW={"400px"}
+        p={3}
+        borderColor={"gray.700"}
+      >
+        <Heading size={"l"} color={"gray.300"}>
           Profil
         </Heading>
-      <Divider orientation="horizontal" borderColor="var(--bordercolor)" mb={1} mt={1}/>
+        <Divider
+          orientation="horizontal"
+          borderColor="var(--bordercolor)"
+          mb={1}
+          mt={1}
+        />
 
-        <Flex justifyContent={'space-between'}>
-        <Text as="h2" size="xl" color={"gray.500"}>
-        Sheima Zbidi
-      </Text>
-      <Text as="h2" size="xl" color={"gray.500"}>
-161 cm
-      </Text>
+        <Flex justifyContent={"space-between"}>
+          <Text as="h2" size="xl" color={"gray.500"}>
+            Sheima Zbidi
+          </Text>
+          <Text as="h2" size="xl" color={"gray.500"}>
+            161 cm
+          </Text>
         </Flex>
-        <Flex justifyContent={'space-between'}>
-
-        <Text as="h2" size="xl" color={"gray.500"}>
-        23 years
-      </Text>
-      <Text as="h2" size="xl" color={"gray.500"}>
-69 kg
-      </Text>
+        <Flex justifyContent={"space-between"}>
+          <Text as="h2" size="xl" color={"gray.500"}>
+            23 years
+          </Text>
+          <Text as="h2" size="xl" color={"gray.500"}>
+            69 kg
+          </Text>
         </Flex>
-    
-     
       </Box>
     </Box>
   );
