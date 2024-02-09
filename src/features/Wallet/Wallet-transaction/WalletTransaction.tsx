@@ -15,25 +15,40 @@ import {
   Divider,
   InputLeftElement,
   InputGroup,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverArrow,
+  PopoverHeader,
+  PopoverCloseButton,
+  PopoverBody,
 } from "@chakra-ui/react";
 import WalletIncome from "./WalletIncome";
 import WalletExpense from "./WalletExpenses";
 import { useState } from "react";
 import { AddIcon, SearchIcon } from "@chakra-ui/icons";
 import React from "react";
-import { FaWallet } from "react-icons/fa6";
-import { fetchAllCategories } from "../../../states/wallet";
-import { listcategories } from "../CategoriesIcons";
+import {
+  fetchAllCategories,
+  addCategory,
+  deleteCategory,
+} from "../../../states/wallet";
+import { initialCategoryIcons, listcategories } from "../CategoriesIcons";
+import { IoClose } from "react-icons/io5";
 
 const WalletTransaction = () => {
   const [activeComponent, setActiveComponent] = useState("expenses");
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [catebogies, setCatebogies] = useState<any[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [deleteCategoryName, setDeleteCategoryName] = useState("");
 
   const handleSearchTermChange = (e: any) => {
     setSearchTerm(e.target.value);
   };
+  const filteredCategories = listcategories.filter(
+    (category) => !catebogies.includes(category)
+  );
 
   const fetchData = async () => {
     try {
@@ -57,6 +72,37 @@ const WalletTransaction = () => {
   const handleTabClick = (tab: string) => {
     setActiveComponent(tab);
   };
+
+  // Function to add a category to the user
+  const handleCategoryClick = async (category: string) => {
+    try {
+      await addCategory(category);
+      fetchData();
+    } catch (error) {
+      console.error("Error adding category to user:", error);
+    }
+  };
+
+  // Function to delete a category from the user
+  const handleCategoryDelete = async (category: string) => {
+    try {
+      setDeleteCategoryName(category);
+    } catch (error) {
+      console.error("Error deleting category:", error);
+    }
+  };
+
+  // Function to confirm deletion and delete the category
+  const confirmDeleteCategory = async () => {
+    try {
+      await deleteCategory(deleteCategoryName);
+      fetchData();
+      setDeleteCategoryName("");
+    } catch (error) {
+      console.error("Error deleting category:", error);
+    }
+  };
+
   return (
     <Box position="sticky" top="30px" zIndex="sticky">
       <Box
@@ -146,14 +192,83 @@ const WalletTransaction = () => {
                 rounded={10}
                 mb={2}
               >
-                <FaWallet color="var(--secend-maincolor)" />
+                <Flex
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                  bg={"gray.700"}
+                  rounded={"50%"}
+                  p={1}
+                >
+                  {initialCategoryIcons[category]()}
+                </Flex>
                 {category}
+                <Popover
+                  isOpen={deleteCategoryName === category}
+                  onClose={() => setDeleteCategoryName("")}
+                  placement="bottom-start"
+                >
+                  <PopoverTrigger>
+                    <Flex
+                      alignItems={"center"}
+                      justifyContent={"center"}
+                      rounded={2}
+                      fontSize={"xl"}
+                      _hover={{
+                        color: "red.500",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => setDeleteCategoryName(category)}
+                    >
+                      <IoClose />
+                    </Flex>
+                  </PopoverTrigger>
+
+                  <PopoverContent
+                    w={200}
+                    bg={"var(--lvl1-darkcolor)"}
+                    borderColor={"var(--bordercolor)"}
+                  >
+                    <PopoverArrow />
+                    <PopoverCloseButton />
+                    <PopoverBody>
+                      <Text>Confirm Delete </Text>
+                      <Flex justifyContent="flex-end" mt={3}>
+                        <Button
+                          size="sm"
+                          colorScheme="red"
+                          onClick={confirmDeleteCategory}
+                        >
+                          Delete
+                        </Button>
+                      </Flex>
+                    </PopoverBody>
+                  </PopoverContent>
+                </Popover>
               </Flex>
             ))}
           </Wrap>
           <Divider w={"90%"} m={"auto"} borderColor={"var(--bordercolor)"} />
-          <Flex flexDirection={"column"} gap={1} m={"10px 20px"}>
-            {listcategories
+          <Flex
+            flexDirection={"column"}
+            gap={1}
+            m={"10px 20px"}
+            maxH={400}
+            overflow={"auto"}
+            __css={{
+              "&::-webkit-scrollbar": {
+                w: "2",
+              },
+              "&::-webkit-scrollbar-track": {
+                w: "6",
+              },
+              "&::-webkit-scrollbar-thumb": {
+                borderRadius: "10",
+                bg: `gray.100`,
+              },
+            }}
+            pr={3}
+          >
+            {filteredCategories
               .filter((category) =>
                 category.toLowerCase().includes(searchTerm.toLowerCase())
               )
@@ -170,6 +285,7 @@ const WalletTransaction = () => {
                   }}
                   rounded={7}
                   mb={2}
+                  onClick={() => handleCategoryClick(category)}
                 >
                   <Flex alignItems={"center"} gap={2}>
                     <Box
@@ -181,7 +297,7 @@ const WalletTransaction = () => {
                       bg={"purple.900"}
                       color="purple.300"
                     >
-                      <FaWallet />
+                      {initialCategoryIcons[category]()}
                     </Box>
                     {category}
                   </Flex>

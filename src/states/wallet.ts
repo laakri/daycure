@@ -2,23 +2,6 @@ import axios from "axios";
 
 const BASE_URL = "http://localhost:4401/api";
 
-//add Category
-export const addCategory = async (categoryDetails: {
-  categoryName: string;
-  maxBudget: number;
-}) => {
-  try {
-    const response = await axios.post(
-      `${BASE_URL}/category/category`,
-      categoryDetails
-    );
-    return response.data;
-  } catch (error) {
-    console.error("Error adding category:", error);
-    throw new Error("Failed to add category");
-  }
-};
-
 //fetch All Categories
 export const fetchAllCategories = async () => {
   try {
@@ -31,6 +14,35 @@ export const fetchAllCategories = async () => {
   } catch (err) {
     console.error("Error fetching categories", err);
     throw new Error("Error fetching categories");
+  }
+};
+
+// Function to add a new category
+export const addCategory = async (category: string) => {
+  try {
+    const UserId = "65c62e1585bc357e64c9f354";
+
+    const response = await axios.post(
+      `${BASE_URL}/category/categories/${UserId}`,
+      { category }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error adding category to user:", error);
+    throw new Error("Failed to add category to user");
+  }
+};
+// Function to delete a category
+export const deleteCategory = async (categoryName: string) => {
+  try {
+    const UserId = "65c62e1585bc357e64c9f354";
+    const response = await axios.delete(
+      `${BASE_URL}/category/categories/${UserId}/${categoryName}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting category:", error);
+    throw new Error("Failed to delete category");
   }
 };
 
