@@ -1,14 +1,9 @@
 import {
   Box,
+  Divider,
+  Flex,
   Heading,
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
-  Tfoot,
-  Th,
-  Thead,
-  Tr,
+Text
 } from "@chakra-ui/react";
 import React from "react";
 import { BodyComponent } from "reactjs-human-body";
@@ -16,14 +11,10 @@ const ProfilBodyComponent: React.FC = () => {
   return (
     <Box
       maxW={"420px"}
-      border={"1px solid"}
       p={"5"}
       borderRadius={"20px"}
-      borderColor={"gray.700"}
     >
-      <Heading as="h2" size="xl" color={"purple.500"}>
-        Profil
-      </Heading>
+    
       <BodyComponent
         partsInput={{
           head: { show: true },
@@ -41,29 +32,32 @@ const ProfilBodyComponent: React.FC = () => {
           rightFoot: { show: true },
         }}
       />
-      <TableContainer>
-        <Table size="sm">
-          <Thead>
-            <Tr>
-              <Th>properties</Th>
-              <Th>Values</Th>
-              <Th isNumeric>Normal Values</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            <Tr>
-              <Td>Name</Td>
-              <Td>Zbidi Chaima</Td>
-              <Td isNumeric>-</Td>
-            </Tr>
-            <Tr>
-              <Td>Age</Td>
-              <Td>23 years</Td>
-              <Td isNumeric>-</Td>
-            </Tr>
-          </Tbody>
-        </Table>
-      </TableContainer>
+      <Box borderRadius={'10px'} border={'1px solid'}minW={'400px'} p={3} borderColor={'gray.700'}>
+        <Heading size={'l'} color={'gray.300'}>
+          Profil
+        </Heading>
+      <Divider orientation="horizontal" borderColor="var(--bordercolor)" mb={1} mt={1}/>
+
+        <Flex justifyContent={'space-between'}>
+        <Text as="h2" size="xl" color={"gray.500"}>
+        Sheima Zbidi
+      </Text>
+      <Text as="h2" size="xl" color={"gray.500"}>
+161 cm
+      </Text>
+        </Flex>
+        <Flex justifyContent={'space-between'}>
+
+        <Text as="h2" size="xl" color={"gray.500"}>
+        23 years
+      </Text>
+      <Text as="h2" size="xl" color={"gray.500"}>
+69 kg
+      </Text>
+        </Flex>
+    
+     
+      </Box>
     </Box>
   );
 };
