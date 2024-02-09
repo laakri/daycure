@@ -54,7 +54,6 @@ const WalletTransaction = () => {
     try {
       const data = await fetchAllCategories();
       setCatebogies(data);
-      console.log(data);
     } catch (error) {
       console.error("Error fetching catebogies", error);
     }

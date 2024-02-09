@@ -85,8 +85,8 @@ const WalletExpense = () => {
         onChange={(e) => setCategory(e.target.value)}
       >
         {allCateg.map((category, index) => (
-          <option key={index} value={category.categoryName}>
-            {category.categoryName}
+          <option key={index} value={category}>
+            {category}
           </option>
         ))}
       </Select>
