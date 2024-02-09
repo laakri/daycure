@@ -22,25 +22,32 @@ import { useState } from "react";
 import { AddIcon, SearchIcon } from "@chakra-ui/icons";
 import React from "react";
 import { FaWallet } from "react-icons/fa6";
+import { fetchAllCategories } from "../../../states/wallet";
+import { listcategories } from "../CategoriesIcons";
 
 const WalletTransaction = () => {
   const [activeComponent, setActiveComponent] = useState("expenses");
-  // State to control the modal visibility
   const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [catebogies, setCatebogies] = useState<any[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const wallets = [
-    "Car",
-    "Family",
-    "Education",
-    "Car",
-    "Family",
-    "Education",
-    "Car",
-    "Family",
-  ];
+  const handleSearchTermChange = (e: any) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const fetchData = async () => {
+    try {
+      const data = await fetchAllCategories();
+      setCatebogies(data);
+      console.log(data);
+    } catch (error) {
+      console.error("Error fetching catebogies", error);
+    }
+  };
 
   // Function to open the modal
   const openModal = () => {
+    fetchData();
     setIsModalOpen(true);
   };
 
@@ -119,11 +126,17 @@ const WalletTransaction = () => {
               <InputLeftElement pointerEvents="none">
                 <SearchIcon color="gray.500" />
               </InputLeftElement>
-              <Input borderColor="gray.700" placeholder="Search .." />
+              <Input
+                borderColor="gray.700"
+                placeholder="Search .."
+                value={searchTerm}
+                onChange={handleSearchTermChange}
+              />
             </InputGroup>
           </ModalBody>
+
           <Wrap spacing={2} m={"10px 20px"}>
-            {wallets.map((wallet, index) => (
+            {catebogies.map((category, index) => (
               <Flex
                 key={index}
                 alignItems={"center"}
@@ -134,39 +147,47 @@ const WalletTransaction = () => {
                 mb={2}
               >
                 <FaWallet color="var(--secend-maincolor)" />
-                {wallet}
+                {category}
               </Flex>
             ))}
           </Wrap>
           <Divider w={"90%"} m={"auto"} borderColor={"var(--bordercolor)"} />
           <Flex flexDirection={"column"} gap={1} m={"10px 20px"}>
-            {wallets.map((wallet, index) => (
-              <Flex
-                key={index}
-                justifyContent={"space-between"}
-                alignItems={"center"}
-                border={"1px solid var(--bordercolor) "}
-                p={"7px 8px"}
-                rounded={7}
-                mb={2}
-              >
-                <Flex alignItems={"center"} gap={2}>
-                  <Box
-                    display={"flex"}
-                    alignContent={"center"}
-                    justifyContent={"center"}
-                    p={"7px"}
-                    rounded={"50%"}
-                    bg={"purple.900"}
-                    color="purple.300"
-                  >
-                    <FaWallet />
-                  </Box>
-                  {wallet}
+            {listcategories
+              .filter((category) =>
+                category.toLowerCase().includes(searchTerm.toLowerCase())
+              )
+              .map((category, index) => (
+                <Flex
+                  key={index}
+                  justifyContent={"space-between"}
+                  alignItems={"center"}
+                  border={"1px solid var(--bordercolor) "}
+                  p={"7px 8px"}
+                  _hover={{
+                    bg: "var(--lvl1-darkcolor)",
+                    cursor: "pointer",
+                  }}
+                  rounded={7}
+                  mb={2}
+                >
+                  <Flex alignItems={"center"} gap={2}>
+                    <Box
+                      display={"flex"}
+                      alignContent={"center"}
+                      justifyContent={"center"}
+                      p={"7px"}
+                      rounded={"50%"}
+                      bg={"purple.900"}
+                      color="purple.300"
+                    >
+                      <FaWallet />
+                    </Box>
+                    {category}
+                  </Flex>
+                  <AddIcon fontSize={"xs"} color={"gray.400"} />
                 </Flex>
-                <AddIcon fontSize={"xs"} color={"gray.400"} />
-              </Flex>
-            ))}
+              ))}
           </Flex>
         </ModalContent>
       </Modal>
