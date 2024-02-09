@@ -26,6 +26,15 @@ router.post("/signup", limiter, async (req, res, next) => {
       name: req.body.name,
       email: req.body.email,
       password: hash,
+      walletCategories: [
+        "Food",
+        "Transportation",
+        "Entertainment",
+        "Utilities",
+        "Shopping",
+        "Healthcare",
+        "Education",
+      ],
     });
     const result = await user.save();
     res.status(201).json({
