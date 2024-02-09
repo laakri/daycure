@@ -40,7 +40,7 @@ export const initialCategoryIcons: Record<string, any> = {
   ShoppingBag: ShoppingBagIcon,
   Coffee: CoffeeIcon,
 };
-export const categories = [
+export const listcategories = [
   "Food",
   "Education",
   "Car",

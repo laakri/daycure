@@ -8,11 +8,14 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
+  Divider,
 } from "@chakra-ui/react";
 import logo from "../assets/logo.png";
 import { FaMoon, FaUserAstronaut } from "react-icons/fa6";
 import { useState } from "react";
-import { IoIosSettings } from "react-icons/io";
+import { IoIosSettings, IoMdLogOut } from "react-icons/io";
+import { IoNotifications } from "react-icons/io5";
+import { logout } from "../states/auth";
 
 const Navbar = () => {
   const isLoggedIn = localStorage.getItem("token") !== null;
@@ -24,7 +27,7 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
-    // Your logout logic here
+    logout();
   };
 
   return (
@@ -93,29 +96,31 @@ const Navbar = () => {
       </Flex>
       <Flex gap={"20px"}>
         {isLoggedIn ? (
-          <Menu>
-            <MenuButton
-              as={Flex}
-              rounded={5}
+          <Flex alignItems="center" gap={2}>
+            <Flex
+              bg="var(--lvl3-darkcolor)"
+              border="var(--bordercolor) solid 1px"
+              rounded="5px"
               h="35px"
-              fontSize="18px"
-              onClick={handleMenuToggle}
-              w={"max-content"}
+              w="35px"
+              alignItems="center"
+              justifyContent="center"
+              fontSize="md"
             >
-              <Flex alignItems="center" gap={1}>
-                <Flex
-                  bg="var(--lvl3-darkcolor)"
-                  border="var(--bordercolor) solid 1px"
-                  rounded="5px"
-                  h="35px"
-                  w="35px"
-                  alignItems="center"
-                  justifyContent="center"
-                  fontSize="md"
-                  px={4}
-                >
-                  {UserName}
-                </Flex>
+              <IoNotifications />
+            </Flex>
+
+            <Menu>
+              <MenuButton
+                as={Flex}
+                rounded={5}
+                h="35px"
+                fontSize="18px"
+                cursor={"pointer"}
+                _hover={{ bg: "var(--lvl1-darkcolor)" }}
+                onClick={handleMenuToggle}
+                w={"max-content"}
+              >
                 <Flex
                   bg="var(--lvl3-darkcolor)"
                   border="var(--bordercolor) solid 1px"
@@ -128,16 +133,63 @@ const Navbar = () => {
                 >
                   <FaUserAstronaut />
                 </Flex>
-              </Flex>
-            </MenuButton>
-            {showMenu && (
-              <MenuList>
-                <MenuItem icon={<IoIosSettings />}>Settings</MenuItem>
-                <MenuItem icon={<FaMoon />}>Theme Mode</MenuItem>
-                <MenuItem onClick={handleLogout}>Logout</MenuItem>
-              </MenuList>
-            )}
-          </Menu>
+              </MenuButton>
+              {showMenu && (
+                <MenuList
+                  bg={"var(--lvl1-darkcolor)"}
+                  borderColor={"var(--bordercolor)"}
+                >
+                  <MenuItem
+                    bg={"var(--lvl1-darkcolor)"}
+                    _hover={{
+                      bg: "var(--lvl1-darkcolor)",
+                      border: "transparent 1px solid",
+                      color: "var(--chakra-colors-chakra-body-text)",
+                    }}
+                    justifyContent={"center"}
+                  >
+                    {UserName}
+                  </MenuItem>
+                  <Divider w={"90%"} m={"auto"} />
+                  <MenuItem
+                    mt={3}
+                    bg={"var(--lvl1-darkcolor)"}
+                    _hover={{
+                      bg: "var(--lvl3-darkcolor)",
+                      border: "transparent 1px solid",
+                      color: "var(--chakra-colors-chakra-body-text)",
+                    }}
+                    icon={<IoIosSettings />}
+                  >
+                    Settings
+                  </MenuItem>
+                  <MenuItem
+                    bg={"var(--lvl1-darkcolor)"}
+                    _hover={{
+                      bg: "var(--lvl3-darkcolor)",
+                      border: "transparent 1px solid",
+                      color: "var(--chakra-colors-chakra-body-text)",
+                    }}
+                    icon={<FaMoon />}
+                  >
+                    Theme Mode
+                  </MenuItem>
+                  <MenuItem
+                    bg={"var(--lvl1-darkcolor)"}
+                    _hover={{
+                      bg: "var(--lvl3-darkcolor)",
+                      border: "transparent 1px solid",
+                      color: "var(--chakra-colors-chakra-body-text)",
+                    }}
+                    onClick={handleLogout}
+                    icon={<IoMdLogOut />}
+                  >
+                    Logout
+                  </MenuItem>
+                </MenuList>
+              )}
+            </Menu>
+          </Flex>
         ) : (
           <>
             <Flex alignItems="center" rounded="5px" padding="5px 20px">

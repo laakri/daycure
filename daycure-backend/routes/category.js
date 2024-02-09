@@ -1,81 +1,56 @@
 const express = require("express");
 const router = express.Router();
-const Category = require("../models/category");
+const User = require("../models/user");
 
-// Create a category
-router.post("/category", async (req, res) => {
+// Route to get categories of a specific user
+router.get("/categories/:userId", async (req, res) => {
   try {
-    const category = new Category(req.body);
-    await category.save();
-    res.status(201).send(category);
-  } catch (error) {
-    res.status(400).send(error);
-  }
-});
-
-// Get all categories
-router.get("/categories", async (req, res) => {
-  try {
-    const categories = await Category.find();
-    res.send(categories);
-  } catch (error) {
-    res.status(500).send(error);
-  }
-});
-
-// Get category by ID
-router.get("/category/:id", async (req, res) => {
-  try {
-    const category = await Category.findById(req.params.id);
-    if (!category) {
-      return res.status(404).send();
+    const user = await User.findById(req.params.userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
     }
-    res.send(category);
-  } catch (error) {
-    res.status(500).send(error);
+    console.log(user.walletCategories);
+
+    res.json(user.walletCategories);
+  } catch (err) {
+    console.error("Error getting categories:", err);
+    res.status(500).json({ message: "Server error" });
   }
 });
 
-// Update category by ID
-router.patch("/category/:id", async (req, res) => {
-  const updates = Object.keys(req.body);
-  const allowedUpdates = ["categoryName", "maxBudget"];
-  const isValidOperation = updates.every((update) =>
-    allowedUpdates.includes(update)
-  );
-
-  if (!isValidOperation) {
-    return res.status(400).send({ error: "Invalid updates!" });
-  }
-
+// Route to add a new category to a user's walletCategories array
+router.post("/categories/:userId", async (req, res) => {
+  const { category } = req.body;
   try {
-    const category = await Category.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    });
-
-    if (!category) {
-      return res.status(404).send();
+    const user = await User.findById(req.params.userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
     }
-
-    res.send(category);
-  } catch (error) {
-    res.status(400).send(error);
+    user.walletCategories.push(category);
+    await user.save();
+    res.status(201).json({ message: "Category added successfully" });
+  } catch (err) {
+    console.error("Error adding category:", err);
+    res.status(500).json({ message: "Server error" });
   }
 });
 
-// Delete category by ID
-router.delete("/category/:id", async (req, res) => {
+// Route to delete a category from a user's walletCategories array
+router.delete("/categories/:userId/:categoryId", async (req, res) => {
+  const { categoryId } = req.params;
   try {
-    const category = await Category.findByIdAndDelete(req.params.id);
-
-    if (!category) {
-      return res.status(404).send();
+    const user = await User.findById(req.params.userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
     }
-
-    res.send(category);
-  } catch (error) {
-    res.status(500).send(error);
+    user.walletCategories = user.walletCategories.filter(
+      (cat) => cat !== categoryId
+    );
+    await user.save();
+    res.json({ message: "Category deleted successfully" });
+  } catch (err) {
+    console.error("Error deleting category:", err);
+    res.status(500).json({ message: "Server error" });
   }
 });
 

@@ -22,7 +22,11 @@ export const addCategory = async (categoryDetails: {
 //fetch All Categories
 export const fetchAllCategories = async () => {
   try {
-    const response = await axios.get(`${BASE_URL}/category/categories`);
+    /* const UserId = localStorage.getItem("userId");*/
+    const UserId = "65c62e1585bc357e64c9f354";
+    const response = await axios.get(
+      `${BASE_URL}/category/categories/${UserId}`
+    );
     return response.data;
   } catch (err) {
     console.error("Error fetching categories", err);
