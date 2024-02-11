@@ -87,31 +87,28 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
 
   return (
     <Flex
-      px={10}
       flexDirection={"column"}
-      gap={10}
-      borderRadius={"30px"}
+      gap={3}
       alignItems={"center"}
-      _before={{
-        content: '""',
-        position: "absolute",
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: "50%",
-        background:
-          "linear-gradient(to bottom, rgba(255, 255, 255, 0.01), transparent)",
-        zIndex: 1,
-        pointerEvents: "none",
-      }}
+      position="sticky"
+      top="30px"
+      zIndex="sticky"
     >
-      <Calendar
-        getDayProps={(date) => ({
-          onClick: () => handleSelect(date),
-        })}
-        size={"xl"}
-        renderDay={renderDay}
-      />
+      <Flex
+        bg={"var(--lvl3-darkcolor)"}
+        rounded={10}
+        border={"solid 1px "}
+        borderColor={"#3b3a3a44"}
+      >
+        <Calendar
+          getDayProps={(date) => ({
+            onClick: () => handleSelect(date),
+          })}
+          size={"xl"}
+          renderDay={renderDay}
+        />
+      </Flex>
+
       <Box
         border="solid 1px"
         borderColor={"#5e007a"}

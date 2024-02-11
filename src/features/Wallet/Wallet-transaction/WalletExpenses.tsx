@@ -1,10 +1,9 @@
 import { Text, Flex, Input, Button, Select } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { fetchAllCategories, addTransaction } from "../../../states/wallet";
-import Category from "./categoryModel";
 
 const WalletExpense = () => {
-  const [allCateg, setAllCateg] = useState<Category[]>([]);
+  const [allCateg, setAllCateg] = useState<string[]>([]);
   const [amount, setAmount] = useState(0);
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");

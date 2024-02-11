@@ -16,7 +16,10 @@
   --hover-maincolor: #5420a8;
   --secend-maincolor: #e8683e;
   --hover-secend-maincolor: #bf4a22;
-  --Dashboard-garien-color: linear-gradient(to bottom, rgba(127, 57, 218, 0.111), transparent);
+  /*
+    --Dashboard-garien-color: linear-gradient(to bottom, rgba(127, 57, 218, 0.111), transparent);
+  */ 
+ --Dashboard-garien-color: #06070a;
   
   background-color: var(--chakra-colors-chakra-body-bg);
   color: var(--chakra-colors-chakra-body-text);
