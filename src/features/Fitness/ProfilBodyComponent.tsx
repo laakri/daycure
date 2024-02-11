@@ -30,7 +30,7 @@ const ProfilBodyComponent: React.FC = () => {
       <Box
         borderRadius={"10px"}
         border={"1px solid"}
-        minW={"400px"}
+        minW={"290px"}
         p={3}
         borderColor={"gray.700"}
       >
@@ -61,6 +61,8 @@ const ProfilBodyComponent: React.FC = () => {
           </Text>
         </Flex>
       </Box>
+
+      
     </Box>
   );
 };
