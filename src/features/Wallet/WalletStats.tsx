@@ -1,10 +1,8 @@
-import { CalendarIcon } from "@chakra-ui/icons";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Flex,
   Text,
-  Divider,
-  HStack,
   InputGroup,
   InputRightElement,
   Input,
@@ -14,61 +12,62 @@ import {
   StatNumber,
   StatHelpText,
   StatArrow,
-  Image,
+  useColorModeValue,
 } from "@chakra-ui/react";
-import { FaArrowTrendDown, FaArrowTrendUp } from "react-icons/fa6";
-import { useEffect, useState } from "react";
-import { fetchAllTransactions } from "../../states/wallet";
-import React from "react";
-import { initialCategoryIcons } from "./CategoriesIcons";
+import Chart from "react-apexcharts";
+import { CalendarIcon } from "@chakra-ui/icons";
 
 const WalletStats = () => {
-  const [transactions, setTransactions] = useState<any[]>([]);
+  const [chartData, setChartData] = useState({
+    labels: [],
+    series: [
+      { name: "Income", data: [] },
+      { name: "Expense", data: [] },
+    ],
+  });
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await fetchAllTransactions();
-        setTransactions(data);
-      } catch (error) {
-        console.error("Error fetching transactions", error);
-      }
-    };
-
+    // Fetch data from backend when component mounts
     fetchData();
   }, []);
 
-  const groupTransactionsByDate = (transactions: any[]): any => {
-    const sortedTransactions = transactions.sort((a, b) => {
-      const dateA = new Date(a.date);
-      const dateB = new Date(b.date);
-      const currentDate = new Date();
-
-      const diffA = Math.abs(dateA.getTime() - currentDate.getTime());
-      const diffB = Math.abs(dateB.getTime() - currentDate.getTime());
-
-      return diffA - diffB;
-    });
-
-    const groupedTransactions: any = {};
-    sortedTransactions.forEach((transaction) => {
-      const date = new Date(transaction.date).toLocaleDateString();
-      if (!groupedTransactions[date]) {
-        groupedTransactions[date] = [];
-      }
-      groupedTransactions[date].push(transaction);
-    });
-    return groupedTransactions;
+  const fetchData = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:4401/api/transactions/stats/65c62e1585bc357e64c9f354"
+      );
+      const data = await response.json();
+      setChartData(data.chartData);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   };
 
-  const groupedTransactions: any = groupTransactionsByDate(transactions);
+  const options = {
+    chart: {
+      type: "line",
+      toolbar: {
+        show: false, // Hide the toolbar
+      },
+    },
+    stroke: {
+      curve: "smooth",
+      colors: ["#38A169", "#E53E3E"], // Green for income, red for expense
+    },
+    xaxis: {
+      categories: chartData.labels,
+    },
+    grid: {
+      show: false,
+    },
+  };
+
+  const bgColor = useColorModeValue("var(--lvl1-darkcolor)", "gray.800");
+  const borderColor = useColorModeValue("var(--bordercolor)", "gray.700");
+  const textColor = useColorModeValue("black", "white");
 
   return (
-    <Flex
-      flexDirection={"column"}
-      w={{ base: "80%", xl: "calc(100% - 540px)" }}
-      gap={5}
-    >
+    <Flex flexDirection={"column"} gap={5}>
       <Flex justifyContent={"space-between"} alignItems={"center"}>
         <Flex gap={4}>
           <Text fontSize="2xl" fontWeight="bold">
@@ -77,7 +76,7 @@ const WalletStats = () => {
           <Text
             fontSize="md"
             fontWeight="bold"
-            border={"var(--bordercolor) solid 1px"}
+            border={`${borderColor} solid 1px`}
             p={"5px 8px "}
             rounded={8}
             gap={3}
@@ -88,7 +87,7 @@ const WalletStats = () => {
             2024
           </Text>
         </Flex>
-        <InputGroup size="md" borderColor={"gray.700"} maxW={"250px"}>
+        <InputGroup size="md" borderColor={borderColor} maxW={"250px"}>
           <Input pr="4.5rem" placeholder="Search.." />
           <InputRightElement width="4.5rem">
             <Button
@@ -111,8 +110,8 @@ const WalletStats = () => {
         borderRadius={"20px"}
         w={"100%"}
         minH={"300px"}
-        bg={"var(--lvl1-darkcolor)"}
-        border={"1px solid var(--bordercolor)"}
+        bg={bgColor}
+        border={`1px solid ${borderColor}`}
         h={"100%"}
       >
         <Flex
@@ -140,106 +139,15 @@ const WalletStats = () => {
             </Stat>
           </Box>
         </Flex>
-        <Box w={"calc(100% - 120px)"}>
-          <Image
-            rounded={10}
-            src="https://i.ibb.co/qJgL357/select-chart.png"
-            alt="Dan Abramov"
+        <Box w={"calc(100% - 120px)"} color={textColor}>
+          <Chart
+            options={options}
+            series={chartData.series}
+            type="line"
+            height={350}
           />
         </Box>
       </Flex>
-      <Flex justifyContent={"space-between"} px={5}>
-        <Text fontSize={"xl"}>Transactions</Text>
-        <Flex gap={4} p={"5px 10px"} bg={"var(--lvl1-darkcolor)"} rounded={4}>
-          <Box
-            bg={"var(--lvl4-darkcolor)"}
-            p={" 0 10px"}
-            rounded={4}
-            _hover={{
-              cursor: "pointer",
-            }}
-          >
-            Infos
-          </Box>
-          <Box
-            bg={"var(--lvl1-darkcolor)"}
-            p={" 0 10px"}
-            rounded={4}
-            _hover={{
-              cursor: "pointer",
-            }}
-          >
-            History
-          </Box>
-        </Flex>
-      </Flex>
-      <Divider orientation="horizontal" borderColor="var(--bordercolor)" />
-
-      {Object.entries(groupedTransactions).map(([date, dateTransactions]) => (
-        <React.Fragment key={date}>
-          <Text p={"2px 7px"} maxW={"max-content"} rounded={7}>
-            {date}
-          </Text>
-          {dateTransactions.map((transaction: any) => (
-            <HStack
-              key={transaction._id}
-              bg={"var(--lvl3-darkcolor)"}
-              p={"10px 15px "}
-              rounded={10}
-              justifyContent={"space-between"}
-            >
-              <Flex gap={2} alignItems={"center"}>
-                <Flex alignItems={"center"} gap={3} w={"110px"}>
-                  <Flex
-                    justifyContent={"center"}
-                    alignItems={"center"}
-                    bg={transaction.isExpense ? "red.800" : "green.800"}
-                    p={"7px"}
-                    rounded={"50%"}
-                    color={transaction.isExpense ? "red.200" : "green.200"}
-                  >
-                    {transaction.isExpense ? (
-                      <FaArrowTrendDown />
-                    ) : (
-                      <FaArrowTrendUp />
-                    )}
-                  </Flex>
-                  <Text fontWeight={"550"}>
-                    {transaction.isExpense ? "Expense" : "Income"}
-                  </Text>
-                </Flex>
-                {transaction.category !== "" && (
-                  <Flex alignItems={"center"} gap={2}>
-                    <Flex
-                      justifyContent={"center"}
-                      alignItems={"center"}
-                      bg={"purple.900"}
-                      p={"2px 7px"}
-                      gap={2}
-                      rounded={5}
-                      color={"purple.100"}
-                    >
-                      {initialCategoryIcons[transaction.category]()}
-                      <Text>{transaction.category}</Text>
-                    </Flex>
-                  </Flex>
-                )}
-                <Text fontSize={"sm"} color={"gray.300"}>
-                  {transaction.description}
-                </Text>
-              </Flex>
-              <Flex>
-                <Text
-                  fontSize={"17px"}
-                  color={transaction.isExpense ? "red.300" : "green.300"}
-                >
-                  {transaction.amount} DT
-                </Text>
-              </Flex>
-            </HStack>
-          ))}
-        </React.Fragment>
-      ))}
     </Flex>
   );
 };

@@ -1,10 +1,9 @@
 import { Text, Flex, Input, Button, Select } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { fetchAllCategories, addTransaction } from "../../../states/wallet";
-import Category from "./categoryModel";
 
 const WalletExpense = () => {
-  const [allCateg, setAllCateg] = useState<Category[]>([]);
+  const [allCateg, setAllCateg] = useState<string[]>([]);
   const [amount, setAmount] = useState(0);
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
@@ -29,7 +28,7 @@ const WalletExpense = () => {
         date: new Date(),
         description,
         isExpense: true,
-        userId: "65b38749dabf0c792c357f12",
+        userId: "65c62e1585bc357e64c9f354",
         category,
       });
       setAmount(0);
@@ -85,8 +84,8 @@ const WalletExpense = () => {
         onChange={(e) => setCategory(e.target.value)}
       >
         {allCateg.map((category, index) => (
-          <option key={index} value={category.categoryName}>
-            {category.categoryName}
+          <option key={index} value={category}>
+            {category}
           </option>
         ))}
       </Select>

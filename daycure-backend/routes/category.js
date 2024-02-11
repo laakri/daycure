@@ -9,7 +9,6 @@ router.get("/categories/:userId", async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    console.log(user.walletCategories);
 
     res.json(user.walletCategories);
   } catch (err) {
@@ -36,15 +35,15 @@ router.post("/categories/:userId", async (req, res) => {
 });
 
 // Route to delete a category from a user's walletCategories array
-router.delete("/categories/:userId/:categoryId", async (req, res) => {
-  const { categoryId } = req.params;
+router.delete("/categories/:userId/:categoryName", async (req, res) => {
+  const { categoryName } = req.params;
   try {
     const user = await User.findById(req.params.userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
     user.walletCategories = user.walletCategories.filter(
-      (cat) => cat !== categoryId
+      (cat) => cat !== categoryName
     );
     await user.save();
     res.json({ message: "Category deleted successfully" });

@@ -12,6 +12,10 @@ import {
   BiShoppingBag,
 } from "react-icons/bi";
 import { FiCoffee } from "react-icons/fi";
+import { IoIosHappy } from "react-icons/io";
+import { MdEmojiTransportation } from "react-icons/md";
+import { MdHealthAndSafety } from "react-icons/md";
+import { LuUtilityPole } from "react-icons/lu";
 
 const FoodIcon = IoFastFood;
 const EducationIcon = BiBook;
@@ -25,6 +29,10 @@ const HealthIcon = BiHealth;
 const MusicIcon = BiMusic;
 const ShoppingBagIcon = BiShoppingBag;
 const CoffeeIcon = FiCoffee;
+const EntertainmentIcon = IoIosHappy;
+const TransportationIcon = MdEmojiTransportation;
+const HealthcareIcon = MdHealthAndSafety;
+const UtilitiesIcon = LuUtilityPole;
 
 export const initialCategoryIcons: Record<string, any> = {
   Food: FoodIcon,
@@ -37,8 +45,12 @@ export const initialCategoryIcons: Record<string, any> = {
   Love: HeartIcon,
   Health: HealthIcon,
   Music: MusicIcon,
-  ShoppingBag: ShoppingBagIcon,
+  Shopping: ShoppingBagIcon,
   Coffee: CoffeeIcon,
+  Entertainment: EntertainmentIcon,
+  Transportation: TransportationIcon,
+  Healthcare: HealthcareIcon,
+  Utilities: UtilitiesIcon,
 };
 export const listcategories = [
   "Food",
@@ -51,6 +63,10 @@ export const listcategories = [
   "Love",
   "Health",
   "Music",
-  "ShoppingBag",
   "Coffee",
+  "Transportation",
+  "Entertainment",
+  "Utilities",
+  "Shopping",
+  "Healthcare",
 ];

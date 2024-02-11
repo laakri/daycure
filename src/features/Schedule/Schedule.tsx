@@ -218,19 +218,24 @@ const Schedule = () => {
   };
 
   return (
-    <Box>
-      <Flex mt={50} gap={4} justifyContent={"center"} alignItems={"start"}>
-        <CalendarComponent
-          selected={selected}
-          handleSelect={handleSelect}
-          tasks={tasks}
-        />
-
+    <Box maxW={"1400px"} m={"40px auto"}>
+      <Flex
+        gap={{ base: "20px", xl: "none" }}
+        p={"10px"}
+        justifyContent={"space-between"}
+        alignItems={{ base: "center", xl: "start" }}
+        direction={{ base: "column", xl: "row" }}
+      >
         <TasksComponent
           selected={selected}
           tasks={tasks}
           handleOpenModal={handleOpenModal}
           handleToggleTaskCompletion={handleToggleTaskCompletion}
+        />
+        <CalendarComponent
+          selected={selected}
+          handleSelect={handleSelect}
+          tasks={tasks}
         />
       </Flex>
       <Modal

@@ -1,6 +1,7 @@
 import { Box, Flex, Stack } from "@chakra-ui/react";
 import WalletStats from "./WalletStats";
 import WalletTransaction from "./Wallet-transaction/WalletTransaction";
+import WalletListTransactions from "./Wallet-list-transactions";
 
 const Wallet = () => {
   return (
@@ -12,7 +13,14 @@ const Wallet = () => {
         alignItems={{ base: "center", xl: "start" }}
         direction={{ base: "column", xl: "row" }}
       >
-        <WalletStats />
+        <Flex
+          flexDirection={"column"}
+          w={{ base: "80%", xl: "calc(100% - 540px)" }}
+          gap={5}
+        >
+          <WalletStats />
+          <WalletListTransactions />
+        </Flex>
         <WalletTransaction />
       </Flex>
     </Box>

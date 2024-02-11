@@ -14,8 +14,14 @@ import logo from "../assets/logo.png";
 import { FaMoon, FaUserAstronaut } from "react-icons/fa6";
 import { useState } from "react";
 import { IoIosSettings, IoMdLogOut } from "react-icons/io";
-import { IoNotifications } from "react-icons/io5";
+import {
+  IoFitnessOutline,
+  IoNotifications,
+  IoWalletOutline,
+} from "react-icons/io5";
 import { logout } from "../states/auth";
+import { MdOutlineAddTask } from "react-icons/md";
+import { RxDashboard } from "react-icons/rx";
 
 const Navbar = () => {
   const isLoggedIn = localStorage.getItem("token") !== null;
@@ -67,29 +73,29 @@ const Navbar = () => {
       >
         <Box display="flex" gap="10px" alignItems="center">
           <NavLink to="/dashboard">
-            <Text fontSize="md" p="5px 10px">
-              Dashboard
+            <Text fontSize="2xl" p="5px 10px">
+              <RxDashboard />
             </Text>
           </NavLink>
         </Box>
         <Box display="flex" gap="10px" alignItems="center ">
           <NavLink to="/schedule">
-            <Text fontSize="md" p="5px 10px">
-              Schedule
+            <Text fontSize="2xl" p="5px 10px">
+              <MdOutlineAddTask />
             </Text>
           </NavLink>
         </Box>
         <Box display="flex" gap="10px" alignItems="cent e r">
           <NavLink to="/wallet">
-            <Text fontSize="md" p="5px 10px">
-              Wallet
+            <Text fontSize="2xl" p="5px 10px">
+              <IoWalletOutline />
             </Text>
           </NavLink>
         </Box>
         <Box display="flex" gap="10px" alignItems="cente r ">
           <NavLink to="/fitness">
-            <Text fontSize="md" p="5px 10px">
-              Fitness
+            <Text fontSize="2xl" p="5px 10px">
+              <IoFitnessOutline />
             </Text>
           </NavLink>
         </Box>

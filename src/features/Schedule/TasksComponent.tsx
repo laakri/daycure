@@ -254,8 +254,8 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
                 p={2}
                 justifyContent={"space-between"}
                 rounded={5}
-                border={"solid 1px"}
-                borderColor={getBackgroundColorBysubType(task.subType)}
+                border={"solid 1px transparent "}
+                bg={getBackgroundColorBysubType(task.subType)}
                 _hover={{
                   bg: "var(--lvl2-darkcolor)",
                 }}
@@ -467,13 +467,13 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
   function getBackgroundColorBysubType(type: string): string {
     switch (type) {
       case "event":
-        return "green.200";
+        return "green.900";
       case "birthday":
-        return "yellow.300";
+        return "#226600";
       case "wedding":
-        return "cyan.200";
+        return "#000099";
       case "party":
-        return "pink.200";
+        return "pink.900";
 
       default:
         return "#ea2a9055";
@@ -481,7 +481,7 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
   }
   return (
     <Box
-      w={520}
+      w={"100%"}
       border={"solid 1px "}
       borderColor={"#3b3a3a44"}
       p={"20px 10px"}
