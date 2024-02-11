@@ -28,7 +28,7 @@ const WalletExpense = () => {
         date: new Date(),
         description,
         isExpense: true,
-        userId: "65b38749dabf0c792c357f12",
+        userId: "65c62e1585bc357e64c9f354",
         category,
       });
       setAmount(0);

@@ -9,7 +9,6 @@ router.get("/categories/:userId", async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    console.log(user.walletCategories);
 
     res.json(user.walletCategories);
   } catch (err) {
