@@ -1,9 +1,13 @@
-import { Box, Flex, Stack } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import WalletStats from "./WalletStats";
 import WalletTransaction from "./Wallet-transaction/WalletTransaction";
 import WalletListTransactions from "./Wallet-list-transactions";
 
 const Wallet = () => {
+  const handleTransactionAdded = () => {
+    console.log("Transaction added!");
+    onTransactionAdded();
+  };
   return (
     <Box maxW={"1400px"} m={"40px auto"}>
       <Flex
@@ -18,10 +22,10 @@ const Wallet = () => {
           w={{ base: "80%", xl: "calc(100% - 540px)" }}
           gap={5}
         >
-          <WalletStats />
+          <WalletStats onTransactionAdded={handleTransactionAdded} />
           <WalletListTransactions />
         </Flex>
-        <WalletTransaction />
+        <WalletTransaction onTransactionAdded={handleTransactionAdded} />
       </Flex>
     </Box>
   );

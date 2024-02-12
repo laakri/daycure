@@ -19,7 +19,6 @@ import {
   PopoverTrigger,
   PopoverContent,
   PopoverArrow,
-  PopoverHeader,
   PopoverCloseButton,
   PopoverBody,
 } from "@chakra-ui/react";
@@ -35,8 +34,12 @@ import {
 } from "../../../states/wallet";
 import { initialCategoryIcons, listcategories } from "../CategoriesIcons";
 import { IoClose } from "react-icons/io5";
-
-const WalletTransaction = () => {
+interface WalletTransactionProps {
+  onTransactionAdded: () => void;
+}
+const WalletTransaction: React.FC<WalletTransactionProps> = ({
+  onTransactionAdded,
+}) => {
   const [activeComponent, setActiveComponent] = useState("expenses");
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [catebogies, setCatebogies] = useState<any[]>([]);
@@ -46,6 +49,7 @@ const WalletTransaction = () => {
   const handleSearchTermChange = (e: any) => {
     setSearchTerm(e.target.value);
   };
+
   const filteredCategories = listcategories.filter(
     (category) => !catebogies.includes(category)
   );
@@ -157,7 +161,9 @@ const WalletTransaction = () => {
           </Button>
         </HStack>
 
-        {activeComponent === "expenses" && <WalletExpense />}
+        {activeComponent === "expenses" && (
+          <WalletExpense onTransactionAdded={onTransactionAdded} />
+        )}
         {activeComponent === "income" && <WalletIncome />}
       </Box>
 

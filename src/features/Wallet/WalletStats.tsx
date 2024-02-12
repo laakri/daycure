@@ -13,31 +13,45 @@ import {
   StatHelpText,
   StatArrow,
   useColorModeValue,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
 } from "@chakra-ui/react";
 import Chart from "react-apexcharts";
-import { CalendarIcon } from "@chakra-ui/icons";
+import { CalendarIcon, ChevronDownIcon } from "@chakra-ui/icons";
 
-const WalletStats = () => {
+interface WalletStatsProps {
+  onTransactionAdded: () => void;
+}
+
+const WalletStats: React.FC<WalletStatsProps> = ({ onTransactionAdded }) => {
+  const [selectedOption, setSelectedOption] = useState("All");
+  const [StatsData, setStatsData] = useState<any | null>(null);
   const [chartData, setChartData] = useState({
     labels: [],
     series: [
-      { name: "Income", data: [] },
       { name: "Expense", data: [] },
+      { name: "Income", data: [] },
     ],
   });
 
   useEffect(() => {
-    // Fetch data from backend when component mounts
-    fetchData();
-  }, []);
+    fetchData(selectedOption);
+  }, [selectedOption, onTransactionAdded]);
 
-  const fetchData = async () => {
+  const fetchData = async (range: string) => {
     try {
       const response = await fetch(
-        "http://localhost:4401/api/transactions/stats/65c62e1585bc357e64c9f354"
+        `http://localhost:4401/api/transactions/stats/65c62e1585bc357e64c9f354/${range}`
       );
       const data = await response.json();
       setChartData(data.chartData);
+      const responsees = await fetch(
+        `http://localhost:4401/api/transactions/stats-number/65c62e1585bc357e64c9f354`
+      );
+      const datastats = await responsees.json();
+      setStatsData(datastats);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -47,12 +61,17 @@ const WalletStats = () => {
     chart: {
       type: "line",
       toolbar: {
-        show: false, // Hide the toolbar
+        show: false,
       },
+    },
+
+    fill: {
+      type: "gradient",
     },
     stroke: {
       curve: "smooth",
-      colors: ["#38A169", "#E53E3E"], // Green for income, red for expense
+      width: 5,
+      colors: ["#66DA26", "#E53E3E"],
     },
     xaxis: {
       categories: chartData.labels,
@@ -60,11 +79,18 @@ const WalletStats = () => {
     grid: {
       show: false,
     },
+    legend: {
+      show: false,
+    },
   };
 
   const bgColor = useColorModeValue("var(--lvl1-darkcolor)", "gray.800");
   const borderColor = useColorModeValue("var(--bordercolor)", "gray.700");
   const textColor = useColorModeValue("black", "white");
+
+  const handleOptionSelect = (option: any) => {
+    setSelectedOption(option);
+  };
 
   return (
     <Flex flexDirection={"column"} gap={5}>
@@ -113,6 +139,7 @@ const WalletStats = () => {
         bg={bgColor}
         border={`1px solid ${borderColor}`}
         h={"100%"}
+        position={"relative"}
       >
         <Flex
           flexDirection={"column"}
@@ -122,7 +149,9 @@ const WalletStats = () => {
         >
           <Stat>
             <StatLabel color={"purple.300"}>Total Income</StatLabel>
-            <StatNumber>300.00</StatNumber>
+            <StatNumber>
+              {StatsData ? StatsData.totalIncome : "Loading..."}
+            </StatNumber>
             <StatHelpText>
               <StatArrow type="increase" />
               23.36%
@@ -131,11 +160,15 @@ const WalletStats = () => {
           <Box>
             <Stat>
               <StatLabel color={"red.300"}>Monthly Expenses</StatLabel>
-              <StatNumber color={"red.100"}>100.00</StatNumber>
+              <StatNumber color={"red.100"}>
+                {StatsData ? StatsData.totalExpense : "Loading..."}
+              </StatNumber>
             </Stat>
             <Stat>
               <StatLabel color={"cyan.300"}>Remaining Amount</StatLabel>
-              <StatNumber color={"cyan.50"}>100.00</StatNumber>
+              <StatNumber color={"cyan.50"}>
+                {StatsData ? StatsData.remainingAmount : "Loading..."}
+              </StatNumber>
             </Stat>
           </Box>
         </Flex>
@@ -144,9 +177,74 @@ const WalletStats = () => {
             options={options}
             series={chartData.series}
             type="line"
-            height={350}
+            height={250}
           />
         </Box>
+        <Flex position={"absolute"} right={3}>
+          <Menu placement="bottom-end" colorScheme="gray">
+            <MenuButton
+              as={Button}
+              rightIcon={<ChevronDownIcon />}
+              bg={"var(--lvl3-darkcolor)"}
+              color={"white"}
+              px={2}
+              h={8}
+              display={"flex"}
+              _active={{
+                bg: "var(--lvl3-darkcolor)",
+              }}
+              border={"var(--bordercolor) solid 1px"}
+            >
+              {selectedOption}
+            </MenuButton>
+            <MenuList
+              bg={"var(--lvl3-darkcolor)"}
+              borderColor={"var(--bordercolor)"}
+              zIndex={10000}
+              style={{
+                minWidth: "unset",
+                maxWidth: "150px",
+              }}
+            >
+              <MenuItem
+                minH="48px"
+                bg={"var(--lvl3-darkcolor)"}
+                _hover={{
+                  bg: "var(--lvl1-darkcolor)",
+                  color: "white",
+                }}
+                borderColor={"transparent"}
+                onClick={() => handleOptionSelect("All")}
+              >
+                All
+              </MenuItem>
+              <MenuItem
+                minH="48px"
+                bg={"var(--lvl3-darkcolor)"}
+                _hover={{
+                  bg: "var(--lvl1-darkcolor)",
+                  color: "white",
+                }}
+                borderColor={"transparent"}
+                onClick={() => handleOptionSelect("Year")}
+              >
+                Year
+              </MenuItem>
+              <MenuItem
+                minH="40px"
+                bg={"var(--lvl3-darkcolor)"}
+                _hover={{
+                  bg: "var(--lvl1-darkcolor)",
+                  color: "white",
+                }}
+                borderColor={"transparent"}
+                onClick={() => handleOptionSelect("Month")}
+              >
+                Month
+              </MenuItem>
+            </MenuList>
+          </Menu>
+        </Flex>
       </Flex>
     </Flex>
   );

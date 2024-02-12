@@ -1,8 +1,13 @@
-import { Text, Flex, Input, Button, Select } from "@chakra-ui/react";
+import { Text, Flex, Input, Button, Select, useToast } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { fetchAllCategories, addTransaction } from "../../../states/wallet";
+interface WalletExpenseProps {
+  onTransactionAdded: () => void;
+}
 
-const WalletExpense = () => {
+const WalletExpense: React.FC<WalletExpenseProps> = ({
+  onTransactionAdded,
+}) => {
   const [allCateg, setAllCateg] = useState<string[]>([]);
   const [amount, setAmount] = useState(0);
   const [description, setDescription] = useState("");
@@ -19,6 +24,7 @@ const WalletExpense = () => {
     };
     fetchAllCateg();
   }, []);
+  const toast = useToast();
 
   const handleConfirmClick = async () => {
     try {
@@ -34,8 +40,20 @@ const WalletExpense = () => {
       setAmount(0);
       setDescription("");
       setCategory("");
-      console.log("Transaction added successfully!");
+      toast({
+        title: "Transaction added successfully!",
+        status: "success",
+        duration: 2000,
+        isClosable: true,
+      });
+      onTransactionAdded();
     } catch (error) {
+      toast({
+        title: "Error adding transaction",
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+      });
       console.error("Error adding transaction", error);
     }
   };

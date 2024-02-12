@@ -99,15 +99,35 @@ router.delete("/transaction/:id", async (req, res) => {
 });
 
 // Route to get income and expense data for a user within a specific time period
-router.get("/stats/:userId", async (req, res) => {
+const moment = require("moment");
+
+router.get("/stats/:userId/:range", async (req, res) => {
   try {
     const userId = req.params.userId;
+    const range = req.params.range.toLowerCase(); // Convert range to lowercase for easier comparison
 
     // Fetch transactions for the given userId
-    const transactions = await Transaction.find({ userId: userId });
-    console.log(transactions);
+    let transactions;
+    if (range === "all") {
+      transactions = await Transaction.find({ userId: userId });
+    } else if (range === "year") {
+      const startDate = moment().subtract(12, "months").startOf("day"); // Start date: 12 months ago from today
+      transactions = await Transaction.find({
+        userId: userId,
+        date: { $gte: startDate.toDate() }, // Fetch transactions from startDate onwards
+      });
+    } else if (range === "month") {
+      const startDate = moment().subtract(30, "days").startOf("day"); // Start date: 30 days ago from today
+      transactions = await Transaction.find({
+        userId: userId,
+        date: { $gte: startDate.toDate() }, // Fetch transactions from startDate onwards
+      });
+    } else {
+      return res.status(400).json({ message: "Invalid range parameter" });
+    }
+
     // If no transactions found for the user
-    if (!transactions) {
+    if (!transactions || transactions.length === 0) {
       return res
         .status(404)
         .json({ message: "No transactions found for the user" });
@@ -141,6 +161,47 @@ router.get("/stats/:userId", async (req, res) => {
 
     // Send the formatted data back in the response
     res.status(200).json({ chartData });
+  } catch (err) {
+    // Handle any errors
+    console.error(err);
+    res.status(500).json({ message: "Server Error" });
+  }
+});
+router.get("/stats-number/:userId", async (req, res) => {
+  try {
+    const userId = req.params.userId;
+
+    // Fetch transactions based on the specified range
+    const transactions = await Transaction.find({ userId: userId });
+
+    // If no transactions found for the user
+    if (!transactions) {
+      return res
+        .status(404)
+        .json({ message: "No transactions found for the user" });
+    }
+
+    // Extract necessary data for the stats
+    let totalIncome = 0;
+    let totalExpense = 0;
+
+    transactions.forEach((transaction) => {
+      if (transaction.isExpense) {
+        totalExpense += transaction.amount;
+      } else {
+        totalIncome += transaction.amount;
+      }
+    });
+
+    // Calculate remaining amount
+    const remainingAmount = totalIncome - totalExpense;
+
+    // Send the formatted data back in the response
+    res.status(200).json({
+      totalIncome,
+      totalExpense,
+      remainingAmount,
+    });
   } catch (err) {
     // Handle any errors
     console.error(err);
