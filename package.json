@@ -28,7 +28,8 @@
     "react-router-dom": "^6.21.3",
     "react-slick": "^0.30.1",
     "reactjs-human-body": "^0.0.8",
-    "slick-carousel": "^1.8.1"
+    "slick-carousel": "^1.8.1",
+    "styled-components": "^6.1.8"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",
