@@ -1,4 +1,7 @@
 /* global colors */
+.slick-slide {
+  margin : 0 10px;
+}
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
