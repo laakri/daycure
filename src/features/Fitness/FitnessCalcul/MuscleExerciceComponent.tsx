@@ -11,8 +11,6 @@ import {
   ModalCloseButton,
   ModalHeader,
   ModalOverlay,
-  Divider,
-  Heading,
 } from "@chakra-ui/react";
 import { LiaWeightSolid } from "react-icons/lia";
 import { GiMuscleUp } from "react-icons/gi";
@@ -31,8 +29,9 @@ const MuscleExerciceComponent: React.FC = () => {
     className: "center",
     infinite: true,
     centerPadding: "60px",
-    slidesToShow: 5,
+    slidesToShow: 3,
     swipeToSlide: true,
+    adaptiveHeight: true
   };
 
   // Définition de l'état initial du chronomètre
@@ -47,18 +46,18 @@ const MuscleExerciceComponent: React.FC = () => {
   };
   return (
     <Box w={1000} mt={20}>
-      <Heading as="h2" size="3xl" textAlign={"center"}>
+      <Text fontSize="3xl" fontWeight="bold">
         what is your goal
-      </Heading>
-      <Text fontSize="3xl" textAlign={"center"}>
+      </Text>
+      <Text textAlign={"left"}>
         achieve your goal with your personalized program
       </Text>
-      <Flex mt={"60px"} gap={20} ml={"55px"}>
+      <Flex mt={"30px"} gap={5} >
         <Button
           border={"var(--bordercolor) solid 1px"}
           p={"5px 8px "}
           rounded={8}
-          w={"240px"}
+          w={"180px"}
           gap={2}
           alignContent={"center"}
           alignItems={"center"}
@@ -72,7 +71,8 @@ const MuscleExerciceComponent: React.FC = () => {
           border={"var(--bordercolor) solid 1px"}
           p={"5px 8px "}
           rounded={8}
-          w={"240px"}
+          w={"180px"}
+
           gap={2}
           alignContent={"center"}
           alignItems={"center"}
@@ -85,18 +85,18 @@ const MuscleExerciceComponent: React.FC = () => {
           border={"var(--bordercolor) solid 1px"}
           p={"5px 8px "}
           rounded={8}
-          w={"240px"}
+          w={"180px"}
           gap={2}
           alignContent={"center"}
           alignItems={"center"}
           justifyContent={"space-evenly"}
         >
           <IoIosFitness size={25} />
-          <Text> strengthen your muscles</Text>
+          <Text> strengthen muscles</Text>
         </Button>
       </Flex>
 
-      <Flex mt={"50px"} mb={4}>
+      <Flex mt={"20px"} mb={4}>
         <Text fontSize="xl">Exercises</Text>
       </Flex>
       <Box className="slider-container">
@@ -105,7 +105,7 @@ const MuscleExerciceComponent: React.FC = () => {
             border={"1px solid"}
             borderColor={"gray.700"}
             rounded={10}
-            h={"150px"}
+            h={"350px"}
           >
             <Text>1</Text>
           </Box>
@@ -113,7 +113,7 @@ const MuscleExerciceComponent: React.FC = () => {
             border={"1px solid"}
             borderColor={"gray.700"}
             rounded={10}
-            h={"150px"}
+            h={"350px"}
           >
             <Text>2</Text>
           </Box>
@@ -121,7 +121,7 @@ const MuscleExerciceComponent: React.FC = () => {
             border={"1px solid"}
             borderColor={"gray.700"}
             rounded={10}
-            h={"150px"}
+            h={"350px"}
           >
             <Text>3</Text>
           </Box>
@@ -130,7 +130,7 @@ const MuscleExerciceComponent: React.FC = () => {
             border={"1px solid"}
             borderColor={"gray.700"}
             rounded={10}
-            h={"150px"}
+            h={"350px"}
           >
             <Text>8</Text>
           </Box>

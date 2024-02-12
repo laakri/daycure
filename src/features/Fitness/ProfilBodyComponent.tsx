@@ -1,12 +1,22 @@
-import { Box, Divider, Flex, Heading, Text } from "@chakra-ui/react";
 import React, { useState } from "react";
+import { Box, Divider, Flex, Heading, Text } from "@chakra-ui/react";
 import { BodyComponent } from "reactjs-human-body";
-const ProfilBodyComponent: React.FC = () => {
+
+interface ProfilBodyComponentProps {
+  onBodyPartSelect: (selectedMuscle: string) => void; // Define a function prop that accepts the selected muscle
+}
+
+const ProfilBodyComponent: React.FC<ProfilBodyComponentProps> = ({ onBodyPartSelect }) => {
   const [selectedPart, setSelectedPart] = useState<string | null>(null);
-  const showBodyPart = (e: any) => {
-    setSelectedPart(e);
+
+  const showBodyPart = (part: string) => {
+    setSelectedPart(part);
+    onBodyPartSelect(part); // Call the function prop to pass the selected muscle
+   // window.location.href = `/fitness/exercise/${part}`; 
   };
-  console.log("test", selectedPart);
+
+  console.log(selectedPart);
+
   return (
     <Box maxW={"420px"} p={"5"} borderRadius={"20px"}>
       <BodyComponent
@@ -25,7 +35,7 @@ const ProfilBodyComponent: React.FC = () => {
           leftFoot: { show: true },
           rightFoot: { show: true },
         }}
-        onClick={(e: any) => showBodyPart(e)}
+        onClick={(part: string) => showBodyPart(part)}
       />
       <Box
         borderRadius={"10px"}
@@ -61,9 +71,8 @@ const ProfilBodyComponent: React.FC = () => {
           </Text>
         </Flex>
       </Box>
-
-      
     </Box>
   );
 };
+
 export default ProfilBodyComponent;
