@@ -1,6 +1,11 @@
 import { Text, Flex, Input, Button, Select, useToast } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { fetchAllCategories, addTransaction } from "../../../states/wallet";
+import {
+  fetchAllCategories,
+  addTransaction,
+  fetchAllTransactions,
+} from "../../../states/wallet";
+import { useQueryClient, useQuery } from "react-query";
 interface WalletExpenseProps {
   onTransactionAdded: () => void;
 }
@@ -12,6 +17,10 @@ const WalletExpense: React.FC<WalletExpenseProps> = ({
   const [amount, setAmount] = useState(0);
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
+  const client = useQueryClient();
+
+  const { data } = useQuery("transactions", fetchAllTransactions);
+  console.log(data);
 
   useEffect(() => {
     const fetchAllCateg = async () => {
@@ -47,6 +56,7 @@ const WalletExpense: React.FC<WalletExpenseProps> = ({
         isClosable: true,
       });
       onTransactionAdded();
+      client.invalidateQueries("transactions");
     } catch (error) {
       toast({
         title: "Error adding transaction",
@@ -64,7 +74,7 @@ const WalletExpense: React.FC<WalletExpenseProps> = ({
         Add Expense Transaction
       </Text>
       <Input
-        placeholder="Enter amount"
+        placeholder='Enter amount'
         bg={"var(--lvl1-darkcolor)"}
         h={"40px"}
         border={"1px solid transparent"}
@@ -84,7 +94,7 @@ const WalletExpense: React.FC<WalletExpenseProps> = ({
       />
 
       <Input
-        placeholder="Description"
+        placeholder='Description'
         bg={"var(--lvl1-darkcolor)"}
         h={"40px"}
         border={"1px solid transparent"}
@@ -93,7 +103,7 @@ const WalletExpense: React.FC<WalletExpenseProps> = ({
       />
 
       <Select
-        placeholder="Select category"
+        placeholder='Select category'
         bg={"var(--lvl1-darkcolor)"}
         mt={3}
         borderColor={"transparent"}

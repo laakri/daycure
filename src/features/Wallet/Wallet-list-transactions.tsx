@@ -1,25 +1,13 @@
 import { Box, Flex, Text, HStack } from "@chakra-ui/react";
 import { FaArrowTrendDown, FaArrowTrendUp } from "react-icons/fa6";
-import { useEffect, useState } from "react";
 import { fetchAllTransactions } from "../../states/wallet";
 import React from "react";
 import { initialCategoryIcons } from "./CategoriesIcons";
+import { useQuery } from "react-query";
+import { Skeleton } from "@mantine/core";
 
 const WalletListTransactions = () => {
-  const [transactions, setTransactions] = useState<any[]>([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await fetchAllTransactions();
-        setTransactions(data);
-      } catch (error) {
-        console.error("Error fetching transactions", error);
-      }
-    };
-
-    fetchData();
-  }, []);
+  const { data, isLoading } = useQuery("transactions", fetchAllTransactions);
 
   const groupTransactionsByDate = (transactions: any[]): any => {
     const sortedTransactions = transactions.sort((a, b) => {
@@ -44,16 +32,20 @@ const WalletListTransactions = () => {
     return groupedTransactions;
   };
 
-  const groupedTransactions: any = groupTransactionsByDate(transactions);
+  const groupedTransactions: any = groupTransactionsByDate(data ?? []);
+
+  if (isLoading) {
+    return <Skeleton w={"full"} height={"full"} />;
+  }
 
   return (
     <Box px={2}>
-      {Object.entries(groupedTransactions).map(([date, dateTransactions]) => (
+      {Object.entries(groupedTransactions).map(([date, data]) => (
         <React.Fragment key={date}>
           <Text p={"2px 7px"} maxW={"max-content"} rounded={7}>
             {date}
           </Text>
-          {dateTransactions.map((transaction: any) => (
+          {data.map((transaction: any) => (
             <HStack
               key={transaction._id}
               bg={"var(--lvl3-darkcolor)"}
