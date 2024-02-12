@@ -10,8 +10,6 @@ import {
   Stat,
   StatLabel,
   StatNumber,
-  StatHelpText,
-  StatArrow,
   useColorModeValue,
   Menu,
   MenuButton,
@@ -83,7 +81,6 @@ const WalletStats: React.FC<WalletStatsProps> = ({ onTransactionAdded }) => {
       show: false,
     },
   };
-
   const bgColor = useColorModeValue("var(--lvl1-darkcolor)", "gray.800");
   const borderColor = useColorModeValue("var(--bordercolor)", "gray.700");
   const textColor = useColorModeValue("black", "white");
@@ -138,46 +135,55 @@ const WalletStats: React.FC<WalletStatsProps> = ({ onTransactionAdded }) => {
         minH={"300px"}
         bg={bgColor}
         border={`1px solid ${borderColor}`}
-        h={"100%"}
+        maxH={"300px"}
         position={"relative"}
+        overflow={"hidden"}
       >
-        <Flex
-          flexDirection={"column"}
-          gap={3}
-          justifyContent={"space-between"}
-          w={150}
-        >
+        <Flex flexDirection={"column"} gap={5} w={100}>
           <Stat>
             <StatLabel color={"purple.300"}>Total Income</StatLabel>
-            <StatNumber>
-              {StatsData ? StatsData.totalIncome : "Loading..."}
+            <StatNumber display={"flex"} alignItems={"center"} gap={1}>
+              {StatsData ? StatsData.totalIncome : "..."}
+              <Text fontSize={"xs"} color={"gray.400"}>
+                DT
+              </Text>
             </StatNumber>
-            <StatHelpText>
-              <StatArrow type="increase" />
-              23.36%
-            </StatHelpText>
           </Stat>
-          <Box>
-            <Stat>
-              <StatLabel color={"red.300"}>Monthly Expenses</StatLabel>
-              <StatNumber color={"red.100"}>
-                {StatsData ? StatsData.totalExpense : "Loading..."}
-              </StatNumber>
-            </Stat>
-            <Stat>
-              <StatLabel color={"cyan.300"}>Remaining Amount</StatLabel>
-              <StatNumber color={"cyan.50"}>
-                {StatsData ? StatsData.remainingAmount : "Loading..."}
-              </StatNumber>
-            </Stat>
-          </Box>
+          <Stat>
+            <StatLabel color={"red.300"}>Monthly Expenses</StatLabel>
+            <StatNumber
+              color={"red.100"}
+              display={"flex"}
+              alignItems={"center"}
+              gap={1}
+            >
+              {StatsData ? StatsData.totalExpense : "..."}
+              <Text fontSize={"xs"} color={"gray.400"}>
+                DT
+              </Text>
+            </StatNumber>
+          </Stat>
+          <Stat>
+            <StatLabel color={"cyan.300"}>Remaining Amount</StatLabel>
+            <StatNumber
+              color={"cyan.50"}
+              display={"flex"}
+              alignItems={"center"}
+              gap={1}
+            >
+              {StatsData ? StatsData.remainingAmount : "..."}
+              <Text fontSize={"xs"} color={"gray.400"}>
+                DT
+              </Text>
+            </StatNumber>
+          </Stat>
         </Flex>
-        <Box w={"calc(100% - 120px)"} color={textColor}>
+        <Box w={"calc(100% - 80px)"} color={textColor}>
           <Chart
             options={options}
             series={chartData.series}
             type="line"
-            height={250}
+            height={280}
           />
         </Box>
         <Flex position={"absolute"} right={3}>

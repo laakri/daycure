@@ -1,4 +1,4 @@
-import { Box, Flex, Text, Divider, HStack } from "@chakra-ui/react";
+import { Box, Flex, Text, HStack } from "@chakra-ui/react";
 import { FaArrowTrendDown, FaArrowTrendUp } from "react-icons/fa6";
 import { useEffect, useState } from "react";
 import { fetchAllTransactions } from "../../states/wallet";
@@ -48,37 +48,6 @@ const WalletListTransactions = () => {
 
   return (
     <Box px={2}>
-      <Flex justifyContent={"space-between"} px={5}>
-        <Text fontSize={"xl"}>Transactions</Text>
-        <Flex gap={4} p={"5px 10px"} bg={"var(--lvl1-darkcolor)"} rounded={4}>
-          <Box
-            bg={"var(--lvl4-darkcolor)"}
-            p={" 0 10px"}
-            rounded={4}
-            _hover={{
-              cursor: "pointer",
-            }}
-          >
-            Infos
-          </Box>
-          <Box
-            bg={"var(--lvl1-darkcolor)"}
-            p={" 0 10px"}
-            rounded={4}
-            _hover={{
-              cursor: "pointer",
-            }}
-          >
-            History
-          </Box>
-        </Flex>
-      </Flex>
-      <Divider
-        my={2}
-        orientation="horizontal"
-        borderColor="var(--bordercolor)"
-      />
-
       {Object.entries(groupedTransactions).map(([date, dateTransactions]) => (
         <React.Fragment key={date}>
           <Text p={"2px 7px"} maxW={"max-content"} rounded={7}>
