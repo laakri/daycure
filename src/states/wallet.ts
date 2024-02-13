@@ -80,3 +80,24 @@ export const fetchAllTransactions = async () => {
     throw new Error("Error fetching transactions");
   }
 };
+export const fetchWalletStatsData = async (range: string) => {
+  try {
+    const response = await axios.get(
+      `${BASE_URL}/transactions/stats/65c62e1585bc357e64c9f354/${range}`
+    );
+
+    return response.data.chartData;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+};
+export const fetchWalletNumberStatsData = async () => {
+  try {
+    const response = await axios.get(
+      `${BASE_URL}/transactions/stats-number/65c62e1585bc357e64c9f354`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+};

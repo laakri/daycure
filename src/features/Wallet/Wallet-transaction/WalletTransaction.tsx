@@ -34,12 +34,8 @@ import {
 } from "../../../states/wallet";
 import { initialCategoryIcons, listcategories } from "../CategoriesIcons";
 import { IoClose } from "react-icons/io5";
-interface WalletTransactionProps {
-  onTransactionAdded: () => void;
-}
-const WalletTransaction: React.FC<WalletTransactionProps> = ({
-  onTransactionAdded,
-}) => {
+
+const WalletTransaction = () => {
   const [activeComponent, setActiveComponent] = useState("expenses");
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [catebogies, setCatebogies] = useState<any[]>([]);
@@ -161,9 +157,7 @@ const WalletTransaction: React.FC<WalletTransactionProps> = ({
           </Button>
         </HStack>
 
-        {activeComponent === "expenses" && (
-          <WalletExpense onTransactionAdded={onTransactionAdded} />
-        )}
+        {activeComponent === "expenses" && <WalletExpense />}
         {activeComponent === "income" && <WalletIncome />}
       </Box>
 

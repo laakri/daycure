@@ -1,13 +1,22 @@
-import { Box, Flex, Text, HStack } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  HStack,
+  Text,
+  InputGroup,
+  InputRightElement,
+  Input,
+  Button,
+  Divider,
+} from "@chakra-ui/react";
 import { FaArrowTrendDown, FaArrowTrendUp } from "react-icons/fa6";
-import { fetchAllTransactions } from "../../states/wallet";
+import { fetchAllTransactions } from "../../../states/wallet";
 import React from "react";
-import { initialCategoryIcons } from "./CategoriesIcons";
+import { initialCategoryIcons } from "../CategoriesIcons";
 import { useQuery } from "react-query";
-import { Skeleton } from "@mantine/core";
 
 const WalletListTransactions = () => {
-  const { data, isLoading } = useQuery("transactions", fetchAllTransactions);
+  const { data } = useQuery("transactions", fetchAllTransactions);
 
   const groupTransactionsByDate = (transactions: any[]): any => {
     const sortedTransactions = transactions.sort((a, b) => {
@@ -34,12 +43,38 @@ const WalletListTransactions = () => {
 
   const groupedTransactions: any = groupTransactionsByDate(data ?? []);
 
-  if (isLoading) {
-    return <Skeleton w={"full"} height={"full"} />;
-  }
-
   return (
     <Box px={2}>
+      <Flex justifyContent={"space-between"} py={2}>
+        <Text fontSize={"xl"}>Transactions</Text>
+        <InputGroup
+          size="md"
+          borderColor={"var(--bordercolor) "}
+          maxW={"250px"}
+        >
+          <Input pr="4.5rem" placeholder="Search.." />
+          <InputRightElement width="4.5rem">
+            <Button
+              h="1.75rem"
+              size="xs"
+              color="white"
+              bg={"gray.800"}
+              _hover={{
+                bg: "var(--maincolor)",
+                color: "var(--chakra-colors-chakra-body-text)",
+              }}
+            >
+              Search
+            </Button>
+          </InputRightElement>
+        </InputGroup>
+      </Flex>
+      <Divider
+        orientation="horizontal"
+        borderColor="var(--bordercolor)"
+        my={2}
+      />
+
       {Object.entries(groupedTransactions).map(([date, data]) => (
         <React.Fragment key={date}>
           <Text p={"2px 7px"} maxW={"max-content"} rounded={7}>

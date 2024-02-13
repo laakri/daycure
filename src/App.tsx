@@ -7,7 +7,7 @@ import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
 import { ChakraProvider, extendTheme, Box } from "@chakra-ui/react";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+/*import { ReactQueryDevtools } from "@tanstack/react-query-devtools";*/
 
 const theme = extendTheme({
   config: {
@@ -25,14 +25,14 @@ function App() {
 
   return (
     <ChakraProvider theme={theme}>
-      <MantineProvider defaultColorScheme='dark'>
+      <MantineProvider defaultColorScheme="dark">
         <QueryClientProvider client={queryClient}>
           <BrowserRouter>
             <Navbar />
-            <Box maxW='1400px' p='10px' mx='auto' mt='4'>
+            <Box maxW="1400px" p="10px" mx="auto" mt="4">
               <Routing />
             </Box>
-            <ReactQueryDevtools initialIsOpen={false} client={queryClient} />
+            {/*<ReactQueryDevtools initialIsOpen={false} client={queryClient} /> */}
           </BrowserRouter>
         </QueryClientProvider>
       </MantineProvider>

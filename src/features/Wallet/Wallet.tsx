@@ -1,18 +1,14 @@
 import { useState } from "react";
-import { Box, Divider, Flex, Text } from "@chakra-ui/react";
-import WalletStats from "./WalletStats";
+import { Box, Flex, Text } from "@chakra-ui/react";
+import WalletStats from "./Wallet-stats/WalletStats";
 import WalletTransaction from "./Wallet-transaction/WalletTransaction";
-import WalletListTransactions from "./Wallet-list-transactions";
-import WalletInfos from "./WalletInfos";
+import WalletListTransactions from "./Wallet-history/Wallet-list-transactions";
+import WalletInfos from "./Wallet-stats/WalletInfos";
+import { CalendarIcon } from "@chakra-ui/icons";
 
 const Wallet = () => {
-  const [showTransactions, setShowTransactions] = useState(true);
-  const [activeButton, setActiveButton] = useState("history");
-
-  const handleTransactionAdded = () => {
-    console.log("Transaction added!");
-    // onTransactionAdded();
-  };
+  const [showTransactions, setShowTransactions] = useState(false);
+  const [activeButton, setActiveButton] = useState("infos");
 
   const showTransactionList = () => {
     setShowTransactions(true);
@@ -36,16 +32,34 @@ const Wallet = () => {
         <Flex
           flexDirection={"column"}
           w={{ base: "80%", xl: "calc(100% - 540px)" }}
-          gap={3}
+          gap={6}
         >
-          <WalletStats onTransactionAdded={handleTransactionAdded} />
-          <Flex justifyContent={"space-between"} px={5}>
-            <Text fontSize={"xl"}>Transactions</Text>
+          <Flex justifyContent={"space-between"} alignItems={"center"}>
+            <Flex gap={4}>
+              <Text fontSize="2xl" fontWeight="bold">
+                Wallet Stats
+              </Text>
+              <Text
+                fontSize="md"
+                fontWeight="bold"
+                border={`var(--bordercolor) solid 1px`}
+                p={"5px 8px "}
+                rounded={8}
+                gap={3}
+                display={"flex"}
+                alignItems={"center"}
+              >
+                <CalendarIcon color={"gray.500"} />
+                2024
+              </Text>
+            </Flex>
+
             <Flex
               gap={4}
               p={"5px 10px"}
-              rounded={4}
+              rounded={5}
               bg={"var(--lvl1-darkcolor)"}
+              border={"var(--bordercolor) solid 1px"}
             >
               <Box
                 bg={
@@ -81,10 +95,17 @@ const Wallet = () => {
               </Box>
             </Flex>
           </Flex>
-          <Divider orientation="horizontal" borderColor="var(--bordercolor)" />
-          {showTransactions ? <WalletListTransactions /> : <WalletInfos />}
+
+          {showTransactions ? (
+            <WalletListTransactions />
+          ) : (
+            <Flex flexDirection={"column"} gap={3}>
+              <WalletStats />
+              <WalletInfos />
+            </Flex>
+          )}
         </Flex>
-        <WalletTransaction onTransactionAdded={handleTransactionAdded} />
+        <WalletTransaction />
       </Flex>
     </Box>
   );

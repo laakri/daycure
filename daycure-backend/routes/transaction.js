@@ -133,21 +133,34 @@ router.get("/stats/:userId/:range", async (req, res) => {
         .json({ message: "No transactions found for the user" });
     }
 
+    // Group transactions per day
+    const groupedTransactions = {};
+    transactions.forEach((transaction) => {
+      const day = moment(transaction.date).format("YYYY-MM-DD");
+      if (!groupedTransactions[day]) {
+        groupedTransactions[day] = [];
+      }
+      groupedTransactions[day].push(transaction);
+    });
+
     // Extract necessary data for the chart
     const incomeData = [];
     const expenseData = [];
     const labels = [];
 
-    transactions.forEach((transaction) => {
-      if (transaction.isExpense) {
-        expenseData.push(transaction.amount);
-      } else {
-        incomeData.push(transaction.amount);
-      }
-      // Extracting month from transaction date
-      labels.push(
-        new Date(transaction.date).toLocaleString("default", { month: "short" })
-      );
+    Object.keys(groupedTransactions).forEach((day) => {
+      let totalIncome = 0;
+      let totalExpense = 0;
+      groupedTransactions[day].forEach((transaction) => {
+        if (transaction.isExpense) {
+          totalExpense += transaction.amount;
+        } else {
+          totalIncome += transaction.amount;
+        }
+      });
+      incomeData.push(totalIncome);
+      expenseData.push(totalExpense);
+      labels.push(day);
     });
 
     // Prepare the data object for the chart
@@ -167,6 +180,7 @@ router.get("/stats/:userId/:range", async (req, res) => {
     res.status(500).json({ message: "Server Error" });
   }
 });
+
 router.get("/stats-number/:userId", async (req, res) => {
   try {
     const userId = req.params.userId;

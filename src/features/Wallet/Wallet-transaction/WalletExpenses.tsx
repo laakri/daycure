@@ -6,21 +6,13 @@ import {
   fetchAllTransactions,
 } from "../../../states/wallet";
 import { useQueryClient, useQuery } from "react-query";
-interface WalletExpenseProps {
-  onTransactionAdded: () => void;
-}
 
-const WalletExpense: React.FC<WalletExpenseProps> = ({
-  onTransactionAdded,
-}) => {
+const WalletExpense = () => {
   const [allCateg, setAllCateg] = useState<string[]>([]);
   const [amount, setAmount] = useState(0);
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
   const client = useQueryClient();
-
-  const { data } = useQuery("transactions", fetchAllTransactions);
-  console.log(data);
 
   useEffect(() => {
     const fetchAllCateg = async () => {
@@ -37,7 +29,6 @@ const WalletExpense: React.FC<WalletExpenseProps> = ({
 
   const handleConfirmClick = async () => {
     try {
-      console.log({ amount, description, category });
       await addTransaction({
         amount,
         date: new Date(),
@@ -55,8 +46,9 @@ const WalletExpense: React.FC<WalletExpenseProps> = ({
         duration: 2000,
         isClosable: true,
       });
-      onTransactionAdded();
       client.invalidateQueries("transactions");
+      client.invalidateQueries("walletNumberStats");
+      client.invalidateQueries("walletStatsData");
     } catch (error) {
       toast({
         title: "Error adding transaction",
@@ -74,7 +66,7 @@ const WalletExpense: React.FC<WalletExpenseProps> = ({
         Add Expense Transaction
       </Text>
       <Input
-        placeholder='Enter amount'
+        placeholder="Enter amount"
         bg={"var(--lvl1-darkcolor)"}
         h={"40px"}
         border={"1px solid transparent"}
@@ -94,7 +86,7 @@ const WalletExpense: React.FC<WalletExpenseProps> = ({
       />
 
       <Input
-        placeholder='Description'
+        placeholder="Description"
         bg={"var(--lvl1-darkcolor)"}
         h={"40px"}
         border={"1px solid transparent"}
@@ -103,7 +95,7 @@ const WalletExpense: React.FC<WalletExpenseProps> = ({
       />
 
       <Select
-        placeholder='Select category'
+        placeholder="Select category"
         bg={"var(--lvl1-darkcolor)"}
         mt={3}
         borderColor={"transparent"}
