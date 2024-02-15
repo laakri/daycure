@@ -65,18 +65,35 @@ const WalletInfos = () => {
       },
     },
     labels: expenseCategoriesData.labels,
+
     stroke: {
-      width: 0,
+      width: 4,
+      colors: ["#06070a"],
     },
     colors: [
-      "#530087",
-      "#60009c",
-      "#6e00b3",
-      "#8e00ed",
-      "#E5E7EB",
+      "#dc731f",
+      "#5fc8dd",
+      "#535cf8",
+      "#c31b2a",
+      "#7979b6",
       "#9a00fa",
       "#9900ff",
     ],
+    plotOptions: {
+      pie: {
+        customScale: 0.8,
+        donut: {
+          size: "80%",
+          stroke: {
+            width: 1,
+            colors: ["transparent"],
+          },
+        },
+      },
+    },
+    dataLabels: {
+      enabled: false, // Disabling data labels for better visualization
+    },
   };
   const textColor = useColorModeValue("black", "white");
 

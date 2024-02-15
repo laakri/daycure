@@ -83,11 +83,12 @@ const WalletListTransactions = () => {
           {data.map((transaction: any) => (
             <HStack
               key={transaction._id}
-              bg={"var(--lvl3-darkcolor)"}
+              bg={"var(--lvl2-darkcolor)"}
               p={"10px 15px "}
               rounded={10}
               justifyContent={"space-between"}
-              my={2}
+              border={"var(--bordercolor) solid 1px"}
+              my={"7px"}
             >
               <Flex gap={2} alignItems={"center"}>
                 <Flex alignItems={"center"} gap={3} w={"110px"}>

@@ -81,7 +81,6 @@ const Schedule = () => {
 
         tasksByDate[date].push(task);
       });
-      console.log(allTasks);
       setTasks(tasksByDate);
     } catch (error) {
       console.error("Error fetching tasks:", error);

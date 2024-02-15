@@ -11,9 +11,10 @@ import {
   Divider,
   useToast,
 } from "@chakra-ui/react";
+import { FaGoogle } from "react-icons/fa6";
+
 import logo from "../../assets/logo.png";
 import bgImage from "../../assets/bgAuth.png";
-import { FaGoogle } from "react-icons/fa6";
 import { useUserStore } from "../../stores/user";
 import { redirect } from "react-router-dom";
 
@@ -39,9 +40,7 @@ const Login = () => {
     setLoading(true);
 
     try {
-      console.log(formData);
       await login(formData);
-
       toast({
         title: "Success",
         description: "Logged in successfully!",
@@ -80,8 +79,8 @@ const Login = () => {
         overflow={"hidden"}
         position={"relative"}
         py={5}
-        justifyContent='space-between'
-        alignItems='center'
+        justifyContent="space-between"
+        alignItems="center"
         w={450}
         h={478}
         m={"100px auto"}
@@ -91,9 +90,9 @@ const Login = () => {
       >
         <Flex alignItems={"center"} gap={2}>
           <Image h={"40px"} w={"40px"} src={logo}></Image>
-          <Text fontSize='3xl'>DailyCure</Text>
+          <Text fontSize="3xl">DailyCure</Text>
         </Flex>
-        <Box maxWidth='400px' width='100%'>
+        <Box maxWidth="400px" width="100%">
           <Button
             w={"100%"}
             border={"1px solid "}
@@ -116,26 +115,26 @@ const Login = () => {
             <Divider borderColor={"var(--bordercolor)"}></Divider>
           </Flex>
           <form onSubmit={handleSubmit}>
-            <FormControl mb='5' isRequired>
+            <FormControl mb="5" isRequired>
               <FormLabel color={"purple.100"}>Email</FormLabel>
 
               <Input
-                type='email'
-                id='email'
-                name='email'
-                placeholder='Enter your email address'
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Enter your email address"
                 value={formData.email}
                 onChange={handleChange}
               />
             </FormControl>
-            <FormControl mb='5' isRequired>
+            <FormControl mb="5" isRequired>
               <FormLabel color={"purple.100"}>Password</FormLabel>
 
               <Input
-                type='password'
-                id='password'
-                name='password'
-                placeholder='Enter your password'
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Enter your password"
                 value={formData.password}
                 onChange={handleChange}
               />
@@ -149,9 +148,9 @@ const Login = () => {
               }}
               mt={5}
               w={"100%"}
-              type='submit'
+              type="submit"
               isLoading={loading}
-              loadingText='Loging in...'
+              loadingText="Loging in..."
             >
               Login
             </Button>

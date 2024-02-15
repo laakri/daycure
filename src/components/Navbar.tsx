@@ -12,32 +12,25 @@ import {
 } from "@chakra-ui/react";
 import logo from "../assets/logo.png";
 import { FaMoon, FaUserAstronaut } from "react-icons/fa6";
-import { useState } from "react";
 import { IoIosSettings, IoMdLogOut } from "react-icons/io";
+import { RxDashboard } from "react-icons/rx";
+
 import {
   IoFitnessOutline,
   IoNotifications,
   IoWalletOutline,
 } from "react-icons/io5";
-import { logout } from "../states/auth";
 import { MdOutlineAddTask } from "react-icons/md";
-import { RxDashboard } from "react-icons/rx";
 import { useUserStore } from "../stores/user";
 
 const Navbar = () => {
   const isLoggedIn = localStorage.getItem("token") !== null;
-  const UserName = localStorage.getItem("userName");
-  const [showMenu, setShowMenu] = useState(false);
-
-  const handleMenuToggle = () => {
-    setShowMenu(!showMenu);
-  };
+  const { user } = useUserStore();
+  const { logout } = useUserStore();
 
   const handleLogout = () => {
     logout();
   };
-
-  const { userName } = useUserStore();
 
   return (
     <Flex
@@ -56,7 +49,7 @@ const Navbar = () => {
         >
           <Img h={"28px"} w={"28px"} src={logo}></Img>
           <Link to="/">
-            <Text fontSize="2xl">DailyCure {userName} </Text>
+            <Text fontSize="2xl">DailyCure </Text>
           </Link>
         </Flex>
       </Flex>
@@ -127,7 +120,6 @@ const Navbar = () => {
                 fontSize="18px"
                 cursor={"pointer"}
                 _hover={{ bg: "var(--lvl1-darkcolor)" }}
-                onClick={handleMenuToggle}
                 w={"max-content"}
               >
                 <Flex
@@ -143,65 +135,64 @@ const Navbar = () => {
                   <FaUserAstronaut />
                 </Flex>
               </MenuButton>
-              {showMenu && (
-                <MenuList
+              <MenuList
+                bg={"var(--lvl1-darkcolor)"}
+                borderColor={"var(--bordercolor)"}
+                zIndex={10000000000}
+              >
+                <MenuItem
                   bg={"var(--lvl1-darkcolor)"}
-                  borderColor={"var(--bordercolor)"}
+                  _hover={{
+                    bg: "var(--lvl1-darkcolor)",
+                    border: "transparent 1px solid",
+                    color: "var(--chakra-colors-chakra-body-text)",
+                  }}
+                  justifyContent={"center"}
                 >
-                  <MenuItem
-                    bg={"var(--lvl1-darkcolor)"}
-                    _hover={{
-                      bg: "var(--lvl1-darkcolor)",
-                      border: "transparent 1px solid",
-                      color: "var(--chakra-colors-chakra-body-text)",
-                    }}
-                    justifyContent={"center"}
-                  >
-                    {UserName}
-                  </MenuItem>
-                  <Divider w={"90%"} m={"auto"} />
-                  <MenuItem
-                    mt={3}
-                    bg={"var(--lvl1-darkcolor)"}
-                    _hover={{
-                      bg: "var(--lvl3-darkcolor)",
-                      border: "transparent 1px solid",
-                      color: "var(--chakra-colors-chakra-body-text)",
-                    }}
-                    icon={<IoIosSettings />}
-                  >
-                    Settings
-                  </MenuItem>
-                  <MenuItem
-                    bg={"var(--lvl1-darkcolor)"}
-                    _hover={{
-                      bg: "var(--lvl3-darkcolor)",
-                      border: "transparent 1px solid",
-                      color: "var(--chakra-colors-chakra-body-text)",
-                    }}
-                    icon={<FaMoon />}
-                  >
-                    Theme Mode
-                  </MenuItem>
-                  <MenuItem
-                    bg={"var(--lvl1-darkcolor)"}
-                    _hover={{
-                      bg: "var(--lvl3-darkcolor)",
-                      border: "transparent 1px solid",
-                      color: "var(--chakra-colors-chakra-body-text)",
-                    }}
-                    onClick={handleLogout}
-                    icon={<IoMdLogOut />}
-                  >
-                    Logout
-                  </MenuItem>
-                </MenuList>
-              )}
+                  {user ? user.userName : "User Name"}
+                </MenuItem>
+                <Divider w={"90%"} m={"auto"} />
+                <MenuItem
+                  mt={3}
+                  bg={"var(--lvl1-darkcolor)"}
+                  _hover={{
+                    bg: "var(--lvl3-darkcolor)",
+                    border: "transparent 1px solid",
+                    color: "var(--chakra-colors-chakra-body-text)",
+                  }}
+                  icon={<IoIosSettings />}
+                >
+                  Settings
+                </MenuItem>
+                <MenuItem
+                  bg={"var(--lvl1-darkcolor)"}
+                  _hover={{
+                    bg: "var(--lvl3-darkcolor)",
+                    border: "transparent 1px solid",
+                    color: "var(--chakra-colors-chakra-body-text)",
+                  }}
+                  icon={<FaMoon />}
+                >
+                  Theme Mode
+                </MenuItem>
+                <MenuItem
+                  bg={"var(--lvl1-darkcolor)"}
+                  _hover={{
+                    bg: "var(--lvl3-darkcolor)",
+                    border: "transparent 1px solid",
+                    color: "var(--chakra-colors-chakra-body-text)",
+                  }}
+                  onClick={handleLogout}
+                  icon={<IoMdLogOut />}
+                >
+                  Logout
+                </MenuItem>
+              </MenuList>
             </Menu>
           </Flex>
         ) : (
           <>
-            <Flex alignItems="center" rounded="5px" padding="5px 20px">
+            <Flex alignItems="center" rounded="5px">
               <Link to="/login">
                 <Text fontSize="md">Login</Text>
               </Link>
@@ -210,9 +201,10 @@ const Navbar = () => {
               gap="10px"
               alignItems="center"
               rounded="5px"
-              p="5px 10px"
+              p="3px 7px"
               border={"1px solid "}
-              borderColor={"purple.700"}
+              borderColor={"gray.700"}
+              bg={"var(--lvl3-darkcolor)"}
             >
               <Link to="/signup">
                 <Text fontSize="md">Sign Up</Text>

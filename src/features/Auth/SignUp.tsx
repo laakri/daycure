@@ -14,7 +14,7 @@ import {
 import logo from "../../assets/logo.png";
 import bgImage from "../../assets/bgAuth.png";
 import { FaGoogle } from "react-icons/fa6";
-import { signUp } from "../../states/auth";
+import { useUserStore } from "../../stores/user";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -24,6 +24,8 @@ const SignUp = () => {
   });
   const [loading, setLoading] = useState(false);
   const toast = useToast();
+
+  const { signUp } = useUserStore();
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
