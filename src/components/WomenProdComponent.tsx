@@ -45,6 +45,7 @@ const WomenProd: React.FC = () => {
       position="relative"
       w="320px"
       h={320}
+      overflow={"hidden"}
     >
       <Text fontSize="xl" fontWeight="bold">
         Sephora Store
@@ -101,6 +102,7 @@ const WomenProd: React.FC = () => {
                     </Box>
                     <Box maxW={"200px"}>
                       <Image
+                        w={100}
                         src={store.storeHeroImages.imagePath}
                         alt="Store"
                         className="carousel-image"

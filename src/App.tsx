@@ -1,11 +1,12 @@
-import { BrowserRouter } from "react-router-dom";
+import { ChakraProvider, extendTheme, Box } from "@chakra-ui/react";
+
 import { MantineProvider } from "@mantine/core";
 import Routing from "./Routing";
 import Navbar from "./components/Navbar";
-import "./App.css";
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
-import { ChakraProvider, extendTheme, Box } from "@chakra-ui/react";
+import { BrowserRouter } from "react-router-dom";
+
 import { QueryClient, QueryClientProvider } from "react-query";
 /*import { ReactQueryDevtools } from "@tanstack/react-query-devtools";*/
 

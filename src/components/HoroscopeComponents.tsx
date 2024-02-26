@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { fetchData } from "../apis/HoroscopeApi";
 import { Box, Flex, Image, Text } from "@chakra-ui/react";
-import { DragHandleIcon, SunIcon, StarIcon, ViewIcon } from "@chakra-ui/icons";
+import { DragHandleIcon } from "@chakra-ui/icons";
 import { LuClover } from "react-icons/lu";
 import { CiHeart, CiHospital1 } from "react-icons/ci";
 
@@ -11,6 +11,20 @@ const Horoscope: React.FC = () => {
   useEffect(() => {
     const fetchHoroData = async () => {
       try {
+        // Attempt to retrieve cached data from localStorage
+        const cachedData = localStorage.getItem("HoroscopeDataCache");
+        const cachedTimestamp = localStorage.getItem("HoroscopeDataTimestamp");
+
+        const isDataValid =
+          cachedData &&
+          cachedTimestamp &&
+          Date.now() - parseInt(cachedTimestamp, 10) < 30 * 24 * 60 * 60 * 1000;
+
+        if (isDataValid) {
+          setHoroscopeData(JSON.parse(cachedData));
+          return;
+        }
+
         const data = await fetchData();
         setHoroscopeData(data);
         console.log("Horoscope data:", data);
@@ -41,16 +55,9 @@ const Horoscope: React.FC = () => {
           <DragHandleIcon />
         </button>
       </Box>
-      <Box
-        maxW="150px"
-        maxH="80px"
-        borderColor="gray.200"
-        p="10px"
-        m="auto "
-        mt={"20px"}
-      >
+      <Box h="70px" borderColor="gray.200" m="auto">
         <Image
-          maxH="80px"
+          h="70px"
           src="https://pngimg.com/uploads/scorpio/small/scorpio_PNG31.png"
         />
       </Box>
@@ -68,13 +75,22 @@ const Horoscope: React.FC = () => {
       {horoscopeData ? (
         <Flex
           direction="column"
-          bg="rgba(226, 226, 226, 0.111)"
+          bg="var(--lvl2-darkcolor)"
           p="10px"
           mt="10px"
-          rounded="20px"
+          rounded={10}
           mb={"15px"}
         >
-          <p>{horoscopeData.prediction}</p>
+          <Text
+            style={{
+              display: "-webkit-box",
+              WebkitLineClamp: 5,
+              WebkitBoxOrient: "vertical",
+              overflow: "hidden",
+            }}
+          >
+            {horoscopeData.prediction}
+          </Text>
         </Flex>
       ) : (
         <Flex
@@ -85,10 +101,7 @@ const Horoscope: React.FC = () => {
           rounded="10px"
           mb={"15px"}
         >
-          <p>
-            Lorem ipsum dolor veritatis exercitationem debitis, reprehenderit
-            natus ex eum nemo.
-          </p>
+          <p>Error on fetching data</p>
         </Flex>
       )}
       <Flex
@@ -103,7 +116,7 @@ const Horoscope: React.FC = () => {
           borderRadius={20}
           border={"1px solid "}
           borderColor={"RGBA(255, 255, 255, 0.06)"}
-          background="linear-gradient(to bottom, rgba(127, 112, 251, 0.316), transparent)"
+          background="var( --lvl4-darkcolor)"
           gap="5px"
           p="0 7px"
         >
@@ -114,7 +127,7 @@ const Horoscope: React.FC = () => {
           display="flex"
           alignItems="center"
           borderRadius={20}
-          background="linear-gradient(to bottom, rgba(127, 112, 251, 0.316), transparent)"
+          background="var( --lvl4-darkcolor)"
           border={"1px solid "}
           borderColor={"RGBA(255, 255, 255, 0.06)"}
           gap="5px"
@@ -126,7 +139,7 @@ const Horoscope: React.FC = () => {
           display="flex"
           alignItems="center"
           borderRadius={20}
-          background="linear-gradient(to bottom, rgba(127, 112, 251, 0.316), transparent)"
+          background="var( --lvl4-darkcolor)"
           border={"1px solid "}
           borderColor={"RGBA(255, 255, 255, 0.06)"}
           gap="5px"

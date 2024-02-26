@@ -8,7 +8,6 @@ import {
   Flex,
   Input,
   InputGroup,
-  InputLeftElement,
   InputRightElement,
   Text,
   Wrap,
