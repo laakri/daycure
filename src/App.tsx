@@ -1,12 +1,11 @@
-import { ChakraProvider, extendTheme, Box } from "@chakra-ui/react";
-
+import { ChakraProvider, extendTheme, Box, Flex } from "@chakra-ui/react";
 import { MantineProvider } from "@mantine/core";
 import Routing from "./Routing";
 import Navbar from "./components/Navbar";
+import Sidebar from "./components/Sidebar"; // Import the Sidebar component
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
 import { BrowserRouter } from "react-router-dom";
-
 import { QueryClient, QueryClientProvider } from "react-query";
 /*import { ReactQueryDevtools } from "@tanstack/react-query-devtools";*/
 
@@ -29,10 +28,15 @@ function App() {
       <MantineProvider defaultColorScheme="dark">
         <QueryClientProvider client={queryClient}>
           <BrowserRouter>
-            <Navbar />
-            <Box maxW="1400px" p="10px" mx="auto" mt="4">
-              <Routing />
-            </Box>
+            <Flex>
+              <Sidebar />
+              <Box w={"calc( 100vw - 60px )"} ml={"60px"}>
+                <Navbar />
+                <Box maxW="1400px" p="10px" mx="auto" mt="4">
+                  <Routing />
+                </Box>
+              </Box>
+            </Flex>
             {/*<ReactQueryDevtools initialIsOpen={false} client={queryClient} /> */}
           </BrowserRouter>
         </QueryClientProvider>

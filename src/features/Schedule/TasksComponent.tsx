@@ -1,13 +1,7 @@
 import React, { ReactElement, useEffect, useState } from "react";
-import { GiPartyPopper, GiPartyFlags } from "react-icons/gi";
+import { GiPartyPopper } from "react-icons/gi";
 import { PiCakeThin } from "react-icons/pi";
-import {
-  CiClock2,
-  CiCalendarDate,
-  CiStar,
-  CiTrophy,
-  CiGrid42,
-} from "react-icons/ci";
+import { CiClock2, CiStar, CiTrophy, CiGrid42 } from "react-icons/ci";
 import {
   Box,
   Text,
@@ -30,6 +24,8 @@ import { MdNotStarted, MdPauseCircleFilled } from "react-icons/md";
 import { updateTaskProgress } from "../../states/schedule";
 import { BsStars } from "react-icons/bs";
 import { GoKebabHorizontal } from "react-icons/go";
+import { TbCirclesRelation } from "react-icons/tb";
+import { IoShareSocial } from "react-icons/io5";
 interface TasksComponentProps {
   selected: Date | null;
   tasks: { [key: string]: Task[] };
@@ -246,7 +242,7 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
         <Box>
           {dateTasks
 
-            .filter((task) => task.subType !== undefined)
+            .filter((task) => task.type == "Social")
             .map((task, index) => (
               <HStack
                 key={`${task._id}-${index}`}
@@ -257,14 +253,16 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
                 border={"solid 1px transparent "}
                 bg={getBackgroundColorBysubType(task.subType)}
                 _hover={{
-                  bg: "var(--lvl2-darkcolor)",
+                  bg: "gray.400",
                 }}
+                color="black"
               >
                 <Flex
                   display={"flex"}
                   justifyContent={"center"}
                   alignContent={"center"}
                   gap={"15px"}
+                  color="black"
                 >
                   {getIconBysubType(task.subType)}
 
@@ -437,7 +435,7 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
   function getIconByType(type: string): ReactElement {
     switch (type) {
       case "Social":
-        return <CiStar size={15} />;
+        return <CiStar size={15} color="black" />;
       case "Goal":
         return <CiTrophy size={15} />;
       case "Routine":
@@ -445,7 +443,7 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
       case "Timing":
         return <CiClock2 size={15} />;
       default:
-        return <CiCalendarDate size={15} />;
+        return <IoShareSocial size={15} />;
     }
   }
 
@@ -456,27 +454,27 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
       case "birthday":
         return <PiCakeThin color={"yellow.300"} size={22} />;
       case "wedding":
-        return <GiPartyPopper color={"cyan.200"} size={22} />;
+        return <TbCirclesRelation color={"cyan.200"} size={22} />;
       case "party":
-        return <GiPartyFlags color={"pink.200"} size={22} />;
+        return <GiPartyPopper color={"pink.200"} size={22} />;
 
       default:
-        return <CiCalendarDate color="white" size={22} />;
+        return <IoShareSocial color="black" size={22} />;
     }
   }
   function getBackgroundColorBysubType(type: string): string {
     switch (type) {
       case "event":
-        return "green.900";
+        return "linear-gradient(90deg, rgba(242,239,232,1) 0%, rgba(167,167,167,1) 100%)";
       case "birthday":
-        return "#226600";
+        return "linear-gradient(90deg, rgba(238,224,255,1) 0%, rgba(167,167,167,1) 100%)";
       case "wedding":
-        return "#000099";
+        return "linear-gradient(90deg, rgba(231,244,251,1) 0%, rgba(167,167,167,1) 100%)";
       case "party":
-        return "pink.900";
+        return "linear-gradient(90deg, rgba(224,197,220,1) 0%, rgba(167,167,167,1) 100%)";
 
       default:
-        return "#ea2a9055";
+        return "linear-gradient(90deg, #ffffff 0%, rgba(167,167,167,1) 100%)";
     }
   }
   return (

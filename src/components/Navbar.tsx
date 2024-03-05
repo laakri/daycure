@@ -1,27 +1,25 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   Flex,
   Text,
-  Box,
   Img,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
   Divider,
+  InputGroup,
+  Input,
+  InputRightElement,
+  Button,
 } from "@chakra-ui/react";
 import logo from "../assets/logo.png";
 import { FaMoon, FaUserAstronaut } from "react-icons/fa6";
 import { IoIosSettings, IoMdLogOut } from "react-icons/io";
-import { RxDashboard } from "react-icons/rx";
 
-import {
-  IoFitnessOutline,
-  IoNotifications,
-  IoWalletOutline,
-} from "react-icons/io5";
-import { MdOutlineAddTask } from "react-icons/md";
+import { IoNotifications } from "react-icons/io5";
 import { useUserStore } from "../stores/user";
+import { Search2Icon } from "@chakra-ui/icons";
 
 const Navbar = () => {
   const isLoggedIn = localStorage.getItem("token") !== null;
@@ -36,9 +34,11 @@ const Navbar = () => {
     <Flex
       align="center"
       justify="space-between"
+      alignItems={"center"}
       display="flex"
       h="60px"
       px="10px"
+      gap={2}
     >
       <Flex>
         <Flex
@@ -47,13 +47,20 @@ const Navbar = () => {
           justifyContent={"center"}
           padding="5px 20px"
         >
-          <Img h={"28px"} w={"28px"} src={logo}></Img>
           <Link to="/">
-            <Text fontSize="2xl">DailyCure </Text>
+            <Text fontSize="xl">DailyCure </Text>
           </Link>
         </Flex>
       </Flex>
-      <Flex
+      <InputGroup size="md" w={460}>
+        <Input borderColor={"gray.700"} placeholder="Search " />
+        <InputRightElement>
+          <Button size="xs" bg={"gray.700"} mr={1} color={"white"}>
+            <Search2Icon />
+          </Button>
+        </InputRightElement>
+      </InputGroup>
+      {/* <Flex
         as="nav"
         align="center"
         justify="space-around"
@@ -95,7 +102,7 @@ const Navbar = () => {
             </Text>
           </NavLink>
         </Box>
-      </Flex>
+      </Flex> */}
       <Flex gap={"20px"}>
         {isLoggedIn ? (
           <Flex alignItems="center" gap={2}>

@@ -111,12 +111,16 @@ const Schedule = () => {
       const subTypeValue = taskType === "Social" ? eventType || "" : "";
       const routineTypeValue =
         taskType === "Routine" ? selectedRoutineType || "" : "";
+
+      // Set isCompleted based on taskType
+      const isCompleted = taskType === "Social" ? true : false;
+
       const taskDetails = {
         userId: "65b0320bb3870b156e159462",
         date: dayjs(selected).format("YYYY-MM-DD"),
         description: newTask.trim(),
         isImportant: important,
-        isCompleted: false,
+        isCompleted: isCompleted,
         type: taskType || "Normal",
         ...(subTypeValue !== "" && { subType: subTypeValue }),
         ...(routineTypeValue !== "" && { routineType: routineTypeValue }),
