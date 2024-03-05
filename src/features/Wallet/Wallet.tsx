@@ -21,9 +21,9 @@ const Wallet = () => {
   };
 
   return (
-    <Box maxW={"1400px"} m={"40px auto"}>
+    <Box m={" auto"} p={"10px"}>
       <Flex
-        gap={{ base: "20px", xl: "none" }}
+        gap={{ base: "10px", xl: "none" }}
         mt={50}
         justifyContent={"space-between"}
         alignItems={{ base: "center", xl: "start" }}

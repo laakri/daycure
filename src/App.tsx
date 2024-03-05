@@ -32,7 +32,7 @@ function App() {
               <Sidebar />
               <Box w={"calc( 100vw - 60px )"} ml={"60px"}>
                 <Navbar />
-                <Box maxW="1400px" p="10px" mx="auto" mt="4">
+                <Box maxW={"1700px"} p="10px" mx="auto" mt="4">
                   <Routing />
                 </Box>
               </Box>

@@ -21,8 +21,8 @@ import { IoInformationCircleOutline } from "react-icons/io5";
 import { FaPlus } from "react-icons/fa6";
 const Dashboard = () => {
   return (
-    <Box>
-      <Text fontSize="3xl" fontWeight="bold">
+    <Box m={"10px auto"} p={"10px"}>
+      <Text fontSize="2xl" fontWeight="bold">
         Dashboard
       </Text>
       <Text>

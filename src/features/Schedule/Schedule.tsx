@@ -221,9 +221,9 @@ const Schedule = () => {
   };
 
   return (
-    <Box maxW={"1400px"} m={"40px auto"}>
+    <Box m={"10px auto"}>
       <Flex
-        gap={{ base: "20px", xl: "none" }}
+        gap={{ base: "10px", xl: "none" }}
         p={"10px"}
         justifyContent={"space-between"}
         alignItems={{ base: "center", xl: "start" }}
