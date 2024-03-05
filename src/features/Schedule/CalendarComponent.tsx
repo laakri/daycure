@@ -55,7 +55,8 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
         display={"flex"}
         justifyContent={"center"}
         alignItems={"center"}
-        rounded={7}
+        rounded={"50%"}
+        overflow={"hidden"}
         borderColor={
           isCurrentDay
             ? "purple.200"

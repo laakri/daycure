@@ -261,11 +261,25 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
                   display={"flex"}
                   justifyContent={"center"}
                   alignContent={"center"}
-                  gap={"15px"}
+                  gap={"10px"}
                   color="black"
                 >
-                  {getIconBysubType(task.subType)}
-
+                  <Box w={5}>{getIconBysubType(task.subType)}</Box>
+                  <Tag
+                    size={"sm"}
+                    variant="outline"
+                    border={"solid 1px"}
+                    pb={"1px"}
+                    color={"black"}
+                    borderColor={"black"}
+                    maxH={"25px"}
+                    mt={"2px"}
+                    mr={"5px"}
+                  >
+                    <TagLabel display={"flex"} alignItems={"center"} gap={2}>
+                      {task.subType ? <>{task.subType}</> : <Text>Random</Text>}
+                    </TagLabel>
+                  </Tag>
                   {task.description}
                 </Flex>
                 <Flex>
