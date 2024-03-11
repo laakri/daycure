@@ -20,7 +20,11 @@ import {
 import { AddIcon } from "@chakra-ui/icons";
 import dayjs from "dayjs";
 import Task from "./taskModel";
-import { MdNotStarted, MdPauseCircleFilled } from "react-icons/md";
+import {
+  MdNotStarted,
+  MdPauseCircleFilled,
+  MdQuestionMark,
+} from "react-icons/md";
 import { updateTaskProgress } from "../../states/schedule";
 import { BsStars } from "react-icons/bs";
 import { GoKebabHorizontal } from "react-icons/go";
@@ -29,14 +33,12 @@ import { IoShareSocial } from "react-icons/io5";
 interface TasksComponentProps {
   selected: Date | null;
   tasks: { [key: string]: Task[] };
-  handleOpenModal: () => void;
   handleToggleTaskCompletion: (taskId: string, isCompleted: boolean) => void;
 }
 
 const TasksComponent: React.FC<TasksComponentProps> = ({
   selected,
   tasks,
-  handleOpenModal,
   handleToggleTaskCompletion,
 }) => {
   const [draggedTaskId, setDraggedTaskId] = useState<string | null>(null);
@@ -238,7 +240,26 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
       istype = task.type;
     }
     return (
-      <Box mt={4} h={"max-content"}>
+      <Box
+        minH={"calc(100vh - 225px)"}
+        maxH={"calc(100vh - 225px)"}
+        overflowY={"auto"}
+        css={{
+          "&::-webkit-scrollbar": {
+            width: "8px",
+          },
+          "&::-webkit-scrollbar-track": {
+            background: "transparent",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            background: "#888",
+            borderRadius: "10px",
+          },
+          "&::-webkit-scrollbar-thumb:hover": {
+            background: "#555",
+          },
+        }}
+      >
         <Box>
           {dateTasks
 
@@ -326,7 +347,7 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
                 _hover={{ background: "gray.100" }}
                 leftIcon={<AddIcon fontSize={"xs"} />}
                 maxW={"max-content"}
-                onClick={handleOpenModal}
+                // onClick={handleOpenModal}
               >
                 <Text fontSize={"sm"}>Add task</Text>
               </Button>
@@ -505,18 +526,17 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
           <Text fontSize={"xl"}>{dayjs(selected).format("MMMM D, YYYY")}</Text>
           <Button
             size={"sm"}
+            fontSize={"xl"}
             bg={"transparent"}
             color={"gray.100"}
-            border={"dashed 1px"}
-            borderColor={"gray.500"}
             _hover={{
               bg: "var(--lvl2-darkcolor)",
               color: "white",
               borderColor: "var(--lvl2-darkcolor)",
             }}
-            onClick={handleOpenModal}
+            // onClick={handleOpenModal}
           >
-            <AddIcon />
+            <MdQuestionMark />
           </Button>
         </Flex>
       )}

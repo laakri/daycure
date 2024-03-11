@@ -16,7 +16,6 @@ import FinanceNews from "../../dashboard-Components/FinanceNewsComponent";
 import TechnologiesNews from "../../dashboard-Components/TechnologiesNews";
 import WomenProd from "../../dashboard-Components/WomenProdComponent";
 import WomenPeriod from "../../dashboard-Components/WomenPeriodComponent";
-import { Search2Icon } from "@chakra-ui/icons";
 import { IoInformationCircleOutline } from "react-icons/io5";
 import { FaPlus } from "react-icons/fa6";
 const Dashboard = () => {
