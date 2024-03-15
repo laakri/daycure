@@ -74,7 +74,7 @@ const Navbar = () => {
         <Input
           id="searchInput"
           borderColor={"gray.700"}
-          placeholder="Search "
+          placeholder="Quick Entry"
           onClick={handleOpenModal}
         />
         <InputRightElement mr={6}>

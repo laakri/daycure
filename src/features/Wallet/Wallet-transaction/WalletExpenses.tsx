@@ -1,11 +1,7 @@
 import { Text, Flex, Input, Button, Select, useToast } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import {
-  fetchAllCategories,
-  addTransaction,
-  fetchAllTransactions,
-} from "../../../states/wallet";
-import { useQueryClient, useQuery } from "react-query";
+import { fetchAllCategories, addTransaction } from "../../../states/wallet";
+import { useQueryClient } from "react-query";
 
 const WalletExpense = () => {
   const [allCateg, setAllCateg] = useState<string[]>([]);
