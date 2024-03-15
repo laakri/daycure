@@ -315,12 +315,12 @@ const AddTask: React.FC<AddTaskProps> = ({ selected, updateTasks }) => {
         <Flex flexDirection={"column"} gap={2}>
           <Link>
             <Text fontSize={"sm"} color={"gray.400"}>
-              Can't find any tasks ?{" "}
+              Can't find any tasks ?
             </Text>
           </Link>
           <Link>
             <Text fontSize={"sm"} color={"gray.400"}>
-              Pro tips{" "}
+              Pro tips
             </Text>
           </Link>
         </Flex>

@@ -1,8 +1,8 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Flex,
   Text,
-  Img,
   Menu,
   MenuButton,
   MenuItem,
@@ -11,23 +11,45 @@ import {
   InputGroup,
   Input,
   InputRightElement,
-  Button,
+  Kbd,
 } from "@chakra-ui/react";
-import logo from "../assets/logo.png";
 import { FaMoon, FaUserAstronaut } from "react-icons/fa6";
 import { IoIosSettings, IoMdLogOut } from "react-icons/io";
-
 import { IoNotifications } from "react-icons/io5";
 import { useUserStore } from "../stores/user";
-import { Search2Icon } from "@chakra-ui/icons";
+import ModalComponent from "./ModalComponent";
 
 const Navbar = () => {
   const isLoggedIn = localStorage.getItem("token") !== null;
-  const { user } = useUserStore();
-  const { logout } = useUserStore();
+  const { user, logout } = useUserStore();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      // Check for Ctrl + A combination to open the modal
+      if (event.ctrlKey && event.key === "a") {
+        setIsModalOpen(true);
+      }
+    };
+
+    document?.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document?.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -41,68 +63,38 @@ const Navbar = () => {
       gap={2}
     >
       <Flex>
-        <Flex
-          gap="10px"
-          alignItems="center"
-          justifyContent={"center"}
-          padding="5px 20px"
-        >
+        <Flex gap="10px" alignItems="center" padding="5px 20px">
           <Link to="/">
             <Text fontSize="xl">DailyCure </Text>
           </Link>
         </Flex>
       </Flex>
-      <InputGroup size="md" w={460}>
-        <Input borderColor={"gray.700"} placeholder="Search " />
-        <InputRightElement>
-          <Button size="xs" bg={"gray.700"} mr={1} color={"white"}>
-            <Search2Icon />
-          </Button>
+
+      <InputGroup size="sm" w={460}>
+        <Input
+          id="searchInput"
+          borderColor={"gray.700"}
+          placeholder="Search "
+          onClick={handleOpenModal}
+        />
+        <InputRightElement mr={6}>
+          <Kbd
+            bg={"var(--lvl3-darkcolor)"}
+            border="var(--bordercolor) solid 1px"
+            mr={1}
+          >
+            Ctrl
+          </Kbd>
+          +
+          <Kbd
+            bg={"var(--lvl3-darkcolor)"}
+            border="var(--bordercolor) solid 1px"
+          >
+            A
+          </Kbd>
         </InputRightElement>
       </InputGroup>
-      {/* <Flex
-        as="nav"
-        align="center"
-        justify="space-around"
-        wrap="wrap"
-        padding="5px 10px"
-        display="flex"
-        gap="15px"
-        bg="var(--lvl3-darkcolor)"
-        rounded="10px"
-        maxW="500px"
-        margin="auto"
-        mt={"10px"}
-      >
-        <Box display="flex" gap="10px" alignItems="center">
-          <NavLink to="/dashboard">
-            <Text fontSize="2xl" p="5px 10px">
-              <RxDashboard />
-            </Text>
-          </NavLink>
-        </Box>
-        <Box display="flex" gap="10px" alignItems="center ">
-          <NavLink to="/schedule">
-            <Text fontSize="2xl" p="5px 10px">
-              <MdOutlineAddTask />
-            </Text>
-          </NavLink>
-        </Box>
-        <Box display="flex" gap="10px" alignItems="cent e r">
-          <NavLink to="/wallet">
-            <Text fontSize="2xl" p="5px 10px">
-              <IoWalletOutline />
-            </Text>
-          </NavLink>
-        </Box>
-        <Box display="flex" gap="10px" alignItems="cente r ">
-          <NavLink to="/fitness">
-            <Text fontSize="2xl" p="5px 10px">
-              <IoFitnessOutline />
-            </Text>
-          </NavLink>
-        </Box>
-      </Flex> */}
+      <ModalComponent isOpen={isModalOpen} onClose={handleCloseModal} />
       <Flex gap={"20px"}>
         {isLoggedIn ? (
           <Flex alignItems="center" gap={2}>

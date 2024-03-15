@@ -347,7 +347,6 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
                 _hover={{ background: "gray.100" }}
                 leftIcon={<AddIcon fontSize={"xs"} />}
                 maxW={"max-content"}
-                // onClick={handleOpenModal}
               >
                 <Text fontSize={"sm"}>Add task</Text>
               </Button>
@@ -368,7 +367,7 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
                     p={2}
                     justifyContent={"space-between"}
                     rounded={5}
-                    bg="var(--lvl1-darkcolor)"
+                    bg="var(--lvl3-darkcolor)"
                     _hover={{
                       bg: "var(--lvl2-darkcolor)",
                       cursor: "pointer",
@@ -515,11 +514,11 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
   return (
     <Box
       w={"100%"}
-      border={"solid 1px "}
-      borderColor={"#3b3a3a44"}
+      // border={"solid 1px "}
+      // borderColor={"#3b3a3a44"}
+      // bg={"var(--lvl3-darkcolor)"}
       p={"20px 10px"}
       rounded={10}
-      bg={"var(--lvl3-darkcolor)"}
     >
       {selected && (
         <Flex justifyContent={"space-between"} alignItems={"center"}>
