@@ -3,6 +3,7 @@ import ProfilBodyComponent from "./ProfilBodyComponent";
 import { Flex } from "@chakra-ui/react";
 import StatsFitnessComponent from "./StatsFitnessComponent";
 import MuscleExerciceComponent from "./FitnessCalcul/MuscleExerciceComponent";
+import FitnessExercise from "../../components/FitnessExercise";
 
 const Fitness: React.FC = () => {
   const [selectedMuscle, setSelectedMuscle] = useState<string | null>(null);
@@ -18,7 +19,8 @@ const Fitness: React.FC = () => {
       {selectedMuscle ? (
         <MuscleExerciceComponent />
       ) : (
-        <StatsFitnessComponent />
+        <FitnessExercise/>
+
       )}
       <ProfilBodyComponent onBodyPartSelect={handleBodyPartSelect} /> {/* Pass the function to handle selected muscle */}
     </Flex>

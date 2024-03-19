@@ -27,7 +27,7 @@ export const addCategory = async (category: string) => {
       { category }
     );
     return response.data;
-  } catch (error) {
+  } catch (error) { 
     console.error("Error adding category to user:", error);
     throw new Error("Failed to add category to user");
   }

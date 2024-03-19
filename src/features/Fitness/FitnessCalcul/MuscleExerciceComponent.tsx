@@ -11,10 +11,11 @@ import {
   ModalCloseButton,
   ModalHeader,
   ModalOverlay,
+  Image,
 } from "@chakra-ui/react";
 import { LiaWeightSolid } from "react-icons/lia";
 import { GiMuscleUp } from "react-icons/gi";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { VscDebugStart } from "react-icons/vsc";
 import { PiPauseBold, PiStopBold } from "react-icons/pi";
 import { IoIosFitness } from "react-icons/io";
@@ -23,15 +24,41 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import { ImPower } from "react-icons/im";
-
+import axios from "axios";
+import ReactPlayer from "react-player";
 const MuscleExerciceComponent: React.FC = () => {
+  const [exerciseData, setExerciseData] = useState<any>(null);
+
+  useEffect(() => {
+    const options = {
+      method: "GET",
+      url: "https://work-out-api1.p.rapidapi.com/search",
+      params: { Muscles: "biceps" },
+      headers: {
+        "X-RapidAPI-Key": "f56a29727amsh1e440faac635274p1398a7jsn31b9a76e1c98",
+        "X-RapidAPI-Host": "work-out-api1.p.rapidapi.com",
+      },
+    };
+
+    const fetchExerciseData = async () => {
+      try {
+        const response = await axios.request(options);
+        setExerciseData(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchExerciseData();
+  }, []);
+
   const settings = {
     className: "center",
     infinite: true,
     centerPadding: "60px",
-    slidesToShow: 3,
+    slidesToShow: 4,
     swipeToSlide: true,
-    adaptiveHeight: true
+    adaptiveHeight: true,
   };
 
   // Définition de l'état initial du chronomètre
@@ -52,7 +79,7 @@ const MuscleExerciceComponent: React.FC = () => {
       <Text textAlign={"left"}>
         achieve your goal with your personalized program
       </Text>
-      <Flex mt={"30px"} gap={5} >
+      <Flex mt={"30px"} gap={5}>
         <Button
           border={"var(--bordercolor) solid 1px"}
           p={"5px 8px "}
@@ -72,7 +99,6 @@ const MuscleExerciceComponent: React.FC = () => {
           p={"5px 8px "}
           rounded={8}
           w={"180px"}
-
           gap={2}
           alignContent={"center"}
           alignItems={"center"}
@@ -101,39 +127,57 @@ const MuscleExerciceComponent: React.FC = () => {
       </Flex>
       <Box className="slider-container">
         <Slider {...settings}>
-          <Box
-            border={"1px solid"}
-            borderColor={"gray.700"}
-            rounded={10}
-            h={"350px"}
-          >
-            <Text>1</Text>
-          </Box>
-          <Box
-            border={"1px solid"}
-            borderColor={"gray.700"}
-            rounded={10}
-            h={"350px"}
-          >
-            <Text>2</Text>
-          </Box>
-          <Box
-            border={"1px solid"}
-            borderColor={"gray.700"}
-            rounded={10}
-            h={"350px"}
-          >
-            <Text>3</Text>
-          </Box>
+          {exerciseData &&
+            exerciseData.map((exercise: any, index: number) => (
+              <Box
+                border={"1px solid"}
+                borderColor={"gray.700"}
+                rounded={10}
+                h={"370px"}
+                key={index}
+                overflow={'hidden'}
+              >
+                <Flex direction={"column"} 
+                
+                >
+                  <Flex justifyContent={"center"} h={200} mb={0}
+                  >
+                    <Image
+                      src="https://builtforathletes.com/cdn/shop/articles/Bench_press_and_biceps.jpg"></Image>
+                  </Flex>
 
-          <Box
-            border={"1px solid"}
-            borderColor={"gray.700"}
-            rounded={10}
-            h={"350px"}
-          >
-            <Text>8</Text>
-          </Box>
+                  <Flex direction={"column"} justifyContent={"center"} p={5}>
+                    <Flex gap={3}>
+                      <Text
+                        pl={2}
+                        pr={2}
+                        rounded={10}
+                        w={"max-content"}
+                        bg="gray.700"
+                        color={"gray.300"}
+                      >
+                        {exercise.Muscles}
+                      </Text>
+                      <Text
+                        pl={2}
+                        pr={2}
+                        rounded={10}
+                        w={"max-content"}
+                        bg="gray.700"
+                        color={"gray.300"}
+                        maxH={"max-content"}
+                      >
+                        {exercise.WorkOut}
+                      </Text>
+                    </Flex>
+                    <Text mt={3} color={"gray"}>
+                      <Text color={"gray.300"} > Description </Text>
+                      {exercise.Explaination}
+                    </Text>
+                  </Flex>
+                </Flex>
+              </Box>
+            ))}
         </Slider>
       </Box>
       <Flex justifyContent={"center"} m={"50px"}>
@@ -296,8 +340,8 @@ const MuscleExerciceComponent: React.FC = () => {
                       + 50 Kcal
                     </Text>
                   </Flex>
-                  <Flex >
-                  <Button
+                  <Flex>
+                    <Button
                       border={"var(--bordercolor) solid 1px"}
                       p={"5px 8px "}
                       rounded={8}
@@ -310,12 +354,10 @@ const MuscleExerciceComponent: React.FC = () => {
                     >
                       <Text> Next</Text>
                       <VscDebugStart size={15} />
-
-                    </Button></Flex>
+                    </Button>
+                  </Flex>
                 </Flex>
-                
               </Flex>
-              
             </ModalBody>
             <ModalFooter></ModalFooter>
           </ModalContent>
