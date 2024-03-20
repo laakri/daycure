@@ -14,15 +14,51 @@ import {
   Button,
   Wrap,
 } from "@chakra-ui/react";
-import { BiSend } from "react-icons/bi";
+import { BiGame, BiSend } from "react-icons/bi";
 import { addTask } from "../states/schedule";
 import { addTransaction } from "../states/wallet";
 import { listcategories } from "../features/Wallet/CategoriesIcons";
+import { JSX } from "react/jsx-runtime";
 
 interface ModalComponentProps {
   isOpen: boolean;
   onClose: () => void;
 }
+const commands: any = {
+  NavigateTask: {
+    type: "navigate",
+    text: "Navigate to Tasks page",
+    pageUrl: "http://localhost:5173/schedule",
+    buttonDiscription: "Navigate",
+  },
+  NavigateWallet: {
+    type: "navigate",
+    text: "Navigate to Wallet page",
+
+    pageUrl: "http://localhost:5173/wallet",
+    buttonDiscription: "Navigate",
+  },
+  NavigateFitness: {
+    type: "navigate",
+    text: "Navigate to Fitness page",
+    pageUrl: "http://localhost:5173/fitness",
+    buttonDiscription: "Navigate",
+  },
+  CreateTask: {
+    type: "create",
+    text: "Create quick Task ",
+    InputText: "Task :",
+
+    buttonDiscription: "Create",
+  },
+  CreateWallet: {
+    type: "create",
+    text: "Create quick wallet Transaction ",
+    InputText: "Wallet :",
+
+    buttonDiscription: "Create",
+  },
+};
 
 const ModalComponent: React.FC<ModalComponentProps> = ({ isOpen, onClose }) => {
   const [searchText, setSearchText] = useState("");
@@ -32,6 +68,7 @@ const ModalComponent: React.FC<ModalComponentProps> = ({ isOpen, onClose }) => {
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [amount, setAmount] = useState(0);
   const [isExpense, setIsExpense] = useState(false);
+  const [content, setContent] = useState<JSX.Element | null>(null);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -113,26 +150,14 @@ const ModalComponent: React.FC<ModalComponentProps> = ({ isOpen, onClose }) => {
     return true;
   };
   const handleCommand = (command: string) => {
-    const commands: any = {
-      Task: {
-        text: "Task :",
-        pageUrl: "http://localhost:5173/schedule",
-      },
-      Wallet: {
-        text: "Wallet :",
-        pageUrl: "http://localhost:5173/schedule",
-      },
-      // Add more commands here if necessary
-    };
-
     const selectedCommand = commands[command];
-    if (selectedCommand) {
-      setSearchText(selectedCommand.text);
-      if (selectedCommand.pageUrl) {
-        window.location.href = selectedCommand.pageUrl;
-      }
+    if (selectedCommand.type === "create") {
+      setSearchText(selectedCommand.InputText);
+    } else if (selectedCommand.type === "navigate") {
+      window.location.href = selectedCommand.pageUrl;
     }
   };
+
   const handleInputChange = (value: string) => {
     setSearchText(value);
     if (value.startsWith("Task :")) {
@@ -173,7 +198,6 @@ const ModalComponent: React.FC<ModalComponentProps> = ({ isOpen, onClose }) => {
 
       if (amountMatch) {
         const amount = parseFloat(amountMatch[1]);
-        const currencySymbol = amountMatch[3] || ""; // Get currency symbol or empty string
         const description = transactionInput.replace(amountRegex, "").trim();
         const isExpense = isTransactionExpense(description);
         const categorys =
@@ -186,13 +210,35 @@ const ModalComponent: React.FC<ModalComponentProps> = ({ isOpen, onClose }) => {
         setDescription(description);
         setIsExpense(isExpense);
         setCategory(categorys);
-
-        console.log("Amount:", amount);
-        console.log("Currency Symbol:", currencySymbol);
-        console.log("Description:", description);
-        console.log("Is Expense:", isExpense);
-        console.log("Category:", category);
       }
+    } else {
+      setContent(
+        <Flex flexDirection={"column"} gap={2} mt={2}>
+          {Object.keys(commands)
+            .filter((key) =>
+              commands[key].text.toLowerCase().includes(value.toLowerCase())
+            )
+            .map((key) => (
+              <Flex
+                key={key}
+                justifyContent={"space-between"}
+                bg={"gray.800"}
+                p={"10px 15px"}
+                rounded={5}
+              >
+                <Text color={"gray.300"}>{commands[key].text}</Text>
+
+                <Button
+                  size="sm"
+                  colorScheme="white"
+                  border={"solid 1px var(--bordercolor)"}
+                >
+                  {commands[key].buttonDiscription}
+                </Button>
+              </Flex>
+            ))}
+        </Flex>
+      );
     }
   };
 
@@ -310,9 +356,12 @@ const ModalComponent: React.FC<ModalComponentProps> = ({ isOpen, onClose }) => {
             />
             <InputRightElement>
               <Button
-                onClick={sendQuickEntry}
-                bg={"transparent"}
+                size="sm"
+                bg={"gray.700"}
+                mr={1}
                 color={"white"}
+                px={2}
+                _hover={{ bg: "gray.600", color: "purple.100" }}
               >
                 <BiSend color={"gray.400"} />
               </Button>
@@ -338,76 +387,79 @@ const ModalComponent: React.FC<ModalComponentProps> = ({ isOpen, onClose }) => {
             </Text>
           </Flex>
 
-          {/* Custom Commands */}
           <Flex flexDirection={"column"} gap={2} mt={2}>
-            <Flex flexDirection={"column"} gap={2} mt={2}>
-              <Flex
-                justifyContent={"space-between"}
-                bg={"gray.800"}
-                p={" 10px 15px"}
-                rounded={5}
-              >
-                <Text color={"gray.300"}>
-                  You can add a task by typing "Task :"
-                </Text>
+            {!searchText ? (
+              <>
+                <Flex flexDirection={"column"} gap={2} mt={2}>
+                  <Flex
+                    justifyContent={"space-between"}
+                    bg={"gray.800"}
+                    p={" 10px 15px"}
+                    rounded={5}
+                  >
+                    <Text color={"gray.300"}>
+                      You can add a task by typing "Task :"
+                    </Text>
 
-                <Flex alignItems={"center"} gap={2}>
-                  <Text fontSize={"xs"} color={"purple.300"}>
-                    or
-                  </Text>
-                  <Text>
-                    <Kbd
-                      bg={"var(--lvl3-darkcolor)"}
-                      border="var(--bordercolor) solid 1px"
-                      mr={1}
-                    >
-                      Ctrl
-                    </Kbd>
-                    +
-                    <Kbd
-                      bg={"var(--lvl3-darkcolor)"}
-                      border="var(--bordercolor) solid 1px"
-                    >
-                      E
-                    </Kbd>
-                  </Text>
+                    <Flex alignItems={"center"} gap={2}>
+                      <Text fontSize={"xs"} color={"purple.300"}>
+                        or
+                      </Text>
+                      <Text>
+                        <Kbd
+                          bg={"var(--lvl3-darkcolor)"}
+                          border="var(--bordercolor) solid 1px"
+                          mr={1}
+                        >
+                          Ctrl
+                        </Kbd>
+                        +
+                        <Kbd
+                          bg={"var(--lvl3-darkcolor)"}
+                          border="var(--bordercolor) solid 1px"
+                        >
+                          E
+                        </Kbd>
+                      </Text>
+                    </Flex>
+                  </Flex>
+                  <Flex
+                    justifyContent={"space-between"}
+                    bg={"gray.800"}
+                    p={" 10px 15px"}
+                    rounded={5}
+                  >
+                    <Text color={"gray.300"}>
+                      You can add a Transaction by typing "Wallet :"
+                    </Text>
+
+                    <Flex alignItems={"center"} gap={2}>
+                      <Text fontSize={"xs"} color={"purple.300"}>
+                        or
+                      </Text>
+                      <Text>
+                        <Kbd
+                          bg={"var(--lvl3-darkcolor)"}
+                          border="var(--bordercolor) solid 1px"
+                          mr={1}
+                        >
+                          Ctrl
+                        </Kbd>
+                        +
+                        <Kbd
+                          bg={"var(--lvl3-darkcolor)"}
+                          border="var(--bordercolor) solid 1px"
+                        >
+                          Q
+                        </Kbd>
+                      </Text>
+                    </Flex>
+                  </Flex>
                 </Flex>
-              </Flex>{" "}
-              <Flex
-                justifyContent={"space-between"}
-                bg={"gray.800"}
-                p={" 10px 15px"}
-                rounded={5}
-              >
-                <Text color={"gray.300"}>
-                  You can add a Transaction by typing "Wallet :"
-                </Text>
-
-                <Flex alignItems={"center"} gap={2}>
-                  <Text fontSize={"xs"} color={"purple.300"}>
-                    or
-                  </Text>
-                  <Text>
-                    <Kbd
-                      bg={"var(--lvl3-darkcolor)"}
-                      border="var(--bordercolor) solid 1px"
-                      mr={1}
-                    >
-                      Ctrl
-                    </Kbd>
-                    +
-                    <Kbd
-                      bg={"var(--lvl3-darkcolor)"}
-                      border="var(--bordercolor) solid 1px"
-                    >
-                      Q
-                    </Kbd>
-                  </Text>
-                </Flex>
-              </Flex>
-            </Flex>
-
-            {/* Recent History */}
+              </>
+            ) : (
+              content
+            )}
             <Flex
               flexDirection={"column"}
               bg={"gray.800"}
