@@ -21,7 +21,7 @@ const Schedule = () => {
   // function that fetch the data
   const fetchData = async () => {
     try {
-      const allTasks = await fetchAllTasks("65b0320bb3870b156e159462");
+      const allTasks = await fetchAllTasks();
 
       const tasksByDate: { [key: string]: Task[] } = {};
 
@@ -32,7 +32,6 @@ const Schedule = () => {
           tasksByDate[date] = [];
         }
 
-        // Assign position to the task based on its order in the array
         task.position = index + 1;
 
         tasksByDate[date].push(task);

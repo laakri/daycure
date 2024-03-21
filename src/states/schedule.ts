@@ -1,6 +1,8 @@
 import axios from "axios";
+import { useUserStore } from "../stores/user";
 
 const BASE_URL = "http://localhost:4401/api";
+const { user } = useUserStore();
 
 // ADD new TASK
 export const addTask = async (taskDetails: {
@@ -28,10 +30,13 @@ export const addTask = async (taskDetails: {
 };
 
 // Fetch all tasks for the user
-export const fetchAllTasks = async (userId: string) => {
+export const fetchAllTasks = async () => {
   try {
+    if (!user) {
+      throw new Error("User not found");
+    }
     const response = await axios.get(
-      `${BASE_URL}/tasks/tasks-by-user/${userId}`
+      `${BASE_URL}/tasks/tasks-by-user/${user.userId}`
     );
     return response.data;
   } catch (error) {

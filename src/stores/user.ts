@@ -1,5 +1,6 @@
 import axios from "axios";
 import { create } from "zustand";
+import { jwtDecode } from "jwt-decode";
 
 const BASE_URL = "http://localhost:4401/api";
 
@@ -28,15 +29,24 @@ interface SignUpData {
 }
 
 export const useUserStore = create<UserStore>((set) => ({
-  user: null,
+  user: getUserFromLocalStorage(),
+
   login: async (loginData: LoginData) => {
     try {
       const response = await axios.post(`${BASE_URL}/users/login`, loginData);
       if (response.status === 200) {
-        const { token, expiresIn, userId, userName, isAdmin } = response.data;
+        const { token } = response.data;
+
+        const decodedToken: any = jwtDecode(token);
+
+        const user: User = {
+          userName: decodedToken.name,
+          userId: decodedToken.userId,
+          isAdmin: decodedToken.isAdmin,
+        };
+
         localStorage.setItem("token", token);
-        localStorage.setItem("expiresIn", expiresIn.toString());
-        set({ user: { userName, userId, isAdmin } });
+        set({ user });
       }
     } catch (error) {
       console.error("Login error:", error);
@@ -63,3 +73,16 @@ export const useUserStore = create<UserStore>((set) => ({
     set({ user: null });
   },
 }));
+
+function getUserFromLocalStorage(): User | null {
+  const token = localStorage.getItem("token");
+  if (token) {
+    const decodedToken: any = jwtDecode(token);
+    return {
+      userName: decodedToken.name,
+      userId: decodedToken.userId,
+      isAdmin: decodedToken.isAdmin,
+    };
+  }
+  return null;
+}

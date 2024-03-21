@@ -15,6 +15,8 @@ import { fetchAllTasks, addTask } from "../../states/schedule";
 import Task from "./taskModel";
 import dayjs from "dayjs";
 import { BiSend } from "react-icons/bi";
+import { useUserStore } from "../../stores/user";
+
 interface AddTaskProps {
   selected: Date | null;
   updateTasks: (updatedTasks: { [key: string]: Task[] }) => void;
@@ -52,7 +54,7 @@ const AddTask: React.FC<AddTaskProps> = ({ selected, updateTasks }) => {
   // function that fetch the data
   const fetchData = async () => {
     try {
-      const allTasks = await fetchAllTasks("65b0320bb3870b156e159462");
+      const allTasks = await fetchAllTasks();
 
       const tasksByDate: { [key: string]: Task[] } = {};
 
@@ -96,9 +98,12 @@ const AddTask: React.FC<AddTaskProps> = ({ selected, updateTasks }) => {
 
       // Set isCompleted based on taskType
       const isCompleted = taskType === "Social" ? true : false;
-
+      const { user } = useUserStore();
+      if (!user) {
+        throw new Error("User not found");
+      }
       const taskDetails = {
-        userId: "65b0320bb3870b156e159462",
+        userId: user.userId,
         date: dayjs(selected).format("YYYY-MM-DD"),
         description: newTask.trim(),
         isImportant: important,

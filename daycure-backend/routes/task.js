@@ -98,6 +98,7 @@ router.put("/update-task-progress/:taskId", async (req, res) => {
 router.get("/tasks-by-user/:userId", async (req, res) => {
   try {
     const requestedUserId = req.params.userId;
+    console.log(requestedUserId);
 
     const tasks = await Task.find({ user: requestedUserId });
 
