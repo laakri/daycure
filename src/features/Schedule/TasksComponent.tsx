@@ -35,6 +35,7 @@ import { BsStars } from "react-icons/bs";
 import { GoKebabHorizontal } from "react-icons/go";
 import { TbCirclesRelation } from "react-icons/tb";
 import { IoShareSocial } from "react-icons/io5";
+import { FaTrashAlt } from "react-icons/fa";
 interface TasksComponentProps {
   selected: Date | null;
   tasks: { [key: string]: Task[] };
@@ -443,7 +444,7 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
                       {task.description}
                     </Checkbox>
                     <Flex>
-                      <Menu>
+                      <Menu placement="left-start">
                         <MenuButton
                           as={IconButton}
                           icon={<GoKebabHorizontal />}
@@ -457,9 +458,33 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
                           }}
                           aria-label="Options"
                         />
-                        <MenuList>
-                          <MenuItem>Edit</MenuItem>
-                          <MenuItem>Delete</MenuItem>
+                        <MenuList
+                          bg={"var(--lvl1-darkcolor)"}
+                          borderColor={"var(--bordercolor)"}
+                          zIndex={10000000000}
+                        >
+                          <MenuItem
+                            bg={"var(--lvl1-darkcolor)"}
+                            _hover={{
+                              bg: "var(--lvl3-darkcolor)",
+                              border: "transparent 1px solid",
+                              color: "var(--chakra-colors-chakra-body-text)",
+                            }}
+                            icon={<FaTrashAlt />}
+                          >
+                            Edit
+                          </MenuItem>
+                          <MenuItem
+                            bg={"var(--lvl1-darkcolor)"}
+                            _hover={{
+                              bg: "var(--lvl3-darkcolor)",
+                              border: "transparent 1px solid",
+                              color: "var(--chakra-colors-chakra-body-text)",
+                            }}
+                            icon={<FaTrashAlt />}
+                          >
+                            Delete
+                          </MenuItem>
                         </MenuList>
                       </Menu>
                     </Flex>
