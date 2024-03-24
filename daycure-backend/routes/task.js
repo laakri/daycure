@@ -6,7 +6,7 @@ const Task = require("../models/task");
 router.post("/add-task", async (req, res) => {
   try {
     const {
-      userId,
+      user,
       date,
       description,
       isImportant,
@@ -16,8 +16,9 @@ router.post("/add-task", async (req, res) => {
       routineType,
     } = req.body;
 
+    // Create a new Task instance
     const newTask = new Task({
-      user: userId,
+      user,
       date,
       description,
       isImportant,
@@ -42,10 +43,29 @@ router.post("/add-task", async (req, res) => {
     console.log("Task added successfully");
   } catch (error) {
     console.error("Error adding task:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: "Failed to add task" });
   }
 });
 
+router.get("/tasks-by-user/:userId", async (req, res) => {
+  try {
+    const requestedUserId = req.params.userId;
+
+    const tasks = await Task.find({ user: requestedUserId });
+
+    const formattedTasks = tasks.map((task) => {
+      return {
+        ...task.toObject(),
+        date: task.date.toISOString().split("T")[0],
+      };
+    });
+
+    res.status(200).json(formattedTasks);
+  } catch (error) {
+    console.error("Error fetching tasks by user:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 // Update task by ID
 router.put("/update-task-iscompleted/:taskId", async (req, res) => {
   const { taskId } = req.params;
@@ -69,6 +89,8 @@ router.put("/update-task-iscompleted/:taskId", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+// Update task progress by ID
+
 router.put("/update-task-progress/:taskId", async (req, res) => {
   const { taskId } = req.params;
   const { progressHours, progressMinutes } = req.body;
@@ -95,23 +117,20 @@ router.put("/update-task-progress/:taskId", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
-router.get("/tasks-by-user/:userId", async (req, res) => {
+
+// Delete task progress by ID
+router.delete("/delete-task/:taskId", async (req, res) => {
+  const { taskId } = req.params;
   try {
-    const requestedUserId = req.params.userId;
-    console.log(requestedUserId);
+    const deletedTask = await Task.findByIdAndDelete(taskId);
 
-    const tasks = await Task.find({ user: requestedUserId });
+    if (!deletedTask) {
+      return res.status(404).json({ error: "Task not found" });
+    }
 
-    const formattedTasks = tasks.map((task) => {
-      return {
-        ...task.toObject(),
-        date: task.date.toISOString().split("T")[0],
-      };
-    });
-
-    res.status(200).json(formattedTasks);
+    res.status(200).json({ message: "Task deleted successfully" });
   } catch (error) {
-    console.error("Error fetching tasks by user:", error);
+    console.error("Error deleting task:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });

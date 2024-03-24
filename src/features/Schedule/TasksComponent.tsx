@@ -16,6 +16,11 @@ import {
   SliderTrack,
   Slider,
   SliderFilledTrack,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Spinner,
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import dayjs from "dayjs";
@@ -25,7 +30,7 @@ import {
   MdPauseCircleFilled,
   MdQuestionMark,
 } from "react-icons/md";
-import { updateTaskProgress } from "../../states/schedule";
+import { deleteTask, updateTaskProgress } from "../../states/schedule";
 import { BsStars } from "react-icons/bs";
 import { GoKebabHorizontal } from "react-icons/go";
 import { TbCirclesRelation } from "react-icons/tb";
@@ -34,12 +39,14 @@ interface TasksComponentProps {
   selected: Date | null;
   tasks: { [key: string]: Task[] };
   handleToggleTaskCompletion: (taskId: string, isCompleted: boolean) => void;
+  loading: boolean;
 }
 
 const TasksComponent: React.FC<TasksComponentProps> = ({
   selected,
   tasks,
   handleToggleTaskCompletion,
+  loading,
 }) => {
   const [draggedTaskId, setDraggedTaskId] = useState<string | null>(null);
 
@@ -221,8 +228,21 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
       </>
     );
   };
-
+  const handleDelete = async (taskId: string) => {
+    try {
+      await deleteTask(taskId);
+    } catch (error) {
+      console.error("Error deleting task:", error);
+    }
+  };
   const renderTasks = () => {
+    if (loading) {
+      return (
+        <Flex justify="center" align="center" h="100%">
+          <Spinner size="xl" />
+        </Flex>
+      );
+    }
     if (!selected)
       return (
         <Box>
@@ -423,18 +443,25 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
                       {task.description}
                     </Checkbox>
                     <Flex>
-                      <IconButton
-                        icon={<GoKebabHorizontal />}
-                        size="xs"
-                        color="gray.50"
-                        colorScheme="black"
-                        _hover={{
-                          bg: "gray.400",
-                          color: "gray.900",
-                          cursor: "point",
-                        }}
-                        aria-label="Drag Task"
-                      />
+                      <Menu>
+                        <MenuButton
+                          as={IconButton}
+                          icon={<GoKebabHorizontal />}
+                          size="xs"
+                          color="gray.50"
+                          colorScheme="black"
+                          _hover={{
+                            bg: "gray.400",
+                            color: "gray.900",
+                            cursor: "point",
+                          }}
+                          aria-label="Options"
+                        />
+                        <MenuList>
+                          <MenuItem>Edit</MenuItem>
+                          <MenuItem>Delete</MenuItem>
+                        </MenuList>
+                      </Menu>
                     </Flex>
                   </HStack>
                   {task.type == "Timing" && (
@@ -512,14 +539,7 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
     }
   }
   return (
-    <Box
-      w={"100%"}
-      // border={"solid 1px "}
-      // borderColor={"#3b3a3a44"}
-      // bg={"var(--lvl3-darkcolor)"}
-      p={"20px 10px"}
-      rounded={10}
-    >
+    <Box w={"100%"} p={"20px 10px"} rounded={10}>
       {selected && (
         <Flex justifyContent={"space-between"} alignItems={"center"}>
           <Text fontSize={"xl"}>{dayjs(selected).format("MMMM D, YYYY")}</Text>

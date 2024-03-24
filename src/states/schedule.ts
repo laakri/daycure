@@ -1,12 +1,10 @@
 import axios from "axios";
-import { useUserStore } from "../stores/user";
 
 const BASE_URL = "http://localhost:4401/api";
-const { user } = useUserStore();
 
 // ADD new TASK
 export const addTask = async (taskDetails: {
-  userId: string;
+  user: string;
   date: any;
   description: string;
   isImportant: boolean;
@@ -30,13 +28,10 @@ export const addTask = async (taskDetails: {
 };
 
 // Fetch all tasks for the user
-export const fetchAllTasks = async () => {
+export const fetchAllTasks = async (UserId: string) => {
   try {
-    if (!user) {
-      throw new Error("User not found");
-    }
     const response = await axios.get(
-      `${BASE_URL}/tasks/tasks-by-user/${user.userId}`
+      `${BASE_URL}/tasks/tasks-by-user/${UserId}`
     );
     return response.data;
   } catch (error) {
@@ -44,6 +39,7 @@ export const fetchAllTasks = async () => {
     throw new Error("Failed to fetch tasks");
   }
 };
+
 // Update task isCompleted status
 export const updateTaskIsCompleted = async (
   taskId: string,
@@ -60,6 +56,7 @@ export const updateTaskIsCompleted = async (
     throw new Error("Failed to update task isCompleted status");
   }
 };
+
 // Update task progress
 export const updateTaskProgress = async (
   taskId: string,
@@ -75,5 +72,17 @@ export const updateTaskProgress = async (
   } catch (error) {
     console.error("Error updating task progress:", error);
     throw new Error("Failed to update task progress");
+  }
+};
+// Delete task by ID
+export const deleteTask = async (taskId: string) => {
+  try {
+    const response = await axios.delete(
+      `${BASE_URL}/tasks/delete-task/${taskId}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting task:", error);
+    throw new Error("Failed to delete task");
   }
 };

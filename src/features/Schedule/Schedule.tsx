@@ -1,28 +1,29 @@
 import { useEffect, useState } from "react";
-import { useToast, Box, Flex } from "@chakra-ui/react";
+import { useToast, Box, Flex, Spinner } from "@chakra-ui/react";
 import CalendarComponent from "./CalendarComponent";
 import TasksComponent from "./TasksComponent";
 import { fetchAllTasks, updateTaskIsCompleted } from "../../states/schedule";
 import Task from "./taskModel";
 import dayjs from "dayjs";
 import AddTask from "./AddTask";
+import { useUserData } from "./useUserData";
 
 const Schedule = () => {
   const [selected, setSelected] = useState<Date | null>(dayjs().toDate());
   const [tasks, setTasks] = useState<{ [key: string]: Task[] }>({});
+  const [loading, setLoading] = useState<boolean>(false);
 
   const toast = useToast();
+  const user = useUserData();
 
-  // to fetch the data when the page loaded
   useEffect(() => {
     fetchData();
   }, [toast]);
 
-  // function that fetch the data
   const fetchData = async () => {
+    setLoading(true);
     try {
-      const allTasks = await fetchAllTasks();
-
+      const allTasks = await fetchAllTasks(user.userId);
       const tasksByDate: { [key: string]: Task[] } = {};
 
       allTasks.forEach((task: Task, index: number) => {
@@ -37,8 +38,10 @@ const Schedule = () => {
         tasksByDate[date].push(task);
       });
       setTasks(tasksByDate);
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching tasks:", error);
+      setLoading(false);
 
       toast({
         title: "Error",
@@ -89,6 +92,7 @@ const Schedule = () => {
           selected={selected}
           tasks={tasks}
           handleToggleTaskCompletion={handleToggleTaskCompletion}
+          loading={loading}
         />
         <CalendarComponent
           selected={selected}
@@ -99,4 +103,5 @@ const Schedule = () => {
     </Box>
   );
 };
+
 export default Schedule;

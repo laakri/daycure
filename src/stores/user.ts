@@ -6,7 +6,7 @@ const BASE_URL = "http://localhost:4401/api";
 
 interface User {
   userName: string;
-  userId: number;
+  userId: string;
   isAdmin: boolean;
 }
 
