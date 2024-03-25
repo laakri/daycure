@@ -15,6 +15,7 @@ const Sidebar: React.FC = () => {
   return (
     <Flex
       flexDirection="column"
+     
       alignItems="center"
       bg="var(--lvl3-darkcolor)"
       p={"20px 10px "}
