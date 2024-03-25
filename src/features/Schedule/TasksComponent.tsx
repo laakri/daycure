@@ -462,6 +462,10 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
                           bg={"var(--lvl1-darkcolor)"}
                           borderColor={"var(--bordercolor)"}
                           zIndex={10000000000}
+                          style={{
+                            minWidth: "unset",
+                            maxWidth: "150px",
+                          }}
                         >
                           <MenuItem
                             bg={"var(--lvl1-darkcolor)"}
