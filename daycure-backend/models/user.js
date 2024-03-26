@@ -9,6 +9,7 @@ const userSchema = mongoose.Schema(
     password: { type: String, required: true },
     isAdmin: { type: Boolean, default: false },
     walletCategories: [{ type: String }],
+    dashboardWidgets: [{ type: String }],
   },
   { timestamps: true }
 );

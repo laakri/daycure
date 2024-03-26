@@ -162,8 +162,8 @@ const WalletTransaction = () => {
       </Box>
 
       <Modal isOpen={isModalOpen} onClose={closeModal}>
-        <ModalOverlay />
-        <ModalContent bg={"var(--lvl2-darkcolor)"}>
+        <ModalOverlay bg="rgba(0, 0, 0, 0.5)" backdropFilter="blur(8px)" />
+        <ModalContent bg={"var(--lvl3-darkcolor)"}>
           <ModalHeader fontSize={"sm"}>Category List</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
