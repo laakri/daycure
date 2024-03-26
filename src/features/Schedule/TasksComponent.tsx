@@ -21,25 +21,34 @@ import {
   MenuList,
   MenuItem,
   Spinner,
+  useToast,
+  Input,
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import dayjs from "dayjs";
 import Task from "./taskModel";
 import {
+  MdModeEdit,
   MdNotStarted,
   MdPauseCircleFilled,
   MdQuestionMark,
 } from "react-icons/md";
-import { deleteTask, updateTaskProgress } from "../../states/schedule";
+import {
+  deleteTask,
+  fetchAllTasks,
+  updateTaskProgress,
+} from "../../states/schedule";
 import { BsStars } from "react-icons/bs";
 import { GoKebabHorizontal } from "react-icons/go";
 import { TbCirclesRelation } from "react-icons/tb";
 import { IoShareSocial } from "react-icons/io5";
 import { FaTrashAlt } from "react-icons/fa";
+import { useUserData } from "./useUserData";
 interface TasksComponentProps {
   selected: Date | null;
   tasks: { [key: string]: Task[] };
   handleToggleTaskCompletion: (taskId: string, isCompleted: boolean) => void;
+  updateTasks: (updatedTasks: { [key: string]: Task[] }) => void;
   loading: boolean;
 }
 
@@ -47,10 +56,83 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
   selected,
   tasks,
   handleToggleTaskCompletion,
+  updateTasks,
   loading,
 }) => {
   const [draggedTaskId, setDraggedTaskId] = useState<string | null>(null);
+  const [editMode, setEditMode] = useState(false);
+  const [editedDescription, setEditedDescription] = useState("");
+  const [editedTaskId, setEditedTaskId] = useState("");
 
+  const toast = useToast();
+  const user = useUserData();
+
+  const fetchData = async () => {
+    try {
+      const allTasks = await fetchAllTasks(user.userId);
+      const tasksByDate: { [key: string]: Task[] } = {};
+
+      allTasks.forEach((task: Task, index: number) => {
+        const date = dayjs(task.date).format("YYYY-MM-DD");
+
+        if (!tasksByDate[date]) {
+          tasksByDate[date] = [];
+        }
+
+        task.position = index + 1;
+
+        tasksByDate[date].push(task);
+      });
+      updateTasks(tasksByDate);
+    } catch (error) {
+      console.error("Error fetching tasks:", error);
+
+      toast({
+        title: "Error",
+        description: "An error occurred",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
+  const handleEdit = (taskId: string, description: string) => {
+    // Function to enter edit mode
+    setEditedTaskId(taskId);
+    setEditedDescription(description);
+    setEditMode(true);
+  };
+
+  const handleSave = async () => {
+    setEditMode(false);
+    setEditedTaskId("");
+    setEditedDescription("");
+  };
+
+  const renderDescription = (taskId: string, description: string) => {
+    if (editMode && taskId === editedTaskId) {
+      return (
+        <Flex>
+          <Input
+            m={"auto"}
+            size={"sm"}
+            value={editedDescription}
+            onChange={(e) => setEditedDescription(e.target.value)}
+          />
+          <Button
+            size="sm"
+            bg={"gray.700"}
+            color={"white"}
+            onClick={handleSave}
+          >
+            Save
+          </Button>
+        </Flex>
+      );
+    } else {
+      return <Text>{description}</Text>;
+    }
+  };
   const handleDragStart = (taskId: string) => {
     setDraggedTaskId(taskId);
   };
@@ -229,11 +311,27 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
       </>
     );
   };
+
   const handleDelete = async (taskId: string) => {
     try {
       await deleteTask(taskId);
+      await fetchData();
+      toast({
+        title: "Success",
+        description: "Task deleted successfully",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
     } catch (error) {
       console.error("Error deleting task:", error);
+      toast({
+        title: "Error",
+        description: "Failed to delete task",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
     }
   };
   const renderTasks = () => {
@@ -292,19 +390,23 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
                 p={2}
                 justifyContent={"space-between"}
                 rounded={5}
-                border={"solid 1px transparent "}
-                bg={getBackgroundColorBysubType(task.subType)}
+                borderLeft={"solid 3px"}
+                borderColor={
+                  getBackgroundAndTextColorBySubType(task.subType).textColor
+                }
+                bg={
+                  getBackgroundAndTextColorBySubType(task.subType)
+                    .backgroundColor
+                }
                 _hover={{
-                  bg: "gray.400",
+                  bg: "var(--lvl4-darkcolor)",
                 }}
-                color="black"
               >
                 <Flex
                   display={"flex"}
                   justifyContent={"center"}
                   alignContent={"center"}
                   gap={"10px"}
-                  color="black"
                 >
                   <Box w={5}>{getIconBysubType(task.subType)}</Box>
                   <Tag
@@ -312,20 +414,21 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
                     variant="outline"
                     border={"solid 1px"}
                     pb={"1px"}
-                    color={"black"}
-                    borderColor={"black"}
+                    color={"white"}
+                    borderColor={"white"}
                     maxH={"25px"}
                     mt={"2px"}
                     mr={"5px"}
                   >
                     <TagLabel display={"flex"} alignItems={"center"} gap={2}>
-                      {task.subType ? <>{task.subType}</> : <Text>Random</Text>}
+                      {task.subType ? <>{task.subType}</> : <Text>Social</Text>}
                     </TagLabel>
                   </Tag>
                   {task.description}
                 </Flex>
-                <Flex>
-                  <IconButton
+                <Menu placement="left-start">
+                  <MenuButton
+                    as={IconButton}
                     icon={<GoKebabHorizontal />}
                     size="xs"
                     color="gray.50"
@@ -335,9 +438,44 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
                       color: "gray.900",
                       cursor: "point",
                     }}
-                    aria-label="Drag Task"
+                    aria-label="Options"
                   />
-                </Flex>
+                  <MenuList
+                    bg={"var(--lvl3-darkcolor)"}
+                    borderColor={"var(--bordercolor)"}
+                    zIndex={10000000000}
+                    style={{
+                      minWidth: "unset",
+                      maxWidth: "150px",
+                    }}
+                  >
+                    <MenuItem
+                      bg={"var(--lvl3-darkcolor)"}
+                      _hover={{
+                        bg: "var(--lvl3-darkcolor)",
+                        color: "blue.200",
+                      }}
+                      color={"gray.200"}
+                      icon={<MdModeEdit />}
+                      fontSize={"14px"}
+                    >
+                      Edit
+                    </MenuItem>
+                    <MenuItem
+                      bg={"var(--lvl3-darkcolor)"}
+                      _hover={{
+                        bg: "var(--lvl3-darkcolor)",
+                        color: "red.200",
+                      }}
+                      color={"red.300"}
+                      icon={<FaTrashAlt />}
+                      fontSize={"14px"}
+                      onClick={() => handleDelete(task._id)}
+                    >
+                      Delete
+                    </MenuItem>
+                  </MenuList>
+                </Menu>
                 {dateTasks.length !== 0 &&
                   dateTasks.some((task) => task.type === "Social")}
               </HStack>
@@ -390,7 +528,7 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
                     rounded={5}
                     bg="var(--lvl3-darkcolor)"
                     _hover={{
-                      bg: "var(--lvl2-darkcolor)",
+                      bg: "var(--lvl4-darkcolor)",
                       cursor: "pointer",
                     }}
                     draggable
@@ -440,8 +578,9 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
                           </TagLabel>
                         </Tag>
                       )}
-
-                      {task.description}
+                      {!editMode
+                        ? task.description
+                        : renderDescription(task._id, task.description)}
                     </Checkbox>
                     <Flex>
                       <Menu placement="left-start">
@@ -459,7 +598,7 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
                           aria-label="Options"
                         />
                         <MenuList
-                          bg={"var(--lvl1-darkcolor)"}
+                          bg={"var(--lvl3-darkcolor)"}
                           borderColor={"var(--bordercolor)"}
                           zIndex={10000000000}
                           style={{
@@ -468,24 +607,30 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
                           }}
                         >
                           <MenuItem
-                            bg={"var(--lvl1-darkcolor)"}
+                            bg={"var(--lvl3-darkcolor)"}
                             _hover={{
                               bg: "var(--lvl3-darkcolor)",
-                              border: "transparent 1px solid",
-                              color: "var(--chakra-colors-chakra-body-text)",
+                              color: "blue.200",
                             }}
-                            icon={<FaTrashAlt />}
+                            color={"gray.200"}
+                            icon={<MdModeEdit />}
+                            fontSize={"14px"}
+                            onClick={() =>
+                              handleEdit(task._id, task.description)
+                            }
                           >
                             Edit
                           </MenuItem>
                           <MenuItem
-                            bg={"var(--lvl1-darkcolor)"}
+                            bg={"var(--lvl3-darkcolor)"}
                             _hover={{
                               bg: "var(--lvl3-darkcolor)",
-                              border: "transparent 1px solid",
-                              color: "var(--chakra-colors-chakra-body-text)",
+                              color: "red.200",
                             }}
+                            color={"red.300"}
                             icon={<FaTrashAlt />}
+                            fontSize={"14px"}
+                            onClick={() => handleDelete(task._id)}
                           >
                             Delete
                           </MenuItem>
@@ -525,7 +670,7 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
   function getIconByType(type: string): ReactElement {
     switch (type) {
       case "Social":
-        return <CiStar size={15} color="black" />;
+        return <CiStar size={15} />;
       case "Goal":
         return <CiTrophy size={15} />;
       case "Routine":
@@ -540,33 +685,56 @@ const TasksComponent: React.FC<TasksComponentProps> = ({
   function getIconBysubType(type: string): ReactElement {
     switch (type) {
       case "event":
-        return <BsStars color="green.200" size={18} />;
+        return <BsStars size={18} />;
       case "birthday":
-        return <PiCakeThin color={"yellow.300"} size={22} />;
+        return <PiCakeThin size={22} />;
       case "wedding":
-        return <TbCirclesRelation color={"cyan.200"} size={22} />;
+        return <TbCirclesRelation size={22} />;
       case "party":
-        return <GiPartyPopper color={"pink.200"} size={22} />;
+        return <GiPartyPopper size={22} />;
 
       default:
-        return <IoShareSocial color="black" size={22} />;
+        return <IoShareSocial size={22} />;
     }
   }
-  function getBackgroundColorBysubType(type: string): string {
+  function getBackgroundAndTextColorBySubType(type: string): {
+    backgroundColor: string;
+    textColor: string;
+  } {
     switch (type) {
       case "event":
-        return "linear-gradient(90deg, rgba(242,239,232,1) 0%, rgba(167,167,167,1) 100%)";
+        return {
+          backgroundColor:
+            "linear-gradient(90deg, rgba(23,64,28,1) 0%, rgba(35, 35, 35, 1) 100%)",
+          textColor: "green.500",
+        };
       case "birthday":
-        return "linear-gradient(90deg, rgba(238,224,255,1) 0%, rgba(167,167,167,1) 100%)";
+        return {
+          backgroundColor:
+            "linear-gradient(90deg, rgba(27,23,64,1) 0%, rgba(35, 35, 35, 1) 100%)",
+          textColor: "blue.500",
+        };
       case "wedding":
-        return "linear-gradient(90deg, rgba(231,244,251,1) 0%, rgba(167,167,167,1) 100%)";
+        return {
+          backgroundColor:
+            "linear-gradient(90deg, rgba(64,23,37,1) 0%, rgba(35, 35, 35, 1) 100%)",
+          textColor: "red.500",
+        };
       case "party":
-        return "linear-gradient(90deg, rgba(224,197,220,1) 0%, rgba(167,167,167,1) 100%)";
-
+        return {
+          backgroundColor:
+            "linear-gradient(90deg,rgba(61,64,23,1) 0%, rgba(35, 35, 35, 1) 100%)",
+          textColor: "yellow.500",
+        };
       default:
-        return "linear-gradient(90deg, #ffffff 0%, rgba(167,167,167,1) 100%)";
+        return {
+          backgroundColor:
+            "linear-gradient(90deg, #1a1a1a 0%, rgba(35, 35, 35, 1) 100%)",
+          textColor: "#ffffff",
+        };
     }
   }
+
   return (
     <Box w={"100%"} p={"20px 10px"} rounded={10}>
       {selected && (

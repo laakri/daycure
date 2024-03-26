@@ -62,8 +62,19 @@ const Schedule = () => {
     isCompleted: boolean
   ) => {
     try {
+      const updatedTasks = { ...tasks };
+      const formattedDate = selected
+        ? dayjs(selected).format("YYYY-MM-DD")
+        : "";
+
+      if (updatedTasks[formattedDate]) {
+        const updatedTaskList = updatedTasks[formattedDate].map((task) =>
+          task._id === taskId ? { ...task, isCompleted: isCompleted } : task
+        );
+        updatedTasks[formattedDate] = updatedTaskList;
+        setTasks(updatedTasks);
+      }
       await updateTaskIsCompleted(taskId, isCompleted);
-      await fetchData();
     } catch (error) {
       console.error("Error toggling task completion status:", error);
       const errorMessage = (error as Error).message || "An error occurred";
@@ -92,6 +103,7 @@ const Schedule = () => {
           selected={selected}
           tasks={tasks}
           handleToggleTaskCompletion={handleToggleTaskCompletion}
+          updateTasks={setTasks}
           loading={loading}
         />
         <CalendarComponent

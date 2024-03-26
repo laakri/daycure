@@ -7,6 +7,7 @@ export const addTask = async (taskDetails: {
   user: string;
   date: any;
   description: string;
+  isCompleted: boolean;
   isImportant: boolean;
   type: string;
   RoutineType: string;

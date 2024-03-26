@@ -96,8 +96,6 @@ const AddTask: React.FC<AddTaskProps> = ({ selected, updateTasks }) => {
       const subTypeValue = taskType === "Social" ? eventType || "" : "";
       const routineTypeValue =
         taskType === "Routine" ? selectedRoutineType || "" : "";
-
-      // Set isCompleted based on taskType
       const isCompleted = taskType === "Social" ? true : false;
 
       const taskDetails = {
@@ -111,7 +109,7 @@ const AddTask: React.FC<AddTaskProps> = ({ selected, updateTasks }) => {
         ...(routineTypeValue !== "" && { routineType: routineTypeValue }),
         duration: taskDuration,
       };
-
+      console.log(taskDetails);
       try {
         await addTask(taskDetails);
         await fetchData();
