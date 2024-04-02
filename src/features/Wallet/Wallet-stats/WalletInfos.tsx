@@ -92,7 +92,7 @@ const WalletInfos = () => {
       },
     },
     dataLabels: {
-      enabled: false, // Disabling data labels for better visualization
+      enabled: false,
     },
   };
   const textColor = useColorModeValue("black", "white");
@@ -100,12 +100,7 @@ const WalletInfos = () => {
   return (
     <Flex flexDirection={"column"} w={"100%"} gap={3}>
       <Flex justifyContent="space-between" gap={3}>
-        <Box
-          width={"50%"}
-          bg={"var(--lvl1-darkcolor)"}
-          border={"var(--bordercolor) solid 1px"}
-          rounded={10}
-        >
+        <Box width={"50%"} bg={"gray.900"} rounded={10}>
           <Text fontWeight="bold" m={4}>
             Savings Over Time
           </Text>
@@ -117,12 +112,7 @@ const WalletInfos = () => {
             color={textColor}
           />
         </Box>
-        <Box
-          width={"50%"}
-          bg={"var(--lvl1-darkcolor)"}
-          border={"var(--bordercolor) solid 1px"}
-          rounded={10}
-        >
+        <Box width={"50%"} bg={"gray.900"} rounded={10}>
           <Text fontWeight="bold" m={4}>
             Expense Categories Breakdown
           </Text>

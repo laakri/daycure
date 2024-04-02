@@ -7,16 +7,16 @@ import WalletInfos from "./Wallet-stats/WalletInfos";
 import { CalendarIcon } from "@chakra-ui/icons";
 
 const Wallet = () => {
-  const [showTransactions, setShowTransactions] = useState(false);
+  const [showInofs, setSInofs] = useState(false);
   const [activeButton, setActiveButton] = useState("infos");
 
   const showTransactionList = () => {
-    setShowTransactions(true);
+    setSInofs(true);
     setActiveButton("history");
   };
 
   const showInfos = () => {
-    setShowTransactions(false);
+    setSInofs(false);
     setActiveButton("infos");
   };
 
@@ -75,7 +75,7 @@ const Wallet = () => {
                 }}
                 onClick={showInfos}
               >
-                Infos
+                History
               </Box>
               <Box
                 bg={
@@ -91,17 +91,21 @@ const Wallet = () => {
                 }}
                 onClick={showTransactionList}
               >
-                History
+                Stats
               </Box>
             </Flex>
           </Flex>
 
-          {showTransactions ? (
-            <WalletListTransactions />
+          {showInofs ? (
+            <Flex flexDirection={"column"} gap={3}>
+              <WalletStats />
+
+              <WalletInfos />
+            </Flex>
           ) : (
             <Flex flexDirection={"column"} gap={3}>
               <WalletStats />
-              <WalletInfos />
+              <WalletListTransactions />
             </Flex>
           )}
         </Flex>

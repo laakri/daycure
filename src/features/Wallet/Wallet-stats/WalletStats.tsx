@@ -79,7 +79,7 @@ const WalletStats = () => {
     setSelectedOption(option);
   };
 
-  const bgColor = useColorModeValue("var(--lvl1-darkcolor)", "gray.800");
+  const bgColor = useColorModeValue("var(--lvl1-darkcolor)", "gray.900");
   const borderColor = useColorModeValue("var(--bordercolor)", "gray.700");
   const textColor = useColorModeValue("black", "white");
 
