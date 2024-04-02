@@ -89,7 +89,7 @@ router.post("/login", async (req, res, next) => {
     });
   }
 });
-router.post("/widgets/add", auth, async (req, res) => {
+router.post("/widgets/add", async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
 
@@ -115,7 +115,7 @@ router.post("/widgets/add", auth, async (req, res) => {
   }
 });
 
-router.delete("/widgets/delete", auth, async (req, res) => {
+router.delete("/widgets/delete", async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
 
@@ -138,7 +138,7 @@ router.delete("/widgets/delete", auth, async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
-router.get("/widgets", auth, async (req, res) => {
+router.get("/widgets", async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
 

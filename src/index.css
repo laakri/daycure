@@ -20,9 +20,6 @@
   --hover-maincolor: #1039f3;
   --secend-maincolor: #e8683e;
   --hover-secend-maincolor: #bf4a22;
-  /*
-    --Dashboard-garien-color: linear-gradient(to bottom, rgba(127, 57, 218, 0.111), transparent);
-  */ 
  --Dashboard-garien-color: #131823;
   
   background-color: var(--chakra-colors-chakra-body-bg);
@@ -34,38 +31,19 @@
 }
 a {
   font-weight: 500;
-  color: var(--maincolor);
   text-decoration: inherit;
 }
-a:hover {
-  color: rgb(216, 193, 254);
 
-}
-option{
-  color: var(--chakra-colors-chakra-body-bg);
-}
+
 a.active {
   color: #f5f0ff;
-  background-color: var(--chakra-colors-chakra-body-bg);
   border-radius: 7px;
 }
 
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  color: var(--hover-maincolor);
-}
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
+
+
