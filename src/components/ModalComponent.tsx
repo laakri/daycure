@@ -509,13 +509,7 @@ const ModalComponent: React.FC<ModalComponentProps> = ({ isOpen, onClose }) => {
               rounded={5}
             >
               <Text color={"gray.300"}>Contextual Suggestions:</Text>
-              <Button
-                size="sm"
-                colorScheme="white"
-                border={"solid 1px var(--bordercolor)"}
-              >
-                Show Suggestions
-              </Button>
+              <Button size="sm">Show Suggestions</Button>
             </Flex>
           </Flex>
         </ModalBody>

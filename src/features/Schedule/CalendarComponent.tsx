@@ -1,9 +1,11 @@
-import React, { useEffect } from "react";
 import { Calendar } from "@mantine/dates";
 import { Box, Flex, Link, Tag, TagLabel, Text } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Task from "./taskModel";
 import { DeleteIcon } from "@chakra-ui/icons";
+import { TbTargetArrow } from "react-icons/tb";
+import { LuRecycle } from "react-icons/lu";
+import { FaPeopleGroup } from "react-icons/fa6";
 
 interface CalendarComponentProps {
   selected: Date | null;
@@ -45,6 +47,8 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
     }
     const dateTasks = tasks[date] || [];
     const hasGoalTask = dateTasks.some((task) => task.type === "Goal");
+    const hasRoutineTask = dateTasks.some((task) => task.type === "Routine");
+    const hasSocialTask = dateTasks.some((task) => task.type === "Social");
 
     return (
       <Box
@@ -56,16 +60,48 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({
         justifyContent={"center"}
         alignItems={"center"}
         rounded={"5px"}
-        overflow={"hidden"}
-        borderColor={
-          isCurrentDay
-            ? "purple.200"
-            : hasGoalTask
-            ? "#e7fc00a2"
-            : "transparent"
-        }
+        borderColor={isCurrentDay ? "purple.700" : "transparent"}
         bg={isSelectedDay ? "gray.800" : undefined}
       >
+        {hasGoalTask && (
+          <Box
+            position={"absolute"}
+            top={-1}
+            right={-1}
+            fontSize={"lg"}
+            color="yellow.400"
+            bg={"gray.900"}
+            rounded={"50%"}
+          >
+            <TbTargetArrow />
+          </Box>
+        )}
+        {hasRoutineTask && (
+          <Box
+            position={"absolute"}
+            bottom={0}
+            right={-1}
+            fontSize={"lg"}
+            color="purple.100"
+            bg={"gray.900"}
+            rounded={"50%"}
+          >
+            <LuRecycle />
+          </Box>
+        )}
+        {hasSocialTask && (
+          <Box
+            position={"absolute"}
+            top={-1}
+            left={-1}
+            fontSize={"md"}
+            color="red.400"
+            bg={"gray.900"}
+            rounded={"50%"}
+          >
+            <FaPeopleGroup />
+          </Box>
+        )}
         <Text color={isCurrentDay ? "purple.400" : undefined}>
           {dayjs(paramDate).format("D")}
         </Text>
