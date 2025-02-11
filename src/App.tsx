@@ -2,12 +2,11 @@ import { ChakraProvider, extendTheme, Box, Flex } from "@chakra-ui/react";
 import { MantineProvider } from "@mantine/core";
 import Routing from "./Routing";
 import Navbar from "./components/Navbar";
-import Sidebar from "./components/Sidebar"; // Import the Sidebar component
+import Sidebar from "./components/Sidebar";
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
 import { BrowserRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
-/*import { ReactQueryDevtools } from "@tanstack/react-query-devtools";*/
 
 const theme = extendTheme({
   config: {
@@ -37,7 +36,6 @@ function App() {
                 </Box>
               </Box>
             </Flex>
-            {/*<ReactQueryDevtools initialIsOpen={false} client={queryClient} /> */}
           </BrowserRouter>
         </QueryClientProvider>
       </MantineProvider>
